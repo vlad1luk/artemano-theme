@@ -345,3 +345,34 @@ html:root {
 .artemano-rooms__placeholder {
   opacity: 0.35;
 }
+
+/* --------------------------------------------------------------------------
+   Ajustements mobile de l'en-tête
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 749px) {
+  /* Le lien magasin reste dans le menu et la barre utilitaire sur mobile */
+  .header-actions__store {
+    display: none !important;
+  }
+
+  .header .header-logo__tagline {
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    white-space: nowrap;
+  }
+
+  .header .header-logo {
+    font-size: 1.5rem;
+    letter-spacing: 0.12em;
+  }
+
+  .artemano-utility {
+    font-size: 0.75rem;
+  }
+
+  .artemano-utility__announcement {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
