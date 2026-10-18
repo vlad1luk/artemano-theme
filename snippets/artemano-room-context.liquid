@@ -1,0 +1,26 @@
+{%- doc -%}
+  Trouve la pièce (lien de premier niveau du menu principal) qui contient la collection courante.
+  Écrit le résultat dans la variable de sortie demandée via capture : renvoie l'index (1…n) de la pièce, ou rien.
+
+  @param {object} menu - Menu principal (link_list)
+  @param {object} collection - Collection courante
+{%- enddoc -%}
+{%- liquid
+  assign found = ''
+  for link in menu.links
+    if link.type == 'collection_link' and link.object.handle == collection.handle
+      assign found = forloop.index
+      break
+    endif
+    for child in link.links
+      if child.type == 'collection_link' and child.object.handle == collection.handle
+        assign found = forloop.parentloop.index
+        break
+      endif
+    endfor
+    if found != ''
+      break
+    endif
+  endfor
+  echo found
+-%}

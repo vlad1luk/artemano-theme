@@ -1,0 +1,310 @@
+{%- comment -%}
+  Artemano — en-tête de collection : fil d'Ariane, bandeau éditorial (texte + image)
+  et vignettes des sous-catégories de la pièce.
+{%- endcomment -%}
+
+{%- liquid
+  assign menu = section.settings.menu
+  capture room_index
+    render 'artemano-room-context', menu: menu, collection: collection
+  endcapture
+  assign room_index = room_index | strip
+  assign room = nil
+  if room_index != ''
+    assign i = room_index | plus: 0 | minus: 1
+    assign room = menu.links[i]
+  endif
+
+  assign is_room = false
+  if room and room.object.handle == collection.handle
+    assign is_room = true
+  endif
+
+  assign image = section.settings.fallback_image
+  if collection.image
+    assign image = collection.image
+  elsif collection.products.first.featured_image
+    assign image = collection.products.first.featured_image
+  endif
+-%}
+
+<div class="artemano-coll">
+  <nav class="artemano-coll__crumbs artemano-container" aria-label="Fil d'Ariane">
+    <a href="{{ routes.root_url }}">Accueil</a>
+    {%- if room and is_room == false -%}
+      <span aria-hidden="true">/</span>
+      <a href="{{ room.url }}">{{ room.title }}</a>
+    {%- endif -%}
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">{{ collection.title }}</span>
+  </nav>
+
+  <div class="artemano-coll__banner">
+    <div class="artemano-coll__intro">
+      {%- if room and is_room == false -%}
+        <p class="artemano-eyebrow">{{ room.title }}</p>
+      {%- elsif section.settings.room_eyebrow != blank -%}
+        <p class="artemano-eyebrow">{{ section.settings.room_eyebrow }}</p>
+      {%- endif -%}
+      <h1 class="artemano-coll__title">{{ collection.title }}</h1>
+      {%- if collection.description != blank -%}
+        <div class="artemano-coll__description">{{ collection.description }}</div>
+      {%- endif -%}
+      <p class="artemano-coll__meta">
+        <strong>{{ collection.products_count }} {% if collection.products_count > 1 %}produits{% else %}produit{% endif %}</strong>
+        {%- if section.settings.meta != blank %} · {{ section.settings.meta }}{% endif -%}
+      </p>
+    </div>
+    <div class="artemano-coll__media">
+      {%- if image != blank -%}
+        {{
+          image
+          | image_url: width: 1600
+          | image_tag:
+            widths: '600, 900, 1200, 1600',
+            sizes: '(min-width: 990px) 50vw, 100vw',
+            loading: 'eager',
+            fetchpriority: 'high',
+            alt: ''
+        }}
+      {%- else -%}
+        {{ 'collection-1' | placeholder_svg_tag: 'artemano-coll__placeholder' }}
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if room and room.links.size > 0 -%}
+    <ul class="artemano-coll__subcats list-unstyled" role="list">
+      {%- for child in room.links -%}
+        {%- assign sub = child.object -%}
+        {%- assign sub_image = sub.image | default: sub.products.first.featured_image -%}
+        <li>
+          <a
+            href="{{ child.url }}"
+            class="artemano-coll__subcat{% if child.current or sub.handle == collection.handle %} is-current{% endif %}"
+          >
+            <span class="artemano-coll__subcat-media">
+              {%- if sub_image -%}
+                {{
+                  sub_image
+                  | image_url: width: 500
+                  | image_tag: widths: '250, 400, 500', sizes: '(min-width: 990px) 16vw, 40vw', loading: 'lazy', alt: ''
+                }}
+              {%- endif -%}
+            </span>
+            <span class="artemano-coll__subcat-label">
+              <span class="artemano-coll__subcat-name">{{ child.title }}</span>
+              {%- if sub.products_count -%}
+                <span class="artemano-coll__subcat-count">{{ sub.products_count }}</span>
+              {%- endif -%}
+            </span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .artemano-coll__crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+    padding-block: 1.25rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--artemano-ink-muted, #7d7066);
+  }
+
+  .artemano-coll__crumbs a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .artemano-coll__crumbs a:hover {
+    color: var(--artemano-ink, #2b2420);
+  }
+
+  .artemano-coll__crumbs [aria-current] {
+    color: var(--artemano-ink, #2b2420);
+  }
+
+  .artemano-coll__banner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    padding-inline: 4px;
+    min-height: 26rem;
+  }
+
+  .artemano-coll__intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3.5rem 4.5rem;
+    background: var(--artemano-white, #fff);
+  }
+
+  .artemano-coll__intro .artemano-eyebrow {
+    margin: 0 0 1rem;
+  }
+
+  .artemano-coll__title {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-weight: 400;
+    font-size: clamp(2.5rem, 4.4vw, 4rem);
+    line-height: 1.05;
+    color: var(--artemano-ink, #2b2420);
+  }
+
+  .artemano-coll__description {
+    margin-top: 1.25rem;
+    max-width: 34rem;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--artemano-ink-soft, #5a4e45);
+  }
+
+  .artemano-coll__description p {
+    margin: 0;
+  }
+
+  .artemano-coll__meta {
+    margin: 1.75rem 0 0;
+    font-size: 0.875rem;
+    color: var(--artemano-ink-muted, #7d7066);
+  }
+
+  .artemano-coll__meta strong {
+    color: var(--artemano-ink, #2b2420);
+    font-weight: 500;
+  }
+
+  .artemano-coll__media {
+    position: relative;
+    min-height: 20rem;
+    background: var(--artemano-sand, #dcd4c8);
+    overflow: hidden;
+  }
+
+  .artemano-coll__media img,
+  .artemano-coll__placeholder {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .artemano-coll__placeholder {
+    fill: rgb(43 36 32 / 0.12);
+  }
+
+  .artemano-coll__subcats {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(10rem, 1fr);
+    gap: 4px;
+    margin: 4px 0 0;
+    padding: 0 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .artemano-coll__subcats::-webkit-scrollbar {
+    display: none;
+  }
+
+  .artemano-coll__subcat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    height: 100%;
+    padding: 0.875rem 0.875rem 1rem;
+    background: var(--artemano-white, #fff);
+    color: var(--artemano-ink, #2b2420);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.2s ease;
+  }
+
+  .artemano-coll__subcat:hover,
+  .artemano-coll__subcat.is-current {
+    border-bottom-color: var(--artemano-ink, #2b2420);
+  }
+
+  .artemano-coll__subcat-media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: #efe9df;
+  }
+
+  .artemano-coll__subcat-media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .artemano-coll__subcat-label {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .artemano-coll__subcat-name {
+    font-family: var(--font-heading--family);
+    font-size: 1.25rem;
+    line-height: 1.2;
+  }
+
+  .artemano-coll__subcat-count {
+    font-size: 0.75rem;
+    color: var(--artemano-ink-muted, #7d7066);
+  }
+
+  @media screen and (max-width: 989px) {
+    .artemano-coll__banner {
+      grid-template-columns: 1fr;
+      padding-inline: 0;
+      min-height: 0;
+    }
+
+    .artemano-coll__intro {
+      padding: 2rem 1.25rem;
+    }
+
+    .artemano-coll__media {
+      min-height: 14rem;
+    }
+
+    .artemano-coll__subcats {
+      grid-auto-columns: 9.5rem;
+      padding: 0;
+    }
+
+    .artemano-coll__subcat-name {
+      font-size: 1.0625rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "En-tête de collection",
+  "tag": "section",
+  "class": "artemano-coll-section",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Menu principal (pour les pièces et sous-catégories)", "default": "main-menu" },
+    { "type": "text", "id": "room_eyebrow", "label": "Étiquette quand la collection est une pièce", "default": "Collection" },
+    { "type": "text", "id": "meta", "label": "Texte après le nombre de produits", "default": "Bois massif" },
+    { "type": "image_picker", "id": "fallback_image", "label": "Image par défaut" }
+  ],
+  "presets": [{ "name": "En-tête de collection" }]
+}
+{% endschema %}

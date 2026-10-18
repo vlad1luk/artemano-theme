@@ -62,15 +62,15 @@
 
   # Format all prices
   if use_currency
-    assign price = price | money_with_currency
-    assign compare_at_price = compare_at_price | money_with_currency
-    assign price_min = price_min | money_with_currency
-    assign price_max = price_max | money_with_currency
+    assign price = price | money_with_currency | strip_html
+    assign compare_at_price = compare_at_price | money_with_currency | strip_html
+    assign price_min = price_min | money_with_currency | strip_html
+    assign price_max = price_max | money_with_currency | strip_html
   else
-    assign price = price | money
-    assign compare_at_price = compare_at_price | money
-    assign price_min = price_min | money
-    assign price_max = price_max | money
+    assign price = price | money | strip_html
+    assign compare_at_price = compare_at_price | money | strip_html
+    assign price_min = price_min | money | strip_html
+    assign price_max = price_max | money | strip_html
   endif
 -%}
 
