@@ -15,8 +15,12 @@
 
   <div class="artemano-products__grid">
     {%- if collection != blank and collection.products_count > 0 -%}
-      {%- for product in collection.products limit: section.settings.limit -%}
+      {%- assign shown = 0 -%}
+      {%- for product in collection.products -%}
+        {%- if section.settings.hide_unavailable and product.available == false -%}{%- continue -%}{%- endif -%}
         {% render 'artemano-product-card', product: product %}
+        {%- assign shown = shown | plus: 1 -%}
+        {%- if shown >= section.settings.limit -%}{%- break -%}{%- endif -%}
       {%- endfor -%}
     {%- else -%}
       {%- for i in (1..section.settings.limit) -%}
@@ -115,6 +119,7 @@
   }
 
   .artemano-card__badge {
+    white-space: nowrap;
     position: absolute;
     top: 0;
     left: 0;
@@ -188,7 +193,8 @@
     { "type": "text", "id": "title", "label": "Titre", "default": "Meilleurs vendeurs" },
     { "type": "collection", "id": "collection", "label": "Collection" },
     { "type": "range", "id": "limit", "label": "Nombre de produits", "min": 4, "max": 12, "step": 4, "default": 8 },
-    { "type": "text", "id": "view_all_label", "label": "Lien « tout voir »", "default": "Tout voir" }
+    { "type": "text", "id": "view_all_label", "label": "Lien « tout voir »", "default": "Tout voir" },
+    { "type": "checkbox", "id": "hide_unavailable", "label": "Masquer les produits non disponibles", "default": true }
   ],
   "presets": [{ "name": "Grille de produits" }]
 }
