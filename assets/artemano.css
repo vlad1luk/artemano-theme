@@ -74,6 +74,16 @@ html:root {
   color: var(--artemano-walnut-soft);
 }
 
+/* Titres de section */
+  .artemano-section-title {
+  margin: 0;
+  font-family: var(--font-heading--family);
+  font-weight: 400;
+  font-size: clamp(2rem, 3.4vw, 3rem);
+  line-height: 1.1;
+  color: var(--artemano-ink, #2b2420);
+}
+
 /* --------------------------------------------------------------------------
    Boutons Artemano (utilisés dans les sections sur mesure)
    -------------------------------------------------------------------------- */

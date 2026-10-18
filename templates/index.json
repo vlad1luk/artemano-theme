@@ -116,11 +116,92 @@
         "r3",
         "r4"
       ]
+    },
+    "best_sellers": {
+      "type": "artemano-featured-products",
+      "settings": {
+        "title": "Meilleurs vendeurs",
+        "collection": "living",
+        "limit": 8,
+        "view_all_label": "Tout voir"
+      }
+    },
+    "signature": {
+      "type": "artemano-signature",
+      "settings": {
+        "eyebrow": "Notre signature",
+        "big": "100 %",
+        "big_suffix": "bois massif",
+        "text": "<p>Nos créations partagent la beauté du bois travaillé à la main et transmettent notre amour du bois.</p>",
+        "button_label": "Découvrir nos essences",
+        "button_link": "/collections/all",
+        "story_eyebrow": "Notre histoire",
+        "story_title": "Du bois choisi à la main, depuis 2002",
+        "story_text": "<p>Deux phrases sur les essences et les artisans, à écrire avec Gianni.</p>",
+        "story_link_label": "Lire notre histoire",
+        "story_link": "/pages/decouvrez"
+      },
+      "blocks": {
+        "p1": {
+          "type": "point",
+          "settings": {
+            "label": "Essences",
+            "text": "Suar, palissandre, manguier"
+          }
+        },
+        "p2": {
+          "type": "point",
+          "settings": {
+            "label": "Pièces uniques",
+            "text": "Chaque veinure est différente"
+          }
+        },
+        "p3": {
+          "type": "point",
+          "settings": {
+            "label": "Garantie 1 an",
+            "text": "Contre les défauts de fabrication"
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3"
+      ]
+    },
+    "reviews": {
+      "type": "artemano-reviews",
+      "disabled": true,
+      "settings": {
+        "rating": "4,8",
+        "source": "Avis Google",
+        "source_link": ""
+      }
+    },
+    "store": {
+      "type": "artemano-store",
+      "settings": {
+        "eyebrow": "Notre magasin",
+        "title": "Venez voir et toucher le bois",
+        "store_name": "Artemano Longueuil",
+        "address": "1138, boul. Marie-Victorin, Longueuil (Québec) J4G 2H9",
+        "hours": "<p>Mardi au dimanche : 10 h à 16 h · Lundi fermé</p>",
+        "phone": "450 321-0565",
+        "visit_label": "Nous joindre",
+        "visit_link": "/pages/contact-us",
+        "directions_label": "Itinéraire",
+        "map_query": "Artemano, 1138 boulevard Marie-Victorin, Longueuil, QC J4G 2H9"
+      }
     }
   },
   "order": [
     "double_hero",
     "guarantees",
-    "rooms"
+    "rooms",
+    "best_sellers",
+    "signature",
+    "reviews",
+    "store"
   ]
 }

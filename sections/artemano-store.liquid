@@ -1,0 +1,171 @@
+{%- comment -%}
+  Artemano — notre magasin : coordonnées, heures, boutons et carte.
+{%- endcomment -%}
+
+{%- liquid
+  assign map_query = section.settings.map_query | default: section.settings.address | strip_html | url_encode
+  assign directions_url = 'https://www.google.com/maps/dir/?api=1&destination=' | append: map_query
+-%}
+
+<div class="artemano-store artemano-container">
+  <div class="artemano-store__info">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="artemano-eyebrow">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+    <h2 class="artemano-section-title artemano-store__title">{{ section.settings.title }}</h2>
+
+    <div class="artemano-store__details">
+      <p class="artemano-store__name">{{ section.settings.store_name }}</p>
+      <address class="artemano-store__address">{{ section.settings.address }}</address>
+      {%- if section.settings.hours != blank -%}
+        <div class="artemano-store__hours">{{ section.settings.hours }}</div>
+      {%- endif -%}
+      {%- if section.settings.phone != blank -%}
+        <a class="artemano-store__phone" href="tel:{{ section.settings.phone | remove: ' ' | remove: '.' | remove: '-' | remove: '(' | remove: ')' }}">
+          {{- section.settings.phone -}}
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div class="artemano-store__actions">
+      {%- if section.settings.visit_label != blank -%}
+        <a href="{{ section.settings.visit_link | default: '#' }}" class="artemano-btn artemano-btn--dark">{{ section.settings.visit_label }}</a>
+      {%- endif -%}
+      <a href="{{ directions_url }}" class="artemano-btn artemano-btn--outline" target="_blank" rel="noopener">
+        {{- section.settings.directions_label -}}
+      </a>
+    </div>
+  </div>
+
+  <div class="artemano-store__map">
+    {%- if section.settings.map_image != blank -%}
+      {{
+        section.settings.map_image
+        | image_url: width: 1600
+        | image_tag: widths: '600, 900, 1200, 1600', sizes: '(min-width: 990px) 66vw, 100vw', loading: 'lazy', alt: ''
+      }}
+    {%- else -%}
+      <iframe
+        title="{{ section.settings.store_name | escape }}"
+        src="https://www.google.com/maps?q={{ map_query }}&z=14&output=embed"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+      ></iframe>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .artemano-store {
+    display: grid;
+    grid-template-columns: minmax(20rem, 1fr) 2fr;
+    padding-block: 6rem;
+  }
+
+  .artemano-store__info {
+    padding: 3rem;
+    background: var(--artemano-white, #fff);
+  }
+
+  .artemano-store__info .artemano-eyebrow {
+    margin: 0 0 0.75rem;
+  }
+
+  .artemano-store__title {
+    text-align: left;
+  }
+
+  .artemano-store__details {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--artemano-line, #e2d9cc);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--artemano-ink-soft, #5a4e45);
+  }
+
+  .artemano-store__name {
+    margin: 0 0 0.5rem;
+    font-family: var(--font-heading--family);
+    font-size: 1.75rem;
+    line-height: 1.2;
+    color: var(--artemano-ink, #2b2420);
+  }
+
+  .artemano-store__address {
+    font-style: normal;
+  }
+
+  .artemano-store__hours p {
+    margin: 0;
+  }
+
+  .artemano-store__phone {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .artemano-store__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .artemano-store__map {
+    position: relative;
+    min-height: 26rem;
+    background: var(--artemano-sand, #dcd4c8);
+  }
+
+  .artemano-store__map iframe,
+  .artemano-store__map img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    object-fit: cover;
+  }
+
+  .artemano-store__map iframe {
+    filter: grayscale(0.85) sepia(0.15) contrast(0.95);
+  }
+
+  @media screen and (max-width: 989px) {
+    .artemano-store {
+      grid-template-columns: 1fr;
+      padding-block: 3rem;
+    }
+
+    .artemano-store__info {
+      padding: 2rem 1.25rem;
+    }
+
+    .artemano-store__map {
+      min-height: 18rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Notre magasin",
+  "tag": "section",
+  "class": "artemano-store-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Étiquette", "default": "Notre magasin" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Venez voir et toucher le bois" },
+    { "type": "text", "id": "store_name", "label": "Nom du magasin", "default": "Artemano Longueuil" },
+    { "type": "text", "id": "address", "label": "Adresse", "default": "1138, boul. Marie-Victorin, Longueuil (Québec) J4G 2H9" },
+    { "type": "richtext", "id": "hours", "label": "Heures", "default": "<p>Mardi au dimanche : 10 h à 16 h · Lundi fermé</p>" },
+    { "type": "text", "id": "phone", "label": "Téléphone", "default": "450 321-0565" },
+    { "type": "text", "id": "visit_label", "label": "Bouton « Visiter »", "default": "Planifier une visite" },
+    { "type": "url", "id": "visit_link", "label": "Lien « Visiter »" },
+    { "type": "text", "id": "directions_label", "label": "Bouton itinéraire", "default": "Itinéraire" },
+    { "type": "text", "id": "map_query", "label": "Recherche pour la carte", "info": "Laisser vide pour utiliser l'adresse." },
+    { "type": "image_picker", "id": "map_image", "label": "Image à la place de la carte" }
+  ],
+  "presets": [{ "name": "Notre magasin" }]
+}
+{% endschema %}

@@ -1,0 +1,124 @@
+{%- doc -%}
+  Carte produit Artemano : image, pastilles de finition, nom, essence, prix.
+
+  @param {object} product - Le produit à afficher
+  @param {string} [sizes] - Attribut sizes de l'image
+{%- enddoc -%}
+
+{%- liquid
+  assign sizes = sizes | default: '(min-width: 990px) 25vw, 50vw'
+  assign image_alt = product.featured_image.alt | default: product.title | escape
+
+  # Option de finition (couleur, matière, essence…)
+  assign finish_option = nil
+  for option in product.options_with_values
+    assign option_name = option.name | downcase
+    if option_name contains 'color' or option_name contains 'couleur' or option_name contains 'finition' or option_name contains 'finish' or option_name contains 'essence' or option_name contains 'mati'
+      assign finish_option = option
+      break
+    endif
+  endfor
+
+  # Essence de bois : métachamp custom.essence, sinon étiquettes connues
+  assign essence = product.metafields.custom.essence.value
+  if essence == blank
+    assign tags = product.tags | join: ' ' | downcase
+    if tags contains 'suar'
+      assign essence = 'Suar massif'
+    elsif tags contains 'rosewood' or tags contains 'palissandre'
+      assign essence = 'Palissandre massif'
+    elsif tags contains 'mango' or tags contains 'manguier'
+      assign essence = 'Manguier massif'
+    elsif tags contains 'acacia'
+      assign essence = 'Acacia massif'
+    elsif tags contains 'teak' or tags contains 'teck'
+      assign essence = 'Teck massif'
+    endif
+  endif
+-%}
+
+<a href="{{ product.url }}" class="artemano-card">
+  <div class="artemano-card__media">
+    {%- if product.featured_image -%}
+      {{
+        product.featured_image
+        | image_url: width: 900
+        | image_tag:
+          widths: '300, 450, 600, 900',
+          sizes: sizes,
+          loading: 'lazy',
+          class: 'artemano-card__image',
+          alt: image_alt
+      }}
+      {%- if product.images.size > 1 -%}
+        {{
+          product.images[1]
+          | image_url: width: 900
+          | image_tag:
+            widths: '300, 450, 600, 900',
+            sizes: sizes,
+            loading: 'lazy',
+            class: 'artemano-card__image artemano-card__image--hover',
+            alt: ''
+        }}
+      {%- endif -%}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'artemano-card__image artemano-card__placeholder' }}
+    {%- endif -%}
+
+    {%- unless product.available -%}
+      <span class="artemano-card__badge">Bientôt disponible</span>
+    {%- endunless -%}
+  </div>
+
+  {%- if finish_option and finish_option.values.size > 1 -%}
+    <ul class="artemano-card__swatches list-unstyled" aria-label="{{ finish_option.name | escape }}">
+      {%- for value in finish_option.values limit: 4 -%}
+        {%- liquid
+          assign v = value | downcase
+          assign swatch = value.swatch.color
+          if swatch == blank
+            assign swatch = '#d8cbb8'
+            if v contains 'black' or v contains 'noir' or v contains 'ebony' or v contains 'ébène'
+              assign swatch = '#2b2420'
+            elsif v contains 'walnut' or v contains 'noyer' or v contains 'dark' or v contains 'foncé' or v contains 'brown' or v contains 'brun'
+              assign swatch = '#6b4630'
+            elsif v contains 'caramel' or v contains 'honey' or v contains 'miel' or v contains 'light brown'
+              assign swatch = '#b07d4f'
+            elsif v contains 'natural' or v contains 'naturel'
+              assign swatch = '#c9a574'
+            elsif v contains 'olive' or v contains 'green' or v contains 'vert'
+              assign swatch = '#7f7d55'
+            elsif v contains 'grey' or v contains 'gray' or v contains 'gris' or v contains 'wash'
+              assign swatch = '#9a948e'
+            elsif v contains 'blue' or v contains 'bleu'
+              assign swatch = '#4b5a6b'
+            elsif v contains 'white' or v contains 'blanc' or v contains 'beige' or v contains 'cream' or v contains 'crème'
+              assign swatch = '#e9e0d1'
+            elsif v contains 'taupe'
+              assign swatch = '#8b7d6f'
+            endif
+          endif
+        -%}
+        <li class="artemano-card__swatch" style="--swatch: {{ swatch }};" title="{{ value | escape }}">
+          <span class="visually-hidden">{{ value }}</span>
+        </li>
+      {%- endfor -%}
+      {%- if finish_option.values.size > 4 -%}
+        <li class="artemano-card__swatch-more">+{{ finish_option.values.size | minus: 4 }}</li>
+      {%- endif -%}
+    </ul>
+  {%- endif -%}
+
+  <p class="artemano-card__title">{{ product.title }}</p>
+  {%- if essence != blank -%}
+    <p class="artemano-card__essence">{{ essence }}</p>
+  {%- endif -%}
+  <p class="artemano-card__price">
+    {%- if product.price_varies -%}
+      À partir de {{ product.price_min | money_without_trailing_zeros }}
+    {%- else -%}
+      {{ product.price | money_without_trailing_zeros }}
+    {%- endif -%}
+  </p>
+</a>

@@ -1,0 +1,143 @@
+{%- comment -%}
+  Artemano — note moyenne + témoignages. N'utiliser qu'avec de vrais avis (ex. fiche Google).
+{%- endcomment -%}
+
+<div class="artemano-reviews-wrap">
+  <div class="artemano-reviews artemano-container">
+    <div class="artemano-reviews__score">
+      <p class="artemano-reviews__rating">
+        {{- section.settings.rating -}}<span class="artemano-reviews__out-of">/5</span>
+      </p>
+      <p class="artemano-reviews__stars" aria-hidden="true">★★★★★</p>
+      {%- if section.settings.source != blank -%}
+        <p class="artemano-reviews__source">
+          {%- if section.settings.source_link != blank -%}
+            <a href="{{ section.settings.source_link }}" target="_blank" rel="noopener">{{ section.settings.source }}</a>
+          {%- else -%}
+            {{ section.settings.source }}
+          {%- endif -%}
+        </p>
+      {%- endif -%}
+    </div>
+
+    {%- for block in section.blocks -%}
+      <figure class="artemano-reviews__item" {{ block.shopify_attributes }}>
+        <p class="artemano-reviews__stars artemano-reviews__stars--small" aria-label="{{ block.settings.stars }} sur 5">
+          {%- for i in (1..block.settings.stars) -%}★{%- endfor -%}
+        </p>
+        <blockquote class="artemano-reviews__quote">« {{ block.settings.quote }} »</blockquote>
+        <figcaption class="artemano-reviews__author">{{ block.settings.author }}</figcaption>
+      </figure>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .artemano-reviews-wrap {
+    background: var(--artemano-white, #fff);
+    border-block: 1px solid var(--artemano-line, #e2d9cc);
+  }
+
+  .artemano-reviews {
+    display: grid;
+    grid-template-columns: 1.1fr repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+    padding-block: 4.5rem;
+    align-items: start;
+  }
+
+  .artemano-reviews__rating {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: 5.5rem;
+    line-height: 0.9;
+    color: var(--artemano-ink, #2b2420);
+  }
+
+  .artemano-reviews__out-of {
+    font-size: 2rem;
+    color: var(--artemano-ink-muted, #7d7066);
+  }
+
+  .artemano-reviews__stars {
+    margin: 0.75rem 0 0;
+    color: var(--artemano-walnut-soft, #6e4b2f);
+    letter-spacing: 0.15em;
+    font-size: 1.25rem;
+  }
+
+  .artemano-reviews__stars--small {
+    margin: 0;
+    font-size: 0.9375rem;
+  }
+
+  .artemano-reviews__source {
+    margin: 0.5rem 0 0;
+    font-size: 0.8125rem;
+    color: var(--artemano-ink-muted, #7d7066);
+  }
+
+  .artemano-reviews__source a {
+    color: inherit;
+  }
+
+  .artemano-reviews__item {
+    margin: 0;
+    padding-left: 2rem;
+    border-left: 1px solid var(--artemano-line, #e2d9cc);
+  }
+
+  .artemano-reviews__quote {
+    margin: 1rem 0 0;
+    font-family: var(--font-heading--family);
+    font-size: 1.375rem;
+    line-height: 1.3;
+    color: var(--artemano-ink, #2b2420);
+  }
+
+  .artemano-reviews__author {
+    margin-top: 1rem;
+    font-size: 0.8125rem;
+    color: var(--artemano-ink-muted, #7d7066);
+  }
+
+  @media screen and (max-width: 989px) {
+    .artemano-reviews {
+      grid-template-columns: 1fr;
+      padding-block: 3rem;
+    }
+
+    .artemano-reviews__item {
+      padding: 1.5rem 0 0;
+      border-left: 0;
+      border-top: 1px solid var(--artemano-line, #e2d9cc);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Avis clients",
+  "tag": "section",
+  "class": "artemano-reviews-section",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "paragraph", "content": "N'afficher que de vrais avis, avec leur source." },
+    { "type": "text", "id": "rating", "label": "Note moyenne", "default": "4,8" },
+    { "type": "text", "id": "source", "label": "Source", "default": "Avis Google" },
+    { "type": "url", "id": "source_link", "label": "Lien vers la source" }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Avis",
+      "settings": [
+        { "type": "range", "id": "stars", "label": "Étoiles", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "textarea", "id": "quote", "label": "Avis" },
+        { "type": "text", "id": "author", "label": "Auteur", "info": "Prénom et initiale, ville" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Avis clients" }]
+}
+{% endschema %}

@@ -1,0 +1,195 @@
+{%- comment -%}
+  Artemano — grille de produits (« Meilleurs vendeurs ») : 8 produits d'une collection.
+  Astuce : créer une collection dont l'ordre de tri est « Meilleures ventes » dans l'admin.
+{%- endcomment -%}
+
+{%- assign collection = section.settings.collection -%}
+
+<div class="artemano-products artemano-container">
+  <header class="artemano-products__header">
+    <h2 class="artemano-section-title">{{ section.settings.title }}</h2>
+    {%- if collection != blank and section.settings.view_all_label != blank -%}
+      <a href="{{ collection.url }}" class="artemano-link-caps">{{ section.settings.view_all_label }}</a>
+    {%- endif -%}
+  </header>
+
+  <div class="artemano-products__grid">
+    {%- if collection != blank and collection.products_count > 0 -%}
+      {%- for product in collection.products limit: section.settings.limit -%}
+        {% render 'artemano-product-card', product: product %}
+      {%- endfor -%}
+    {%- else -%}
+      {%- for i in (1..section.settings.limit) -%}
+        <div class="artemano-card">
+          <div class="artemano-card__media">
+            {{ 'product-1' | placeholder_svg_tag: 'artemano-card__image artemano-card__placeholder' }}
+          </div>
+          <p class="artemano-card__title">Nom du produit</p>
+          <p class="artemano-card__price">0 $</p>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .artemano-products {
+    padding-block: 4.5rem 6rem;
+  }
+
+  .artemano-products__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-bottom: 1.25rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--artemano-line, #e2d9cc);
+  }
+
+  .artemano-products__header .artemano-section-title {
+    text-align: left;
+  }
+
+  .artemano-link-caps {
+    font-family: var(--font-body--family);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--artemano-ink, #2b2420);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .artemano-link-caps:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .artemano-products__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 3rem 1.75rem;
+  }
+
+  /* Carte produit */
+  .artemano-card {
+    display: flex;
+    flex-direction: column;
+    color: var(--artemano-ink, #2b2420);
+    text-decoration: none;
+  }
+
+  .artemano-card__media {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: #efe9df;
+    border-radius: var(--artemano-radius, 2px);
+  }
+
+  .artemano-card__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.4s ease, transform 0.6s ease;
+  }
+
+  .artemano-card__placeholder {
+    fill: rgb(43 36 32 / 0.12);
+  }
+
+  .artemano-card__image--hover {
+    opacity: 0;
+  }
+
+  .artemano-card:hover .artemano-card__image--hover {
+    opacity: 1;
+  }
+
+  .artemano-card:hover .artemano-card__image:only-of-type {
+    transform: scale(1.03);
+  }
+
+  .artemano-card__badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    padding: 0.4rem 0.75rem;
+    background: var(--artemano-charcoal, #2b2420);
+    color: var(--artemano-cream, #f7f3ec);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .artemano-card__swatches {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin: 0.875rem 0 0;
+    padding: 0;
+  }
+
+  .artemano-card__swatch {
+    width: 0.875rem;
+    height: 0.875rem;
+    border-radius: 50%;
+    background: var(--swatch);
+    box-shadow: inset 0 0 0 1px rgb(43 36 32 / 0.15);
+  }
+
+  .artemano-card__swatch-more {
+    font-size: 0.75rem;
+    color: var(--artemano-ink-muted, #7d7066);
+  }
+
+  .artemano-card__title {
+    margin: 0.625rem 0 0;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  .artemano-card__essence {
+    margin: 0.125rem 0 0;
+    font-size: 0.8125rem;
+    color: var(--artemano-ink-muted, #7d7066);
+  }
+
+  .artemano-card__price {
+    margin: 0.375rem 0 0;
+    font-size: 0.9375rem;
+  }
+
+  @media screen and (max-width: 989px) {
+    .artemano-products {
+      padding-block: 3rem 4rem;
+    }
+
+    .artemano-products__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2rem 1rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Grille de produits",
+  "tag": "section",
+  "class": "artemano-products-section",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre", "default": "Meilleurs vendeurs" },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "limit", "label": "Nombre de produits", "min": 4, "max": 12, "step": 4, "default": 8 },
+    { "type": "text", "id": "view_all_label", "label": "Lien « tout voir »", "default": "Tout voir" }
+  ],
+  "presets": [{ "name": "Grille de produits" }]
+}
+{% endschema %}

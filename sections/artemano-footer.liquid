@@ -1,0 +1,362 @@
+{%- comment -%}
+  Artemano — pied de page : infolettre, logo, colonnes de liens, mentions et langues.
+{%- endcomment -%}
+
+<footer class="artemano-footer" style="--footer-cols: {{ section.blocks.size | at_least: 1 }};">
+  <div class="artemano-container">
+    {%- if section.settings.show_newsletter -%}
+      <div class="artemano-footer__newsletter">
+        <div>
+          <h2 class="artemano-footer__newsletter-title">{{ section.settings.newsletter_title }}</h2>
+          {%- if section.settings.newsletter_text != blank -%}
+            <p class="artemano-footer__newsletter-text">{{ section.settings.newsletter_text }}</p>
+          {%- endif -%}
+        </div>
+
+        {%- form 'customer', id: 'ArtemanoNewsletter', class: 'artemano-footer__form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          {%- if form.posted_successfully? -%}
+            <p class="artemano-footer__form-message" role="status">{{ section.settings.success_message }}</p>
+          {%- else -%}
+            <label for="ArtemanoNewsletterEmail" class="visually-hidden">{{ section.settings.email_placeholder }}</label>
+            <input
+              id="ArtemanoNewsletterEmail"
+              type="email"
+              name="contact[email]"
+              class="artemano-footer__input"
+              placeholder="{{ section.settings.email_placeholder | escape }}"
+              autocomplete="email"
+              required
+            >
+            <button type="submit" class="artemano-footer__submit">{{ section.settings.subscribe_label }}</button>
+            {%- if form.errors -%}
+              <p class="artemano-footer__form-message artemano-footer__form-message--error" role="alert">
+                {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+              </p>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    {%- endif -%}
+
+    <div class="artemano-footer__main">
+      <div class="artemano-footer__brand">
+        <a href="{{ routes.root_url }}" class="artemano-footer__logo">
+          {% render 'artemano-logo', variant: 'full' %}
+        </a>
+        {%- if section.settings.brand_text != blank -%}
+          <p class="artemano-footer__brand-text">{{ section.settings.brand_text }}</p>
+        {%- endif -%}
+      </div>
+
+      {%- for block in section.blocks -%}
+        <nav class="artemano-footer__column" aria-label="{{ block.settings.title | escape }}" {{ block.shopify_attributes }}>
+          <h3 class="artemano-footer__heading">{{ block.settings.title }}</h3>
+          {%- if block.settings.menu != blank -%}
+            <ul class="list-unstyled artemano-footer__links">
+              {%- for link in block.settings.menu.links -%}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </nav>
+      {%- endfor -%}
+    </div>
+
+    <div class="artemano-footer__bottom">
+      <p class="artemano-footer__legal">
+        © {{ 'now' | date: '%Y' }} {{ shop.name }}
+        {%- if shop.enabled_payment_types.size > 0 %}
+          <span class="artemano-footer__payments">
+            {%- for type in shop.enabled_payment_types limit: 5 -%}
+              {{ type | payment_type_svg_tag: class: 'artemano-footer__payment-icon' }}
+            {%- endfor -%}
+          </span>
+        {%- endif -%}
+      </p>
+
+      <ul class="list-unstyled artemano-footer__policies">
+        {%- for policy in shop.policies -%}
+          {%- if policy != blank -%}
+            <li><a href="{{ policy.url }}">{{ policy.title }}</a></li>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if localization.available_languages.size > 1 -%}
+          <li>
+            {%- form 'localization', id: 'ArtemanoFooterLang', class: 'artemano-footer__lang' -%}
+              <input type="hidden" name="return_to" value="{{ request.path }}">
+              {%- for language in localization.available_languages -%}
+                <button
+                  type="submit"
+                  name="locale_code"
+                  value="{{ language.iso_code }}"
+                  lang="{{ language.iso_code }}"
+                  class="{% if language.iso_code == localization.language.iso_code %}is-active{% endif %}"
+                >
+                  {{- language.endonym_name | capitalize -}}
+                </button>
+                {%- unless forloop.last -%}<span aria-hidden="true">·</span>{%- endunless -%}
+              {%- endfor -%}
+            {%- endform -%}
+          </li>
+        {%- endif -%}
+      </ul>
+    </div>
+  </div>
+</footer>
+
+{% stylesheet %}
+  .artemano-footer {
+    background: var(--artemano-charcoal, #2b2420);
+    color: rgb(247 243 236 / 0.82);
+    font-size: 0.9375rem;
+  }
+
+  .artemano-footer a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .artemano-footer a:hover {
+    color: var(--artemano-cream, #f7f3ec);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .artemano-footer__newsletter {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 2rem;
+    padding-block: 4rem;
+    border-bottom: 1px solid rgb(247 243 236 / 0.12);
+  }
+
+  .artemano-footer__newsletter-title {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-weight: 400;
+    font-size: clamp(1.75rem, 2.8vw, 2.5rem);
+    line-height: 1.15;
+    color: var(--artemano-cream, #f7f3ec);
+  }
+
+  .artemano-footer__newsletter-text {
+    margin: 0.5rem 0 0;
+    font-size: 0.875rem;
+  }
+
+  .artemano-footer__form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .artemano-footer__input {
+    flex: 1 1 16rem;
+    min-height: 3.25rem;
+    padding: 0 1.25rem;
+    background: rgb(255 255 255 / 0.06);
+    border: 1px solid rgb(247 243 236 / 0.22);
+    border-radius: var(--artemano-radius, 2px);
+    color: var(--artemano-cream, #f7f3ec);
+    font: inherit;
+  }
+
+  .artemano-footer__input::placeholder {
+    color: rgb(247 243 236 / 0.55);
+  }
+
+  .artemano-footer__input:focus {
+    outline: none;
+    border-color: var(--artemano-cream, #f7f3ec);
+  }
+
+  .artemano-footer__submit {
+    min-height: 3.25rem;
+    padding: 0 2rem;
+    background: var(--artemano-cream, #f7f3ec);
+    color: var(--artemano-charcoal, #2b2420);
+    border: 0;
+    border-radius: var(--artemano-radius, 2px);
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .artemano-footer__submit:hover {
+    background: #fff;
+  }
+
+  .artemano-footer__form-message {
+    flex-basis: 100%;
+    margin: 0.5rem 0 0;
+    color: var(--artemano-cream, #f7f3ec);
+  }
+
+  .artemano-footer__form-message--error {
+    color: #f0b7a4;
+  }
+
+  .artemano-footer__main {
+    display: grid;
+    grid-template-columns: 1.6fr repeat(var(--footer-cols), minmax(0, 1fr));
+    gap: 2.5rem;
+    padding-block: 4rem;
+  }
+
+  .artemano-footer__logo {
+    display: inline-block;
+    color: var(--artemano-cream, #f7f3ec);
+  }
+
+  .artemano-footer__logo .artemano-logo {
+    display: block;
+    height: 2rem;
+    width: auto;
+  }
+
+  .artemano-footer__brand-text {
+    margin: 1.25rem 0 0;
+    max-width: 18rem;
+    line-height: 1.6;
+  }
+
+  .artemano-footer__heading {
+    margin: 0 0 1.125rem;
+    font-family: var(--font-body--family);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--artemano-cream, #f7f3ec);
+  }
+
+  .artemano-footer__links {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .artemano-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    padding-block: 1.5rem;
+    border-top: 1px solid rgb(247 243 236 / 0.12);
+    font-size: 0.8125rem;
+    color: rgb(247 243 236 / 0.6);
+  }
+
+  .artemano-footer__legal {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 0;
+  }
+
+  .artemano-footer__payments {
+    display: inline-flex;
+    gap: 0.375rem;
+  }
+
+  .artemano-footer__payment-icon {
+    width: 2.125rem;
+    height: auto;
+    opacity: 0.85;
+  }
+
+  .artemano-footer__policies {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1.5rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .artemano-footer__lang {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .artemano-footer__lang button {
+    background: none;
+    border: 0;
+    padding: 0;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .artemano-footer__lang button.is-active {
+    color: var(--artemano-cream, #f7f3ec);
+  }
+
+  @media screen and (max-width: 989px) {
+    .artemano-footer__newsletter {
+      grid-template-columns: 1fr;
+      padding-block: 3rem;
+    }
+
+    .artemano-footer__main {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding-block: 3rem;
+    }
+
+    .artemano-footer__brand {
+      grid-column: 1 / -1;
+    }
+
+    .artemano-footer__bottom {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Pied de page Artemano",
+  "tag": "div",
+  "class": "artemano-footer-section",
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "max_blocks": 5,
+  "settings": [
+    { "type": "checkbox", "id": "show_newsletter", "label": "Afficher l'infolettre", "default": true },
+    { "type": "text", "id": "newsletter_title", "label": "Titre de l'infolettre", "default": "Inspirations et nouveautés, une fois par mois" },
+    { "type": "text", "id": "newsletter_text", "label": "Texte", "default": "Désabonnement en un clic." },
+    { "type": "text", "id": "email_placeholder", "label": "Champ courriel", "default": "Votre courriel" },
+    { "type": "text", "id": "subscribe_label", "label": "Bouton", "default": "S'abonner" },
+    { "type": "text", "id": "success_message", "label": "Message de confirmation", "default": "Merci ! Vous êtes inscrit." },
+    { "type": "text", "id": "brand_text", "label": "Texte sous le logo", "default": "Meubles modernes en bois massif inspirés par la nature." }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Colonne de liens",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Titre", "default": "Aide" },
+        { "type": "link_list", "id": "menu", "label": "Menu" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pied de page Artemano",
+      "blocks": [
+        { "type": "menu", "settings": { "title": "Aide" } },
+        { "type": "menu", "settings": { "title": "Politiques" } },
+        { "type": "menu", "settings": { "title": "À propos" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

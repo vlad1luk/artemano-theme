@@ -1,0 +1,288 @@
+{%- comment -%}
+  Artemano — bloc signature : panneau noyer « 100 % bois massif » + image d'atelier avec carte « Notre histoire ».
+{%- endcomment -%}
+
+<div class="artemano-signature">
+  <div class="artemano-signature__panel">
+    <div class="artemano-signature__panel-inner">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="artemano-eyebrow artemano-signature__eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      <h2 class="artemano-signature__title">
+        <span class="artemano-signature__big">{{ section.settings.big }}</span>
+        <span class="artemano-signature__small">{{ section.settings.big_suffix }}</span>
+      </h2>
+      {%- if section.settings.text != blank -%}
+        <div class="artemano-signature__text">{{ section.settings.text }}</div>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <ul class="artemano-signature__points list-unstyled">
+          {%- for block in section.blocks -%}
+            <li class="artemano-signature__point" {{ block.shopify_attributes }}>
+              <span class="artemano-signature__point-label">{{ block.settings.label }}</span>
+              <span class="artemano-signature__point-text">{{ block.settings.text }}</span>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank -%}
+        <a href="{{ section.settings.button_link | default: '#' }}" class="artemano-btn artemano-btn--light">
+          {{- section.settings.button_label -}}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="artemano-signature__media">
+    {%- if section.settings.image != blank -%}
+      {{
+        section.settings.image
+        | image_url: width: 1800
+        | image_tag:
+          widths: '600, 900, 1200, 1800',
+          sizes: '(min-width: 990px) 63vw, 100vw',
+          loading: 'lazy',
+          class: 'artemano-signature__image',
+          alt: ''
+      }}
+    {%- else -%}
+      {{ 'lifestyle-2' | placeholder_svg_tag: 'artemano-signature__image artemano-signature__placeholder' }}
+    {%- endif -%}
+
+    {%- if section.settings.story_title != blank -%}
+      <div class="artemano-signature__card">
+        {%- if section.settings.story_eyebrow != blank -%}
+          <p class="artemano-eyebrow">{{ section.settings.story_eyebrow }}</p>
+        {%- endif -%}
+        <h3 class="artemano-signature__card-title">{{ section.settings.story_title }}</h3>
+        {%- if section.settings.story_text != blank -%}
+          <div class="artemano-signature__card-text">{{ section.settings.story_text }}</div>
+        {%- endif -%}
+        {%- if section.settings.story_link_label != blank -%}
+          <a href="{{ section.settings.story_link | default: '#' }}" class="artemano-text-link">
+            {{- section.settings.story_link_label -}}
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .artemano-signature {
+    display: grid;
+    grid-template-columns: 37fr 63fr;
+    gap: 4px;
+    padding-inline: 4px;
+    min-height: 34rem;
+  }
+
+  .artemano-signature__panel {
+    display: flex;
+    align-items: center;
+    background: var(--artemano-walnut, #4a3426);
+    color: var(--artemano-cream, #f7f3ec);
+  }
+
+  .artemano-signature__panel-inner {
+    padding: 4.5rem 4rem;
+    max-width: 36rem;
+  }
+
+  .artemano-signature__eyebrow {
+    color: #d9b98c;
+    margin: 0 0 1.25rem;
+  }
+
+  .artemano-signature__title {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-weight: 400;
+    line-height: 0.95;
+    color: var(--artemano-cream, #f7f3ec);
+  }
+
+  .artemano-signature__big,
+  .artemano-signature__small {
+    display: block;
+  }
+
+  .artemano-signature__big {
+    font-size: clamp(3.5rem, 6vw, 5.5rem);
+  }
+
+  .artemano-signature__small {
+    font-size: clamp(2.5rem, 4.2vw, 4rem);
+  }
+
+  .artemano-signature__text {
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    opacity: 0.92;
+  }
+
+  .artemano-signature__text p {
+    margin: 0;
+  }
+
+  .artemano-signature__points {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.375rem;
+    margin: 2rem 0 2.25rem;
+    padding: 0;
+  }
+
+  .artemano-signature__point {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem 1rem 1.125rem;
+    background: rgb(255 255 255 / 0.07);
+    border: 1px solid rgb(255 255 255 / 0.14);
+  }
+
+  .artemano-signature__point-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #d9b98c;
+  }
+
+  .artemano-signature__point-text {
+    font-size: 0.875rem;
+    line-height: 1.35;
+  }
+
+  .artemano-signature__media {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    background: #d3c8b9;
+    padding: 3.5rem;
+  }
+
+  .artemano-signature__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .artemano-signature__placeholder {
+    fill: rgb(43 36 32 / 0.12);
+  }
+
+  .artemano-signature__card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding: 2.25rem 2.5rem;
+    background: var(--artemano-cream, #f7f3ec);
+    color: var(--artemano-ink, #2b2420);
+  }
+
+  .artemano-signature__card .artemano-eyebrow {
+    margin: 0 0 0.75rem;
+  }
+
+  .artemano-signature__card-title {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-weight: 400;
+    font-size: clamp(1.625rem, 2.4vw, 2.25rem);
+    line-height: 1.15;
+  }
+
+  .artemano-signature__card-text {
+    margin-top: 0.75rem;
+    color: var(--artemano-ink-soft, #5a4e45);
+  }
+
+  .artemano-signature__card-text p {
+    margin: 0;
+  }
+
+  .artemano-text-link {
+    display: inline-block;
+    margin-top: 1.25rem;
+    color: var(--artemano-ink, #2b2420);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  @media screen and (max-width: 989px) {
+    .artemano-signature {
+      grid-template-columns: 1fr;
+      padding-inline: 0;
+    }
+
+    .artemano-signature__panel-inner {
+      padding: 3rem 1.25rem;
+    }
+
+    .artemano-signature__points {
+      grid-template-columns: 1fr;
+    }
+
+    .artemano-signature__media {
+      min-height: 28rem;
+      padding: 1.25rem;
+    }
+
+    .artemano-signature__card {
+      padding: 1.5rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Bloc signature",
+  "tag": "section",
+  "class": "artemano-signature-section",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "header", "content": "Panneau noyer" },
+    { "type": "text", "id": "eyebrow", "label": "Étiquette", "default": "Notre signature" },
+    { "type": "text", "id": "big", "label": "Grand titre", "default": "100 %" },
+    { "type": "text", "id": "big_suffix", "label": "Suite du titre", "default": "bois massif" },
+    { "type": "richtext", "id": "text", "label": "Texte", "default": "<p>Nos créations partagent la beauté du bois travaillé à la main et transmettent notre amour du bois.</p>" },
+    { "type": "text", "id": "button_label", "label": "Bouton", "default": "Découvrir nos essences" },
+    { "type": "url", "id": "button_link", "label": "Lien du bouton" },
+    { "type": "header", "content": "Image et carte « Notre histoire »" },
+    { "type": "image_picker", "id": "image", "label": "Image d'atelier" },
+    { "type": "text", "id": "story_eyebrow", "label": "Étiquette", "default": "Notre histoire" },
+    { "type": "text", "id": "story_title", "label": "Titre", "default": "Du bois choisi à la main, depuis 2002" },
+    { "type": "richtext", "id": "story_text", "label": "Texte", "default": "<p>Deux phrases sur les essences et les artisans.</p>" },
+    { "type": "text", "id": "story_link_label", "label": "Lien", "default": "Lire notre histoire" },
+    { "type": "url", "id": "story_link", "label": "Adresse du lien" }
+  ],
+  "blocks": [
+    {
+      "type": "point",
+      "name": "Point fort",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Étiquette", "default": "Point" },
+        { "type": "text", "id": "text", "label": "Texte", "default": "Une ligne." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bloc signature",
+      "blocks": [
+        { "type": "point", "settings": { "label": "Essences", "text": "Suar, palissandre, manguier" } },
+        { "type": "point", "settings": { "label": "Pièces uniques", "text": "Chaque veinure est différente" } },
+        { "type": "point", "settings": { "label": "Garantie", "text": "Défauts de fabrication" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
