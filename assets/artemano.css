@@ -316,21 +316,9 @@ html:root {
     letter-spacing: 0.08em;
   }
 
-  .header__row--bottom .menu-list__link::after {
-    content: '';
-    position: absolute;
-    inset-inline: 0;
-    bottom: 0.625rem;
-    height: 1.5px;
-    background: currentColor;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  /* Soulignement fixe sur la pièce dont le sous-menu est affiché (pas d'animation) */
-  .header__row--bottom .menu-list__link[data-artemano-current]::after,
-  .header__row--bottom .menu-list__link[aria-current]::after {
-    opacity: 1;
+  /* Survol : simple changement de couleur, en douceur (pas de soulignement) */
+  .header__row--bottom .menu-list__link {
+    transition: color 0.25s ease;
   }
 
   /* Le menu déroulant d'Horizon est remplacé par la barre blanche du sous-menu */
@@ -419,5 +407,41 @@ html:root {
 @media screen and (max-width: 749px) {
   .header .header-logo .header-logo__svg {
     height: 1.5rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Actions de l'en-tête : pas de lien « Compte », icônes serrées contre le texte
+   -------------------------------------------------------------------------- */
+.header .account-button {
+  display: none !important;
+}
+
+@media screen and (min-width: 750px) {
+  .header-actions--text {
+    gap: 1.75rem;
+  }
+
+  .header .header-actions--text .header-actions__action,
+  .header .header-actions--text cart-icon {
+    gap: 0.5rem;
+    padding-inline: 0;
+    min-width: 0;
+  }
+
+  .header-actions--text cart-icon,
+  .header-actions__store {
+    gap: 0.5rem;
+  }
+
+  .header .header-actions--text .header-actions__action .svg-wrapper {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: 0;
+  }
+
+  .header .header-actions--text .header-actions__action .svg-wrapper svg {
+    width: 1.125rem;
+    height: 1.125rem;
   }
 }
