@@ -1,0 +1,214 @@
+{%- comment -%}
+  Artemano — « Pièce par pièce » : mosaïque de 4 pièces (une grande, trois petites).
+{%- endcomment -%}
+
+<div class="artemano-rooms artemano-container">
+  {%- if section.settings.title != blank or section.settings.subtitle != blank -%}
+    <header class="artemano-rooms__header">
+      {%- if section.settings.title != blank -%}
+        <h2 class="artemano-section-title">{{ section.settings.title }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subtitle != blank -%}
+        <p class="artemano-rooms__subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </header>
+  {%- endif -%}
+
+  <div class="artemano-rooms__grid">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign collection = block.settings.collection
+        assign image = block.settings.image | default: collection.featured_image
+        assign title = block.settings.title | default: collection.title
+        assign url = collection.url | default: '#'
+        if forloop.first
+          assign sizes = '(min-width: 990px) 50vw, 100vw'
+        else
+          assign sizes = '(min-width: 990px) 25vw, 50vw'
+        endif
+      -%}
+      <a
+        href="{{ url }}"
+        class="artemano-rooms__tile artemano-rooms__tile--{{ forloop.index }}"
+        {{ block.shopify_attributes }}
+      >
+        {%- if image != blank -%}
+          {{
+            image
+            | image_url: width: 1800
+            | image_tag:
+              widths: '400, 600, 900, 1200, 1800',
+              sizes: sizes,
+              loading: 'lazy',
+              class: 'artemano-rooms__image',
+              alt: ''
+          }}
+        {%- else -%}
+          {{ 'collection-1' | placeholder_svg_tag: 'artemano-rooms__image artemano-rooms__placeholder' }}
+        {%- endif -%}
+        <span class="artemano-rooms__label">
+          <span class="artemano-rooms__name">{{ title }}</span>
+          <span class="artemano-rooms__cta">{{ section.settings.cta_label }} →</span>
+        </span>
+      </a>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .artemano-rooms {
+    padding-block: 6rem 5rem;
+  }
+
+  .artemano-rooms__header {
+    text-align: center;
+    margin-bottom: 2.75rem;
+  }
+
+  .artemano-section-title {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-weight: 400;
+    font-size: clamp(2rem, 3.4vw, 3rem);
+    line-height: 1.1;
+    color: var(--artemano-ink, #2b2420);
+  }
+
+  .artemano-rooms__subtitle {
+    margin: 0.5rem 0 0;
+    color: var(--artemano-ink-soft, #5a4e45);
+  }
+
+  .artemano-rooms__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: 18.5rem;
+    gap: 4px;
+  }
+
+  .artemano-rooms__tile {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    background: var(--artemano-sand, #dcd4c8);
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .artemano-rooms__tile--1 {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .artemano-rooms__tile--4 {
+    grid-column: span 2;
+  }
+
+  .artemano-rooms__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  .artemano-rooms__placeholder {
+    fill: rgb(43 36 32 / 0.15);
+  }
+
+  .artemano-rooms__tile:hover .artemano-rooms__image {
+    transform: scale(1.03);
+  }
+
+  .artemano-rooms__tile::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgb(43 36 32 / 0) 55%, rgb(43 36 32 / 0.55) 100%);
+  }
+
+  .artemano-rooms__label {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 1;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 1.75rem 1.5rem;
+  }
+
+  .artemano-rooms__name {
+    font-family: var(--font-heading--family);
+    font-size: clamp(1.5rem, 2.3vw, 2.25rem);
+    line-height: 1.1;
+  }
+
+  .artemano-rooms__cta {
+    font-size: 0.875rem;
+    white-space: nowrap;
+  }
+
+  @media screen and (max-width: 989px) {
+    .artemano-rooms {
+      padding-block: 3.5rem 3rem;
+    }
+
+    .artemano-rooms__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-auto-rows: 12.5rem;
+    }
+
+    .artemano-rooms__tile--1,
+    .artemano-rooms__tile--4 {
+      grid-column: span 2;
+      grid-row: span 1;
+    }
+
+    .artemano-rooms__label {
+      padding: 1rem;
+    }
+
+    .artemano-rooms__cta {
+      display: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Pièce par pièce",
+  "tag": "section",
+  "class": "artemano-rooms-section",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre", "default": "Pièce par pièce" },
+    { "type": "text", "id": "subtitle", "label": "Sous-titre", "default": "Des meubles en bois massif pour chaque pièce de la maison." },
+    { "type": "text", "id": "cta_label", "label": "Texte du lien", "default": "Découvrir" }
+  ],
+  "blocks": [
+    {
+      "type": "room",
+      "name": "Pièce",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "image_picker", "id": "image", "label": "Image (remplace celle de la collection)" },
+        { "type": "text", "id": "title", "label": "Titre (remplace celui de la collection)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pièce par pièce",
+      "blocks": [
+        { "type": "room", "settings": { "title": "Salon" } },
+        { "type": "room", "settings": { "title": "Salle à manger" } },
+        { "type": "room", "settings": { "title": "Chambre" } },
+        { "type": "room", "settings": { "title": "Accessoires" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
