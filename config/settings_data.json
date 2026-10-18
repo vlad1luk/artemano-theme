@@ -114,7 +114,8 @@
     "show_installments": false,
     "artemano_store_url": "/pages/longueuil",
     "artemano_dropdown_menu": true,
-    "artemano_search_placeholder": "Rechercher"
+    "artemano_search_placeholder": "Rechercher",
+    "artemano_logo_tagline": ""
   },
   "presets": {
     "Default": {
