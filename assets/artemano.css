@@ -401,3 +401,23 @@ html:root {
 .artemano-rooms__tile--3 .artemano-rooms__cta {
   display: none;
 }
+
+/* --------------------------------------------------------------------------
+   Logo SVG de la marque (symbole + « artemano »)
+   -------------------------------------------------------------------------- */
+.header .header-logo .header-logo__svg {
+  display: block;
+  height: 2.75rem;
+  width: auto;
+  color: var(--artemano-ink);
+}
+
+.header .header-logo > span:first-child {
+  padding-inline-start: 0;
+}
+
+@media screen and (max-width: 749px) {
+  .header .header-logo .header-logo__svg {
+    height: 1.5rem;
+  }
+}
