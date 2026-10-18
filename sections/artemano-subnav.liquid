@@ -20,41 +20,126 @@
   endif
 -%}
 
-{%- if active_link != nil and active_link.links.size > 0 -%}
-  <nav
+{%- if active_link != nil -%}
+  <artemano-subnav
     class="artemano-subnav"
-    aria-label="{{ active_link.title | escape }}"
     style="--subnav-bg: {{ section.settings.background_color }};"
   >
     <div class="artemano-subnav__inner artemano-container">
-      <ul class="artemano-subnav__list list-unstyled" role="list">
-        {%- for child in active_link.links -%}
-          <li>
-            <a
-              href="{{ child.url }}"
-              class="artemano-subnav__link"
-              {% if child.current %}
-                aria-current="page"
-              {% endif %}
-            >
-              {{- child.title -}}
-            </a>
-          </li>
-        {%- endfor -%}
-        <li>
-          <a href="{{ active_link.url }}" class="artemano-subnav__link artemano-subnav__link--all">
-            {{- section.settings.all_label | default: 'Tout voir' }} →
-          </a>
-        </li>
-      </ul>
+      {%- for link in menu.links -%}
+        {%- if link.links.size > 0 -%}
+          <nav
+            class="artemano-subnav__group"
+            aria-label="{{ link.title | escape }}"
+            data-subnav-url="{{ link.url }}"
+            {% if link.url == active_link.url %}
+              data-default
+            {% else %}
+              hidden
+            {% endif %}
+          >
+            <ul class="artemano-subnav__list list-unstyled" role="list">
+              {%- for child in link.links -%}
+                <li>
+                  <a
+                    href="{{ child.url }}"
+                    class="artemano-subnav__link"
+                    {% if child.current %}
+                      aria-current="page"
+                    {% endif %}
+                  >
+                    {{- child.title -}}
+                  </a>
+                </li>
+              {%- endfor -%}
+              <li>
+                <a href="{{ link.url }}" class="artemano-subnav__link artemano-subnav__link--all">
+                  {{- section.settings.all_label | default: 'Tout voir' }} →
+                </a>
+              </li>
+            </ul>
+          </nav>
+        {%- endif -%}
+      {%- endfor -%}
     </div>
-  </nav>
+  </artemano-subnav>
+
+  <script>
+    /* Survol d'une pièce dans la navigation : on affiche ses sous-catégories dans la barre blanche
+       au lieu du menu déroulant d'Horizon (désactivé sur ordinateur). */
+    if (!customElements.get('artemano-subnav')) {
+      customElements.define(
+        'artemano-subnav',
+        class extends HTMLElement {
+          connectedCallback() {
+            this.groups = [...this.querySelectorAll('[data-subnav-url]')];
+            this.defaultGroup = this.querySelector('[data-default]');
+            this.header = document.querySelector('#header-component') || document.querySelector('.header');
+            if (!this.header) return;
+            this.topLinks = [...this.header.querySelectorAll('.header__row--bottom .menu-list__link')];
+
+            this.topLinks.forEach((link) => {
+              link.addEventListener('mouseenter', () => this.show(link));
+              link.addEventListener('focus', () => this.show(link));
+            });
+
+            /* Quitter l'en-tête et le sous-menu ramène la pièce par défaut */
+            this.wrapper = this.closest('.shopify-section') || this;
+            this.leaveTimer = null;
+            const leave = () => {
+              clearTimeout(this.leaveTimer);
+              this.leaveTimer = setTimeout(() => this.reset(), 250);
+            };
+            const enter = () => clearTimeout(this.leaveTimer);
+            [this.header, this.wrapper].forEach((el) => {
+              el.addEventListener('mouseleave', leave);
+              el.addEventListener('mouseenter', enter);
+            });
+
+            this.reset();
+          }
+
+          path(url) {
+            try {
+              return new URL(url, location.origin).pathname.replace(/^\/(fr|en)(?=\/)/, '');
+            } catch (e) {
+              return url;
+            }
+          }
+
+          show(link) {
+            const target = this.path(link.getAttribute('href') || '');
+            const group = this.groups.find((g) => this.path(g.dataset.subnavUrl) === target);
+            if (!group) return;
+            this.activate(group);
+          }
+
+          reset() {
+            if (this.defaultGroup) this.activate(this.defaultGroup);
+          }
+
+          activate(group) {
+            this.groups.forEach((g) => (g.hidden = g !== group));
+            const target = this.path(group.dataset.subnavUrl);
+            this.topLinks.forEach((l) => {
+              l.toggleAttribute('data-artemano-current', this.path(l.getAttribute('href') || '') === target);
+            });
+          }
+        }
+      );
+    }
+  </script>
 {%- endif -%}
 
 {% stylesheet %}
   .artemano-subnav {
+    display: block;
     background: var(--subnav-bg);
     border-block: 1px solid var(--artemano-line, #e2d9cc);
+  }
+
+  .artemano-subnav__group[hidden] {
+    display: none;
   }
 
   .artemano-subnav__list {

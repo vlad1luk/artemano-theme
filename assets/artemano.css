@@ -323,14 +323,21 @@ html:root {
     bottom: 0;
     height: 2px;
     background: currentColor;
-    transform: scaleX(0);
-    transition: transform 0.2s ease;
+    opacity: 0;
+    pointer-events: none;
   }
 
-  .header__row--bottom .menu-list__list-item:hover .menu-list__link::after,
-  .header__row--bottom .menu-list__link--active::after,
+  /* Soulignement fixe sur la pièce dont le sous-menu est affiché (pas d'animation) */
+  .header__row--bottom .menu-list__link[data-artemano-current]::after,
   .header__row--bottom .menu-list__link[aria-current]::after {
-    transform: scaleX(1);
+    opacity: 1;
+  }
+
+  /* Le menu déroulant d'Horizon est remplacé par la barre blanche du sous-menu */
+  .header__row--bottom .menu-list__submenu,
+  .header__row--bottom .menu-list__disclosure,
+  .header__row--bottom .menu-list__disclosure-icon {
+    display: none !important;
   }
 }
 
