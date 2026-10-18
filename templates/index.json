@@ -72,10 +72,55 @@
       "settings": {
         "card_background": "#FFFFFF"
       }
+    },
+    "rooms": {
+      "type": "artemano-rooms",
+      "settings": {
+        "title": "Pièce par pièce",
+        "subtitle": "Des meubles en bois massif pour chaque pièce de la maison.",
+        "cta_label": "Découvrir"
+      },
+      "blocks": {
+        "r1": {
+          "type": "room",
+          "settings": {
+            "collection": "living",
+            "title": "Salon"
+          }
+        },
+        "r2": {
+          "type": "room",
+          "settings": {
+            "collection": "dining",
+            "title": "Salle à manger"
+          }
+        },
+        "r3": {
+          "type": "room",
+          "settings": {
+            "collection": "bedroom",
+            "title": "Chambre"
+          }
+        },
+        "r4": {
+          "type": "room",
+          "settings": {
+            "collection": "accessory",
+            "title": "Accessoires"
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4"
+      ]
     }
   },
   "order": [
     "double_hero",
-    "guarantees"
+    "guarantees",
+    "rooms"
   ]
 }
