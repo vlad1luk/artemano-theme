@@ -116,9 +116,9 @@
   {%- endif -%}
   <p class="artemano-card__price">
     {%- if product.price_varies -%}
-      À partir de {{ product.price_min | money_without_trailing_zeros }}
+      À partir de {{ product.price_min | money_without_trailing_zeros | strip_html }}
     {%- else -%}
-      {{ product.price | money_without_trailing_zeros }}
+      {{ product.price | money_without_trailing_zeros | strip_html }}
     {%- endif -%}
   </p>
 </a>
