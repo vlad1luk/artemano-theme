@@ -320,8 +320,8 @@ html:root {
     content: '';
     position: absolute;
     inset-inline: 0;
-    bottom: 0;
-    height: 2px;
+    bottom: 0.625rem;
+    height: 1.5px;
     background: currentColor;
     opacity: 0;
     pointer-events: none;
