@@ -89,20 +89,10 @@
         "text_color_bottom": "#2B2420",
         "bubble_style": "default"
       }
-    },
-    "artemano_subnav": {
-      "type": "artemano-subnav",
-      "settings": {
-        "menu": "artemano-principal",
-        "default_index": 1,
-        "all_label": "Tout voir",
-        "background_color": "#F7F3EC"
-      }
     }
   },
   "order": [
     "artemano_utility",
-    "header_section",
-    "artemano_subnav"
+    "header_section"
   ]
 }

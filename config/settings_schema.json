@@ -15,6 +15,12 @@
         "content": "En-tête"
       },
       {
+        "type": "checkbox",
+        "id": "artemano_dropdown_menu",
+        "label": "Menu déroulant compact (style Artemano)",
+        "default": true
+      },
+      {
         "type": "text",
         "id": "artemano_logo_tagline",
         "label": "Sous-titre du logo",

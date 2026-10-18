@@ -63,6 +63,9 @@
       </div>
     {% endif %}
   {% else %}
+    {%- if settings.artemano_dropdown_menu -%}
+      {% render 'artemano-nav', menu: block.settings.menu, block: block %}
+    {%- else -%}
     {% liquid
       assign block_settings = block.settings
       assign menu_content_type = block_settings.menu_style | default: 'text'
@@ -220,6 +223,7 @@
         fetchpriority="low"
       ></script>
     </header-menu>
+    {%- endif -%}
 {% endcase %}
 
 {% style %}

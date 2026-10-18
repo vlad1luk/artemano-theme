@@ -1,0 +1,188 @@
+{%- doc -%}
+  Navigation principale Artemano (ordinateur) : liens par pièce et petit menu déroulant
+  sous chaque pièce, en CSS seulement (aucun script, donc aucun clignotement).
+  Sur mobile, c'est le tiroir d'Horizon qui prend le relais.
+
+  @param {object} menu - Le menu (link_list) à afficher
+  @param {object} [block] - Le bloc, pour l'éditeur de thème
+{%- enddoc -%}
+
+<nav class="artemano-nav" aria-label="{{ menu.title | escape }}" {{ block.shopify_attributes }}>
+  <ul class="artemano-nav__list list-unstyled" role="list">
+    {%- for link in menu.links -%}
+      {%- assign has_children = false -%}
+      {%- if link.links.size > 0 -%}{%- assign has_children = true -%}{%- endif -%}
+      <li class="artemano-nav__item{% if has_children %} artemano-nav__item--dropdown{% endif %}">
+        <a
+          href="{{ link.url }}"
+          class="artemano-nav__link{% if link.active or link.child_active %} is-active{% endif %}"
+          {% if link.current %}
+            aria-current="page"
+          {% endif %}
+        >
+          {{- link.title -}}
+        </a>
+
+        {%- if has_children -%}
+          <div class="artemano-nav__dropdown{% if link.links.size > 6 %} artemano-nav__dropdown--wide{% endif %}">
+            <ul class="artemano-nav__sublist list-unstyled" role="list">
+              {%- for child in link.links -%}
+                <li>
+                  <a
+                    href="{{ child.url }}"
+                    class="artemano-nav__sublink"
+                    {% if child.current %}
+                      aria-current="page"
+                    {% endif %}
+                  >
+                    {{- child.title -}}
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+            <a href="{{ link.url }}" class="artemano-nav__all">Tout voir →</a>
+          </div>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</nav>
+
+{% stylesheet %}
+  .artemano-nav__list {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 0 0.25rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .artemano-nav__item {
+    position: relative;
+    display: flex;
+  }
+
+  .artemano-nav__link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.125rem 1rem;
+    font-family: var(--font-heading--family);
+    font-size: 1.125rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    color: var(--artemano-ink, #2b2420);
+    text-decoration: none;
+    transition: color 0.25s ease;
+  }
+
+  /* Survol : les autres pièces pâlissent doucement */
+  .artemano-nav__list:hover .artemano-nav__link {
+    color: var(--artemano-ink-muted, #7d7066);
+  }
+
+  .artemano-nav__list .artemano-nav__item:hover > .artemano-nav__link,
+  .artemano-nav__item:focus-within > .artemano-nav__link {
+    color: var(--artemano-ink, #2b2420);
+  }
+
+  /* Menu déroulant */
+  .artemano-nav__dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 30;
+    min-width: 15rem;
+    padding: 1.75rem 2.25rem 1.5rem;
+    background: var(--artemano-white, #fff);
+    border: 1px solid var(--artemano-line, #e2d9cc);
+    box-shadow: 0 12px 28px rgb(43 36 32 / 0.06);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(6px);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease,
+      visibility 0s linear 0.2s;
+  }
+
+  .artemano-nav__dropdown--wide {
+    min-width: 26rem;
+  }
+
+  /* Petit pont invisible pour ne pas perdre le survol entre le lien et le menu */
+  .artemano-nav__dropdown::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    height: 0.75rem;
+  }
+
+  .artemano-nav__item--dropdown:hover > .artemano-nav__dropdown,
+  .artemano-nav__item--dropdown:focus-within > .artemano-nav__dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0.05s, 0.05s, 0s;
+  }
+
+  .artemano-nav__sublist {
+    display: grid;
+    gap: 0.875rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .artemano-nav__dropdown--wide .artemano-nav__sublist {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 2.5rem;
+  }
+
+  .artemano-nav__sublink {
+    font-family: var(--font-body--family);
+    font-size: 0.9375rem;
+    color: var(--artemano-ink-soft, #5a4e45);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.2s ease;
+  }
+
+  .artemano-nav__sublink:hover,
+  .artemano-nav__sublink[aria-current] {
+    color: var(--artemano-ink, #2b2420);
+  }
+
+  .artemano-nav__all {
+    display: inline-block;
+    margin-top: 1.375rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--artemano-line, #e2d9cc);
+    width: 100%;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--artemano-ink, #2b2420);
+    text-decoration: none;
+  }
+
+  .artemano-nav__all:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .artemano-nav {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .artemano-nav__dropdown {
+      transition: none;
+      transform: none;
+    }
+  }
+{% endstylesheet %}
