@@ -316,8 +316,8 @@ html:root {
     padding-block: 0;
   }
 
-  .header__row--bottom .menu-list__list {
-    gap: 0 2.75rem;
+  .header__row--bottom .menu-list__list-item {
+    margin-inline: 0.875rem;
   }
 
   /* Navigation par pièce en EB Garamond, minuscules normales */
