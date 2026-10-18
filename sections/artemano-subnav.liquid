@@ -1,0 +1,149 @@
+{%- comment -%}
+  Artemano — sous-menu visible sous la navigation par pièce.
+  Affiche les sous-catégories de la pièce active (ou de la pièce par défaut sur les autres pages).
+{%- endcomment -%}
+
+{%- liquid
+  assign menu = section.settings.menu
+  assign active_link = nil
+
+  for link in menu.links
+    if link.active or link.child_active
+      assign active_link = link
+      break
+    endif
+  endfor
+
+  if active_link == nil
+    assign default_index = section.settings.default_index | minus: 1
+    assign active_link = menu.links[default_index]
+  endif
+-%}
+
+{%- if active_link != nil and active_link.links.size > 0 -%}
+  <nav
+    class="artemano-subnav"
+    aria-label="{{ active_link.title | escape }}"
+    style="--subnav-bg: {{ section.settings.background_color }};"
+  >
+    <div class="artemano-subnav__inner artemano-container">
+      <ul class="artemano-subnav__list list-unstyled" role="list">
+        {%- for child in active_link.links -%}
+          <li>
+            <a
+              href="{{ child.url }}"
+              class="artemano-subnav__link"
+              {% if child.current %}
+                aria-current="page"
+              {% endif %}
+            >
+              {{- child.title -}}
+            </a>
+          </li>
+        {%- endfor -%}
+        <li>
+          <a href="{{ active_link.url }}" class="artemano-subnav__link artemano-subnav__link--all">
+            {{- section.settings.all_label | default: 'Tout voir' }} →
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+{%- endif -%}
+
+{% stylesheet %}
+  .artemano-subnav {
+    background: var(--subnav-bg);
+    border-block: 1px solid var(--artemano-line, #e2d9cc);
+  }
+
+  .artemano-subnav__list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem 2.25rem;
+    margin: 0;
+    padding-block: 1rem;
+  }
+
+  .artemano-subnav__link {
+    color: var(--artemano-ink-soft, #5a4e45);
+    font-family: var(--font-body--family);
+    font-size: 0.9375rem;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .artemano-subnav__link:hover,
+  .artemano-subnav__link[aria-current] {
+    color: var(--artemano-ink, #2b2420);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .artemano-subnav__link--all {
+    color: var(--artemano-ink, #2b2420);
+    font-weight: 500;
+  }
+
+  @media screen and (max-width: 989px) {
+    .artemano-subnav__list {
+      justify-content: flex-start;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+      gap: 1.5rem;
+      padding-block: 0.75rem;
+    }
+
+    .artemano-subnav__list::-webkit-scrollbar {
+      display: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Sous-menu par pièce",
+  "tag": "div",
+  "class": "artemano-subnav-section",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "range",
+      "id": "default_index",
+      "label": "Pièce affichée par défaut",
+      "info": "Position dans le menu (1 = première pièce) quand aucune pièce n'est active.",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "text",
+      "id": "all_label",
+      "label": "Texte du lien « tout voir »",
+      "default": "Tout voir"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Fond",
+      "default": "#FFFFFF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sous-menu par pièce"
+    }
+  ]
+}
+{% endschema %}

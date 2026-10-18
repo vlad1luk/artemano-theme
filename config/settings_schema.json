@@ -8,6 +8,38 @@
     "theme_support_url": "https://support.shopify.com/"
   },
   {
+    "name": "Artemano",
+    "settings": [
+      {
+        "type": "header",
+        "content": "En-tête"
+      },
+      {
+        "type": "text",
+        "id": "artemano_logo_tagline",
+        "label": "Sous-titre du logo",
+        "default": "Bois massif · Québec · 2002"
+      },
+      {
+        "type": "text",
+        "id": "artemano_search_placeholder",
+        "label": "Texte de la barre de recherche",
+        "default": "Rechercher un produit, une essence, une pièce"
+      },
+      {
+        "type": "text",
+        "id": "artemano_store_label",
+        "label": "Lien magasin (texte)",
+        "default": "Longueuil"
+      },
+      {
+        "type": "url",
+        "id": "artemano_store_url",
+        "label": "Lien magasin (adresse)"
+      }
+    ]
+  },
+  {
     "name": "t:names.logo_and_favicon",
     "settings": [
       {

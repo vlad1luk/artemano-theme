@@ -1,0 +1,178 @@
+{%- comment -%}
+  Artemano — barre utilitaire au-dessus de l'en-tête.
+  Liens à gauche, annonce au centre, langues à droite.
+{%- endcomment -%}
+
+<div
+  class="artemano-utility"
+  style="--utility-bg: {{ section.settings.background_color }}; --utility-fg: {{ section.settings.text_color }};"
+>
+  <div class="artemano-utility__inner artemano-container">
+    <nav class="artemano-utility__links" aria-label="{{ section.settings.menu.title | escape }}">
+      {%- for link in section.settings.menu.links -%}
+        <a href="{{ link.url }}">{{ link.title }}</a>
+      {%- endfor -%}
+    </nav>
+
+    <p class="artemano-utility__announcement">
+      {%- if section.settings.announcement_link != blank -%}
+        <a href="{{ section.settings.announcement_link }}">{{ section.settings.announcement }}</a>
+      {%- else -%}
+        {{ section.settings.announcement }}
+      {%- endif -%}
+    </p>
+
+    <div class="artemano-utility__lang">
+      {%- if localization.available_languages.size > 1 -%}
+        {%- form 'localization', id: 'ArtemanoUtilityLang' -%}
+          <input type="hidden" name="return_to" value="{{ request.path }}">
+          {%- for language in localization.available_languages -%}
+            <button
+              type="submit"
+              name="locale_code"
+              value="{{ language.iso_code }}"
+              class="artemano-utility__lang-btn{% if language.iso_code == localization.language.iso_code %} is-active{% endif %}"
+              lang="{{ language.iso_code }}"
+              {% if language.iso_code == localization.language.iso_code %}
+                aria-current="true"
+              {% endif %}
+            >
+              {{- language.iso_code | upcase -}}
+            </button>
+            {%- unless forloop.last -%}<span class="artemano-utility__sep" aria-hidden="true">|</span>{%- endunless -%}
+          {%- endfor -%}
+        {%- endform -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .artemano-utility {
+    background: var(--utility-bg);
+    color: var(--utility-fg);
+    font-family: var(--font-body--family);
+    font-size: 0.8125rem;
+    line-height: 1;
+  }
+
+  .artemano-utility__inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1.5rem;
+    min-height: 2.25rem;
+    padding-block: 0.5rem;
+  }
+
+  .artemano-utility a,
+  .artemano-utility__lang-btn {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .artemano-utility a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .artemano-utility__links {
+    display: flex;
+    gap: 1.75rem;
+  }
+
+  .artemano-utility__announcement {
+    margin: 0;
+    text-align: center;
+    opacity: 0.92;
+  }
+
+  .artemano-utility__lang {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .artemano-utility__lang form {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .artemano-utility__lang-btn {
+    background: none;
+    border: 0;
+    padding: 0.25rem 0;
+    font: inherit;
+    cursor: pointer;
+    opacity: 0.7;
+  }
+
+  .artemano-utility__lang-btn.is-active {
+    font-weight: 600;
+    opacity: 1;
+  }
+
+  .artemano-utility__sep {
+    opacity: 0.5;
+  }
+
+  @media screen and (max-width: 749px) {
+    .artemano-utility__inner {
+      grid-template-columns: 1fr auto;
+    }
+
+    .artemano-utility__links {
+      display: none;
+    }
+
+    .artemano-utility__announcement {
+      text-align: left;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Barre utilitaire",
+  "tag": "div",
+  "class": "artemano-utility-section",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Liens à gauche"
+    },
+    {
+      "type": "text",
+      "id": "announcement",
+      "label": "Annonce",
+      "default": "Ramassage gratuit à notre magasin de Longueuil"
+    },
+    {
+      "type": "url",
+      "id": "announcement_link",
+      "label": "Lien de l'annonce"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Fond",
+      "default": "#4A3426"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Texte",
+      "default": "#F7F3EC"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Barre utilitaire"
+    }
+  ]
+}
+{% endschema %}

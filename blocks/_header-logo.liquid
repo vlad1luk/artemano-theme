@@ -65,6 +65,10 @@
     %}
   </span>
 
+  {%- if settings.artemano_logo_tagline != blank -%}
+    <span class="header-logo__tagline">{{ settings.artemano_logo_tagline }}</span>
+  {%- endif -%}
+
   {% if use_inverse_logo %}
     <span
       class="header-logo__transparent-header-image-container"

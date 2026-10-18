@@ -1,0 +1,172 @@
+{%- comment -%}
+  Artemano — bandeau de garanties (livraison, retours, garantie, service-conseil).
+  N'afficher que des promesses confirmées par Artemano.
+{%- endcomment -%}
+
+{%- capture icon_truck -%}
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path d="M2.75 6.75h11v9.5h-11zM13.75 9.75h4.2l3.3 3.3v3.2h-7.5"/><circle cx="6.75" cy="17.25" r="1.75" fill="var(--guarantee-bg)"/><circle cx="17.25" cy="17.25" r="1.75" fill="var(--guarantee-bg)"/></svg>
+{%- endcapture -%}
+{%- capture icon_return -%}
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.5 9.5A7.5 7.5 0 0 0 5.6 7.3M4.5 14.5a7.5 7.5 0 0 0 13.9 2.2"/><path d="M5.25 3.75v3.75H9M18.75 20.25V16.5H15"/></svg>
+{%- endcapture -%}
+{%- capture icon_shield -%}
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4.75 5.75v5.5c0 4.6 3.1 8.2 7.25 9.75 4.15-1.55 7.25-5.15 7.25-9.75v-5.5z"/><path d="m8.75 12 2.25 2.25 4.25-4.5"/></svg>
+{%- endcapture -%}
+{%- capture icon_home -%}
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path d="M3.75 10.5 12 3.75l8.25 6.75v9.75H3.75z"/><path d="M9.75 20.25v-6h4.5v6"/></svg>
+{%- endcapture -%}
+{%- capture icon_tree -%}
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21v-6M12 3 6 11h3l-3.5 4.5h13L15 11h3z"/></svg>
+{%- endcapture -%}
+{%- capture icon_pin -%}
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M19 10c0 5.5-7 11-7 11s-7-5.5-7-11a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+{%- endcapture -%}
+
+{%- if section.blocks.size > 0 -%}
+  <div
+    class="artemano-guarantees"
+    style="--guarantee-bg: {{ section.settings.card_background }}; --guarantee-cols: {{ section.blocks.size }};"
+  >
+    {%- for block in section.blocks -%}
+      <div class="artemano-guarantees__item" {{ block.shopify_attributes }}>
+        <span class="artemano-guarantees__icon">
+          {%- case block.settings.icon -%}
+            {%- when 'truck' -%}{{ icon_truck }}
+            {%- when 'return' -%}{{ icon_return }}
+            {%- when 'shield' -%}{{ icon_shield }}
+            {%- when 'home' -%}{{ icon_home }}
+            {%- when 'tree' -%}{{ icon_tree }}
+            {%- when 'pin' -%}{{ icon_pin }}
+          {%- endcase -%}
+        </span>
+        <span class="artemano-guarantees__text">
+          {%- if block.settings.link != blank -%}
+            <a href="{{ block.settings.link }}" class="artemano-guarantees__title">{{ block.settings.title }}</a>
+          {%- else -%}
+            <span class="artemano-guarantees__title">{{ block.settings.title }}</span>
+          {%- endif -%}
+          {%- if block.settings.detail != blank -%}
+            <span class="artemano-guarantees__detail">{{ block.settings.detail }}</span>
+          {%- endif -%}
+        </span>
+      </div>
+    {%- endfor -%}
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .artemano-guarantees {
+    display: grid;
+    grid-template-columns: repeat(var(--guarantee-cols), minmax(0, 1fr));
+    gap: 4px;
+    padding: 4px 4px 0;
+  }
+
+  .artemano-guarantees__item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem 1.75rem;
+    background: var(--guarantee-bg);
+    color: var(--artemano-ink, #2b2420);
+  }
+
+  .artemano-guarantees__icon {
+    flex: none;
+    display: flex;
+    color: var(--artemano-sage, #5e6b4f);
+  }
+
+  .artemano-guarantees__text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-width: 0;
+  }
+
+  .artemano-guarantees__title {
+    font-family: var(--font-body--family);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  a.artemano-guarantees__title:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .artemano-guarantees__detail {
+    font-size: 0.8125rem;
+    color: var(--artemano-ink-muted, #7d7066);
+  }
+
+  @media screen and (max-width: 989px) {
+    .artemano-guarantees {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .artemano-guarantees__item {
+      padding: 1.125rem 1rem;
+      gap: 0.75rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Bandeau de garanties",
+  "tag": "section",
+  "class": "artemano-guarantees-section",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "N'afficher que des promesses confirmées par Artemano."
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Fond des cartes",
+      "default": "#FFFFFF"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Garantie",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icône",
+          "options": [
+            { "value": "truck", "label": "Camion" },
+            { "value": "return", "label": "Retour" },
+            { "value": "shield", "label": "Bouclier" },
+            { "value": "home", "label": "Maison" },
+            { "value": "tree", "label": "Arbre" },
+            { "value": "pin", "label": "Repère" }
+          ],
+          "default": "truck"
+        },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Garantie" },
+        { "type": "text", "id": "detail", "label": "Précision" },
+        { "type": "url", "id": "link", "label": "Lien" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bandeau de garanties",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "truck", "title": "Livraison" } },
+        { "type": "item", "settings": { "icon": "return", "title": "Retours" } },
+        { "type": "item", "settings": { "icon": "shield", "title": "Garantie" } },
+        { "type": "item", "settings": { "icon": "home", "title": "Service-conseil" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

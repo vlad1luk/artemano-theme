@@ -1,0 +1,254 @@
+{%- comment -%}
+  Artemano — double hero : une grande image (collection / ambiance) et une plus petite (offre / nouveauté).
+{%- endcomment -%}
+
+{%- liquid
+  assign panels = 'left,right' | split: ','
+-%}
+
+<div
+  class="artemano-hero"
+  style="--hero-height: {{ section.settings.height }}px; --hero-height-mobile: {{ section.settings.height_mobile }}px; --hero-split: {{ section.settings.split }}fr {{ 100 | minus: section.settings.split }}fr;"
+>
+  {%- for side in panels -%}
+    {%- liquid
+      assign k_image = side | append: '_image'
+      assign k_eyebrow = side | append: '_eyebrow'
+      assign k_title = side | append: '_title'
+      assign k_b1_label = side | append: '_button_label'
+      assign k_b1_link = side | append: '_button_link'
+      assign k_b2_label = side | append: '_button2_label'
+      assign k_b2_link = side | append: '_button2_link'
+
+      assign image = section.settings[k_image]
+      assign eyebrow = section.settings[k_eyebrow]
+      assign title = section.settings[k_title]
+      assign b1_label = section.settings[k_b1_label]
+      assign b1_link = section.settings[k_b1_link]
+      assign b2_label = section.settings[k_b2_label]
+      assign b2_link = section.settings[k_b2_link]
+      assign image_alt = image.alt | default: title | escape
+
+      if side == 'left'
+        assign sizes = '(min-width: 750px) 65vw, 100vw'
+        assign title_tag = 'h1'
+      else
+        assign sizes = '(min-width: 750px) 35vw, 100vw'
+        assign title_tag = 'h2'
+      endif
+    -%}
+    <div class="artemano-hero__panel artemano-hero__panel--{{ side }}">
+      <div class="artemano-hero__media">
+        {%- if image != blank -%}
+          {{
+            image
+            | image_url: width: 2400
+            | image_tag:
+              widths: '600, 900, 1200, 1600, 2000, 2400',
+              sizes: sizes,
+              loading: 'eager',
+              fetchpriority: 'high',
+              class: 'artemano-hero__image',
+              alt: image_alt
+          }}
+        {%- else -%}
+          <div class="artemano-hero__placeholder">
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'artemano-hero__placeholder-svg' }}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="artemano-hero__content">
+        {%- if eyebrow != blank -%}
+          <p class="artemano-eyebrow artemano-hero__eyebrow">{{ eyebrow }}</p>
+        {%- endif -%}
+        {%- if title != blank -%}
+          <{{ title_tag }} class="artemano-hero__title">{{ title }}</{{ title_tag }}>
+        {%- endif -%}
+        {%- if b1_label != blank or b2_label != blank -%}
+          <div class="artemano-hero__actions">
+            {%- if b1_label != blank -%}
+              <a href="{{ b1_link | default: routes.all_products_collection_url }}" class="artemano-btn artemano-btn--light">
+                {{- b1_label -}}
+              </a>
+            {%- endif -%}
+            {%- if b2_label != blank -%}
+              <a href="{{ b2_link | default: '#' }}" class="artemano-btn artemano-btn--ghost-light">
+                {{- b2_label -}}
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endfor -%}
+</div>
+
+{% stylesheet %}
+  .artemano-hero {
+    display: grid;
+    grid-template-columns: var(--hero-split);
+    gap: 4px;
+    padding-inline: 4px;
+  }
+
+  .artemano-hero__panel {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    min-height: var(--hero-height);
+    overflow: hidden;
+    color: #fff;
+    background: #d3c8b9;
+  }
+
+  .artemano-hero__media,
+  .artemano-hero__media img,
+  .artemano-hero__placeholder,
+  .artemano-hero__placeholder-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .artemano-hero__media img {
+    object-fit: cover;
+  }
+
+  .artemano-hero__placeholder-svg {
+    fill: rgb(43 36 32 / 0.18);
+    background: #d3c8b9;
+  }
+
+  .artemano-hero__panel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgb(43 36 32 / 0) 35%, rgb(43 36 32 / 0.62) 100%);
+    pointer-events: none;
+  }
+
+  .artemano-hero__content {
+    position: relative;
+    z-index: 1;
+    padding: 0 3.5rem 3.5rem;
+    max-width: 46rem;
+  }
+
+  .artemano-hero__eyebrow {
+    color: rgb(255 255 255 / 0.85);
+    margin: 0 0 0.75rem;
+  }
+
+  .artemano-hero__title {
+    margin: 0;
+    color: #fff;
+    font-family: var(--font-heading--family);
+    font-weight: 400;
+    font-size: clamp(2.25rem, 4.2vw, 4rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+
+  .artemano-hero__panel--right .artemano-hero__title {
+    font-size: clamp(2rem, 3.1vw, 3rem);
+  }
+
+  .artemano-hero__panel--right .artemano-hero__content {
+    padding-inline: 2.5rem;
+  }
+
+  .artemano-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.75rem;
+  }
+
+  @media screen and (max-width: 749px) {
+    .artemano-hero {
+      grid-template-columns: 1fr;
+      padding-inline: 0;
+    }
+
+    .artemano-hero__panel {
+      min-height: var(--hero-height-mobile);
+    }
+
+    .artemano-hero__panel--right {
+      min-height: calc(var(--hero-height-mobile) * 0.7);
+    }
+
+    .artemano-hero__content,
+    .artemano-hero__panel--right .artemano-hero__content {
+      padding: 0 1.25rem 1.75rem;
+    }
+
+    .artemano-hero__actions {
+      margin-top: 1.25rem;
+      gap: 0.75rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Double hero",
+  "tag": "section",
+  "class": "artemano-hero-section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "split",
+      "label": "Largeur de l'image de gauche (%)",
+      "min": 50,
+      "max": 75,
+      "step": 1,
+      "unit": "%",
+      "default": 65
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Hauteur (ordinateur)",
+      "min": 400,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 620
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "label": "Hauteur (mobile)",
+      "min": 300,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "default": 460
+    },
+    { "type": "header", "content": "Grande image (gauche)" },
+    { "type": "image_picker", "id": "left_image", "label": "Image" },
+    { "type": "text", "id": "left_eyebrow", "label": "Étiquette", "default": "Collection" },
+    { "type": "text", "id": "left_title", "label": "Titre", "default": "Le bois massif, pièce par pièce" },
+    { "type": "text", "id": "left_button_label", "label": "Bouton 1", "default": "Magasiner" },
+    { "type": "url", "id": "left_button_link", "label": "Lien du bouton 1" },
+    { "type": "text", "id": "left_button2_label", "label": "Bouton 2", "default": "Trouver un magasin" },
+    { "type": "url", "id": "left_button2_link", "label": "Lien du bouton 2" },
+    { "type": "header", "content": "Petite image (droite)" },
+    { "type": "image_picker", "id": "right_image", "label": "Image" },
+    { "type": "text", "id": "right_eyebrow", "label": "Étiquette", "default": "Offre" },
+    { "type": "text", "id": "right_title", "label": "Titre", "default": "Nouveautés de la saison" },
+    { "type": "text", "id": "right_button_label", "label": "Bouton 1", "default": "Voir l'offre" },
+    { "type": "url", "id": "right_button_link", "label": "Lien du bouton 1" },
+    { "type": "text", "id": "right_button2_label", "label": "Bouton 2" },
+    { "type": "url", "id": "right_button2_link", "label": "Lien du bouton 2" }
+  ],
+  "presets": [
+    {
+      "name": "Double hero"
+    }
+  ]
+}
+{% endschema %}

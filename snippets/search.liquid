@@ -19,9 +19,16 @@
       aria-label="{{ 'content.search_input_label' | t }}"
       aria-haspopup="dialog"
     >
-      <span class="{% if display_style == 'icon' %}hidden{% else %}mobile:hidden{% endif %}">
-        {{ 'content.search' | t }}
-      </span>
+      {%- if settings.artemano_search_placeholder != blank and class contains 'search-action--field' -%}
+        <span class="search-action__field mobile:hidden">
+          <span class="svg-wrapper" aria-hidden="true">{{ 'icon-search.svg' | inline_asset_content }}</span>
+          <span class="search-action__placeholder">{{ settings.artemano_search_placeholder }}</span>
+        </span>
+      {%- else -%}
+        <span class="{% if display_style == 'icon' %}hidden{% else %}mobile:hidden{% endif %}">
+          {{ 'content.search' | t }}
+        </span>
+      {%- endif -%}
 
       <span class="svg-wrapper {% if display_style != 'icon' %}desktop:hidden{% endif %}">
         {{ 'icon-search.svg' | inline_asset_content }}
