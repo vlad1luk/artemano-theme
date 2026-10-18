@@ -456,3 +456,16 @@ html:root {
     height: 1.125rem;
   }
 }
+
+/* --------------------------------------------------------------------------
+   Photos produits : ce sont des détourés sur fond blanc → on les montre en entier
+   -------------------------------------------------------------------------- */
+.product-grid .product-media__image,
+.artemano-coll__subcat-media img {
+  object-fit: contain;
+  background: #fff;
+}
+
+.artemano-coll__subcat-media {
+  background: #fff;
+}
