@@ -317,13 +317,17 @@ html:root {
   }
 
   .header__row--bottom .menu-list__list {
-    gap: 0 3.25rem;
+    gap: 0 2.75rem;
   }
 
+  /* Navigation par pièce en EB Garamond, minuscules normales */
   .header__row--bottom .menu-list__link {
     position: relative;
-    padding-block: 1rem 1.125rem;
-    letter-spacing: 0.08em;
+    padding-block: 0.75rem 1rem;
+    font-family: var(--font-heading--family);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    text-transform: none;
   }
 
   /* Survol : simple changement de couleur, en douceur (pas de soulignement) */

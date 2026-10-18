@@ -111,7 +111,8 @@
     "palette_selected_variant_background": "#2B2420",
     "palette_selected_variant_text": "#F7F3EC",
     "currency_code_enabled_cart_total": false,
-    "show_installments": false
+    "show_installments": false,
+    "artemano_store_url": "/pages/longueuil"
   },
   "presets": {
     "Default": {

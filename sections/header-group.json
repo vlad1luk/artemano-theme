@@ -14,7 +14,7 @@
     "artemano_utility": {
       "type": "artemano-utility-bar",
       "settings": {
-        "menu": "",
+        "menu": "artemano-utilitaire",
         "announcement": "Ramassage gratuit à notre magasin de Longueuil",
         "announcement_link": "",
         "background_color": "#4A3426",
@@ -38,11 +38,11 @@
           "type": "_header-menu",
           "static": true,
           "settings": {
-            "menu": "main-menu",
-            "type_font_primary_size": "0.875rem",
+            "menu": "artemano-principal",
+            "type_font_primary_size": "1.125rem",
             "menu_font_style": "regular",
-            "type_font_primary_link": "subheading",
-            "type_case_primary_link": "uppercase",
+            "type_font_primary_link": "heading",
+            "type_case_primary_link": "none",
             "menu_style": "text",
             "featured_products_aspect_ratio": "4 / 5",
             "featured_collections_aspect_ratio": "16 / 9",
@@ -93,10 +93,10 @@
     "artemano_subnav": {
       "type": "artemano-subnav",
       "settings": {
-        "menu": "main-menu",
-        "default_index": 3,
+        "menu": "artemano-principal",
+        "default_index": 1,
         "all_label": "Tout voir",
-        "background_color": "#FFFFFF"
+        "background_color": "#F7F3EC"
       }
     }
   },
