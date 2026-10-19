@@ -16,27 +16,28 @@
           "type": "_product-media-gallery",
           "static": true,
           "settings": {
-            "media_presentation": "grid",
-            "media_columns": "two",
+            "media_presentation": "carousel",
+            "media_columns": "one",
             "image_gap": 4,
             "large_first_image": false,
-            "icons_style": "arrow",
-            "slideshow_controls_style": "counter",
-            "slideshow_mobile_controls_style": "dots",
-            "thumbnail_position": "right",
-            "thumbnail_width": 44,
-            "aspect_ratio": "adapt",
+            "icons_style": "chevron",
+            "slideshow_controls_style": "thumbnails",
+            "slideshow_mobile_controls_style": "counter",
+            "thumbnail_position": "bottom",
+            "thumbnail_width": 88,
+            "aspect_ratio": "1",
             "constrain_to_viewport": true,
             "media_fit": "contain",
             "media_radius": 0,
             "extend_media": false,
             "zoom": true,
             "video_loop": false,
-            "hide_variants": true,
+            "hide_variants": false,
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-end": 0,
+            "thumbnail_radius": 0
           },
           "blocks": {}
         },
@@ -50,7 +51,7 @@
             "custom_width_mobile": 100,
             "height": "fit",
             "details_position": "flex-start",
-            "gap": 28,
+            "gap": 24,
             "sticky_details_desktop": true,
             "background_media": "none",
             "video_position": "cover",
@@ -59,10 +60,10 @@
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
-            "padding-block-start": 24,
-            "padding-block-end": 24,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-block-start": 32,
+            "padding-block-end": 32,
+            "padding-inline-start": 32,
+            "padding-inline-end": 32
           },
           "blocks": {
             "group_icgrde": {
@@ -76,7 +77,7 @@
                 "align_baseline": false,
                 "horizontal_alignment_flex_direction_column": "flex-start",
                 "vertical_alignment_flex_direction_column": "center",
-                "gap": 12,
+                "gap": 10,
                 "width": "fill",
                 "custom_width": 100,
                 "width_mobile": "fill",
@@ -103,17 +104,23 @@
                 "padding-inline-end": 0
               },
               "blocks": {
-                "text_xpVMaM": {
+                "eyebrow": {
+                  "type": "custom-liquid",
+                  "settings": {
+                    "custom_liquid": "{%- render 'artemano-product-eyebrow', product: product -%}"
+                  },
+                  "blocks": {}
+                },
+                "title": {
                   "type": "text",
-                  "name": "t:names.title",
                   "settings": {
                     "text": "<h1>{{ closest.product.title }}</h1>",
-                    "width": "fit-content",
+                    "width": "100%",
                     "max_width": "normal",
                     "alignment": "left",
                     "type_preset": "h3",
-                    "font": "var(--font-body--family)",
-                    "font_size": "1rem",
+                    "font": "var(--font-heading--family)",
+                    "font_size": "",
                     "line_height": "normal",
                     "letter_spacing": "normal",
                     "case": "none",
@@ -132,13 +139,13 @@
                   "type": "price",
                   "settings": {
                     "show_sale_price_first": true,
-                    "show_installments": true,
+                    "show_installments": false,
                     "show_tax_info": true,
                     "type_preset": "paragraph",
                     "width": "100%",
                     "alignment": "left",
                     "font": "var(--font-body--family)",
-                    "font_size": "1rem",
+                    "font_size": "1.25rem",
                     "line_height": "normal",
                     "letter_spacing": "normal",
                     "case": "none",
@@ -151,7 +158,8 @@
                 }
               },
               "block_order": [
-                "text_xpVMaM",
+                "eyebrow",
+                "title",
                 "price_tVjtKg"
               ]
             },
@@ -172,7 +180,7 @@
               "type": "variant-picker",
               "settings": {
                 "variant_style": "buttons",
-                "show_swatches": false,
+                "show_swatches": true,
                 "alignment": "left",
                 "padding-block-start": 0,
                 "padding-block-end": 0,
@@ -184,8 +192,8 @@
             "buy_buttons_eYQEYi": {
               "type": "buy-buttons",
               "settings": {
-                "stacking": true,
-                "show_pickup_availability": false,
+                "stacking": false,
+                "show_pickup_availability": true,
                 "gift_card_form": true,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
@@ -216,30 +224,143 @@
               },
               "block_order": []
             },
-            "text_aEtTtq": {
-              "type": "text",
-              "name": "t:names.product_description",
+            "contact_button": {
+              "type": "button",
               "settings": {
-                "text": "{{ closest.product.description }}",
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
+                "label": "Une question ? Nous joindre",
+                "link": "shopify://pages/contact-us",
+                "open_in_new_tab": false,
+                "style_class": "button-secondary",
+                "width": "custom",
+                "custom_width": 100,
+                "width_mobile": "custom",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            },
+            "reassurance": {
+              "type": "custom-liquid",
+              "settings": {
+                "custom_liquid": "{%- capture essence -%}{% render 'artemano-product-essence', product: product %}{%- endcapture -%}\n<ul class=\"artemano-pdp__reassure list-unstyled\">\n  <li>Ramassage gratuit à notre entrepôt de Longueuil</li>\n  <li>Garantie 1 an contre les défauts de fabrication</li>\n  {%- if essence != blank -%}<li>Bois massif : chaque pièce a sa propre veinure</li>{%- endif -%}\n</ul>"
+              },
+              "blocks": {}
+            },
+            "details_accordion": {
+              "type": "accordion",
+              "settings": {
+                "icon": "plus",
+                "dividers": true,
+                "type_preset": "",
+                "border": "none",
+                "padding-block-start": 8,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
-              "blocks": {}
+              "blocks": {
+                "row_description": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "Description",
+                    "open_by_default": true,
+                    "icon": "none",
+                    "width": 20
+                  },
+                  "blocks": {
+                    "desc": {
+                      "type": "text",
+                      "settings": {
+                        "text": "{{ closest.product.description }}",
+                        "width": "100%",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "desc"
+                  ]
+                },
+                "row_dimensions": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "Dimensions",
+                    "open_by_default": false,
+                    "icon": "none",
+                    "width": 20
+                  },
+                  "blocks": {
+                    "dims": {
+                      "type": "custom-liquid",
+                      "settings": {
+                        "custom_liquid": "<dl class=\"artemano-pdp__specs\">\n  {%- for option in product.options_with_values -%}\n    {%- assign n = option.name | downcase -%}\n    {%- if n contains 'dimension' or n contains 'size' or n contains 'taille' -%}\n      <div><dt>{{ option.name }}</dt><dd>{{ option.values | join: ' · ' }}</dd></div>\n    {%- endif -%}\n  {%- endfor -%}\n  {%- if product.metafields.custom.dimensions != blank -%}<div><dt>Dimensions</dt><dd>{{ product.metafields.custom.dimensions.value }}</dd></div>{%- endif -%}\n  {%- if product.metafields.custom.poids != blank -%}<div><dt>Poids</dt><dd>{{ product.metafields.custom.poids.value }}</dd></div>{%- endif -%}\n</dl>"
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "dims"
+                  ]
+                },
+                "row_delivery": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "Livraison et ramassage",
+                    "open_by_default": false,
+                    "icon": "none",
+                    "width": 20
+                  },
+                  "blocks": {
+                    "deliv": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>Ramassage gratuit à notre entrepôt de Longueuil.</p><p>Livraison à domicile : les options et les tarifs s'affichent au moment du paiement.</p>",
+                        "width": "100%",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "deliv"
+                  ]
+                }
+              },
+              "block_order": [
+                "row_description",
+                "row_dimensions",
+                "row_delivery"
+              ]
             }
           },
           "block_order": [
@@ -247,16 +368,10 @@
             "divider_VJhene",
             "variant_picker_R3rGDr",
             "buy_buttons_eYQEYi",
-            "text_aEtTtq"
+            "contact_button",
+            "reassurance",
+            "details_accordion"
           ]
-        },
-        "disclosures": {
-          "type": "disclosures",
-          "settings": {
-            "padding-block-start": 0,
-            "padding-block-end": 0
-          },
-          "blocks": {}
         }
       },
       "block_order": [
@@ -267,149 +382,76 @@
         "desktop_media_position": "left",
         "equal_columns": false,
         "limit_details_width": false,
-        "gap": 48,
-        "padding-block-start": 0,
-        "padding-block-end": 0
+        "gap": 56,
+        "padding-block-start": 8,
+        "padding-block-end": 48
       }
     },
-    "product_recommendations_qggXJq": {
-      "type": "product-recommendations",
+    "essence_story": {
+      "type": "artemano-essence-story",
       "blocks": {
-        "text_cbcgyb": {
-          "type": "text",
-          "name": "t:names.header",
+        "suar": {
+          "type": "essence",
           "settings": {
-            "text": "<h2>You may also like </h2>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "h4",
-            "font": "var(--font-body--family)",
-            "font_size": "",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
+            "essence": "suar",
+            "eyebrow": "Le suar",
+            "title": "Chaque dalle est unique.",
+            "text": "<p>Le suar est un bois tropical aux veinures marquées et aux nuances chaudes. Taillée dans le bois massif, chaque pièce garde le dessin naturel de l'arbre : aucune n'est identique.</p>",
+            "button_label": "Voir tout le suar",
+            "button_link": "/collections/suar"
+          }
         },
-        "static-product-card": {
-          "type": "_product-card",
-          "name": "t:names.product_card",
-          "static": true,
+        "palissandre": {
+          "type": "essence",
           "settings": {
-            "product_card_gap": 8,
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 8,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_card_gallery_DNizbJ": {
-              "type": "_product-card-gallery",
-              "name": "t:names.product_card_media",
-              "settings": {
-                "image_ratio": "adapt",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_title_M7MJkb": {
-              "type": "product-title",
-              "name": "t:names.product_title",
-              "settings": {
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "paragraph",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 4,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "price_gLWgA6": {
-              "type": "price",
-              "settings": {
-                "show_sale_price_first": true,
-                "show_installments": false,
-                "show_tax_info": false,
-                "type_preset": "h6",
-                "width": "100%",
-                "alignment": "left",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_card_gallery_DNizbJ",
-            "product_title_M7MJkb",
-            "price_gLWgA6"
-          ]
+            "essence": "palissandre",
+            "eyebrow": "Le palissandre",
+            "title": "Un bois dense, fait pour durer.",
+            "text": "<p>Le palissandre est un bois dur aux tons chauds et aux veines contrastées. Sa densité en fait un choix solide pour les meubles du quotidien.</p>",
+            "button_label": "Voir tout le palissandre",
+            "button_link": "/collections/rosewood"
+          }
+        },
+        "manguier": {
+          "type": "essence",
+          "settings": {
+            "essence": "manguier",
+            "eyebrow": "Le manguier",
+            "title": "Un bois dur aux nuances variées.",
+            "text": "<p>Le manguier est un bois dur au grain fin, dont les teintes varient d'une planche à l'autre. Chaque meuble a donc son propre caractère.</p>",
+            "button_label": "Voir tout le manguier",
+            "button_link": "/collections/mango"
+          }
         }
       },
       "block_order": [
-        "text_cbcgyb"
+        "suar",
+        "palissandre",
+        "manguier"
       ],
-      "name": "t:names.product_recommendations",
+      "settings": {}
+    },
+    "specs_store": {
+      "type": "artemano-product-specs",
+      "settings": {}
+    },
+    "related": {
+      "type": "artemano-related-products",
       "settings": {
-        "product": "{{ closest.product }}",
-        "recommendation_type": "related",
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "max_products": 4,
-        "columns": 4,
-        "mobile_columns": "2",
-        "columns_gap": 12,
-        "rows_gap": 24,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "gap": 28,
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "title": "Dans la même collection",
+        "limit": 4
       }
+    },
+    "sticky_cart": {
+      "type": "artemano-sticky-cart",
+      "settings": {}
     }
   },
   "order": [
     "main",
-    "product_recommendations_qggXJq"
+    "essence_story",
+    "specs_store",
+    "related",
+    "sticky_cart"
   ]
 }

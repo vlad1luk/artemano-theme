@@ -1,0 +1,24 @@
+{%- doc -%}
+  Renvoie la clé de l'essence de bois d'un produit (suar, palissandre, manguier, acacia, teck) ou rien.
+  Priorité au métachamp custom.essence, sinon aux étiquettes du produit.
+
+  @param {object} product - Le produit
+{%- enddoc -%}
+{%- liquid
+  assign key = ''
+  assign meta = product.metafields.custom.essence.value | downcase
+  assign tags = product.tags | join: ' ' | downcase
+  assign source = meta | append: ' ' | append: tags
+  if source contains 'suar'
+    assign key = 'suar'
+  elsif source contains 'rosewood' or source contains 'palissandre'
+    assign key = 'palissandre'
+  elsif source contains 'mango' or source contains 'manguier'
+    assign key = 'manguier'
+  elsif source contains 'acacia'
+    assign key = 'acacia'
+  elsif source contains 'teak' or source contains 'teck'
+    assign key = 'teck'
+  endif
+  echo key
+-%}

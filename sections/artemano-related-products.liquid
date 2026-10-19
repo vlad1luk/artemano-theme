@@ -1,0 +1,56 @@
+{%- comment -%}
+  Artemano — « Dans la même collection » : produits de la collection la plus précise du produit.
+{%- endcomment -%}
+
+{%- liquid
+  # La collection la plus précise = celle qui contient le moins de produits (hors « tous les produits »)
+  assign best = nil
+  assign best_count = 100000
+  for c in product.collections
+    if c.handle == 'all' or c.handle == 'frontpage' or c.products_count < 2
+      continue
+    endif
+    if c.products_count < best_count
+      assign best = c
+      assign best_count = c.products_count
+    endif
+  endfor
+-%}
+
+{%- if best -%}
+  <div class="artemano-products artemano-related artemano-container">
+    <header class="artemano-products__header">
+      <h2 class="artemano-section-title">{{ section.settings.title }}</h2>
+      <a href="{{ best.url }}" class="artemano-link-caps">Tout voir : {{ best.title }}</a>
+    </header>
+    <div class="artemano-products__grid">
+      {%- assign shown = 0 -%}
+      {%- for p in best.products -%}
+        {%- if p.id == product.id or p.available == false -%}{%- continue -%}{%- endif -%}
+        {% render 'artemano-product-card', product: p %}
+        {%- assign shown = shown | plus: 1 -%}
+        {%- if shown >= section.settings.limit -%}{%- break -%}{%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .artemano-related {
+    padding-top: 1rem;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Même collection",
+  "tag": "section",
+  "class": "artemano-related-section",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre", "default": "Dans la même collection" },
+    { "type": "range", "id": "limit", "label": "Nombre de produits", "min": 2, "max": 8, "step": 1, "default": 4 }
+  ],
+  "presets": [{ "name": "Même collection" }]
+}
+{% endschema %}

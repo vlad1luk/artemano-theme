@@ -1,0 +1,26 @@
+{%- doc -%}
+  Étiquette au-dessus du titre produit : essence de bois (ex. « Suar massif ») (rien si l'essence est inconnue).
+
+  @param {object} product - Le produit
+{%- enddoc -%}
+{%- capture key -%}{% render 'artemano-product-essence', product: product %}{%- endcapture -%}
+{%- liquid
+  assign key = key | strip
+  case key
+    when 'suar'
+      assign label = 'Suar massif'
+    when 'palissandre'
+      assign label = 'Palissandre massif'
+    when 'manguier'
+      assign label = 'Manguier massif'
+    when 'acacia'
+      assign label = 'Acacia massif'
+    when 'teck'
+      assign label = 'Teck massif'
+    else
+      assign label = ''
+  endcase
+-%}
+{%- if label != blank -%}
+  <p class="artemano-eyebrow artemano-pdp__eyebrow">{{ label }}</p>
+{%- endif -%}

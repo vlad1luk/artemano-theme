@@ -1,0 +1,209 @@
+{%- comment -%}
+  Artemano — fiche technique (métachamps produit) + « Voir en magasin ».
+  Champs lus : custom.essence, custom.dimensions, custom.poids, custom.fini, custom.places, custom.entretien.
+  Les lignes vides ne s'affichent pas.
+{%- endcomment -%}
+
+{%- capture essence_key -%}{% render 'artemano-product-essence', product: product %}{%- endcapture -%}
+{%- liquid
+  assign essence_key = essence_key | strip
+  assign essence = product.metafields.custom.essence.value
+  if essence == blank
+    case essence_key
+      when 'suar'
+        assign essence = 'Suar massif'
+      when 'palissandre'
+        assign essence = 'Palissandre massif'
+      when 'manguier'
+        assign essence = 'Manguier massif'
+      when 'acacia'
+        assign essence = 'Acacia massif'
+      when 'teck'
+        assign essence = 'Teck massif'
+    endcase
+  endif
+
+  assign dimensions = product.metafields.custom.dimensions.value
+  if dimensions == blank
+    for option in product.options_with_values
+      assign n = option.name | downcase
+      if n contains 'dimension' or n contains 'size' or n contains 'taille'
+        assign dimensions = option.values | join: ' · '
+      endif
+    endfor
+  endif
+
+  assign finish = product.metafields.custom.fini.value
+  if finish == blank
+    for option in product.options_with_values
+      assign n = option.name | downcase
+      if n contains 'color' or n contains 'couleur' or n contains 'fini' or n contains 'finish'
+        assign finish = option.values | join: ' · '
+      endif
+    endfor
+  endif
+
+  assign map_query = section.settings.address | url_encode
+-%}
+
+<div class="artemano-specs artemano-container">
+  <div class="artemano-specs__table">
+    <h2 class="artemano-specs__title">{{ section.settings.title }}</h2>
+    <dl>
+      {%- if essence != blank -%}<div><dt>Essence</dt><dd>{{ essence }}</dd></div>{%- endif -%}
+      {%- if dimensions != blank -%}<div><dt>Dimensions</dt><dd>{{ dimensions }}</dd></div>{%- endif -%}
+      {%- if product.metafields.custom.poids != blank -%}<div><dt>Poids</dt><dd>{{ product.metafields.custom.poids.value }}</dd></div>{%- endif -%}
+      {%- if finish != blank -%}<div><dt>Fini</dt><dd>{{ finish }}</dd></div>{%- endif -%}
+      {%- if product.metafields.custom.places != blank -%}<div><dt>Places</dt><dd>{{ product.metafields.custom.places.value }}</dd></div>{%- endif -%}
+      {%- if product.metafields.custom.entretien != blank -%}<div><dt>Entretien</dt><dd>{{ product.metafields.custom.entretien.value }}</dd></div>{%- endif -%}
+      {%- if product.selected_or_first_available_variant.sku != blank -%}<div><dt>Référence</dt><dd>{{ product.selected_or_first_available_variant.sku }}</dd></div>{%- endif -%}
+    </dl>
+  </div>
+
+  <div class="artemano-specs__store">
+    <p class="artemano-eyebrow">{{ section.settings.store_eyebrow }}</p>
+    <h2 class="artemano-specs__store-name">{{ section.settings.store_name }}</h2>
+    <p class="artemano-specs__store-info">
+      {{ section.settings.address }}<br>
+      {{ section.settings.hours }}<br>
+      {{ section.settings.phone }}
+    </p>
+    <div class="artemano-specs__store-map">
+      <iframe
+        title="{{ section.settings.store_name | escape }}"
+        src="https://www.google.com/maps?q={{ map_query }}&z=14&output=embed"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+      ></iframe>
+    </div>
+    <div class="artemano-specs__store-actions">
+      <a class="artemano-btn artemano-btn--dark" href="https://www.google.com/maps/dir/?api=1&destination={{ map_query }}" target="_blank" rel="noopener">Itinéraire</a>
+      <a class="artemano-btn artemano-btn--outline" href="tel:{{ section.settings.phone | remove: ' ' | remove: '-' | remove: '.' }}">Appeler le magasin</a>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .artemano-specs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-block: 4.5rem;
+    background: var(--artemano-white, #fff);
+  }
+
+  .artemano-specs__table,
+  .artemano-specs__store {
+    padding: 3rem;
+  }
+
+  .artemano-specs__store {
+    border-left: 1px solid var(--artemano-line, #e2d9cc);
+  }
+
+  .artemano-specs__title,
+  .artemano-specs__store-name {
+    margin: 0 0 1.5rem;
+    font-family: var(--font-heading--family);
+    font-weight: 400;
+    font-size: 1.75rem;
+    color: var(--artemano-ink, #2b2420);
+  }
+
+  .artemano-specs__store .artemano-eyebrow {
+    margin: 0 0 0.5rem;
+  }
+
+  .artemano-specs__store-name {
+    margin-bottom: 0.75rem;
+  }
+
+  .artemano-specs dl {
+    margin: 0;
+  }
+
+  .artemano-specs dl > div {
+    display: grid;
+    grid-template-columns: 9rem 1fr;
+    gap: 1rem;
+    padding-block: 0.875rem;
+    border-bottom: 1px solid var(--artemano-line, #e2d9cc);
+    font-size: 0.9375rem;
+  }
+
+  .artemano-specs dt {
+    color: var(--artemano-ink-muted, #7d7066);
+  }
+
+  .artemano-specs dd {
+    margin: 0;
+    color: var(--artemano-ink, #2b2420);
+  }
+
+  .artemano-specs__store-info {
+    margin: 0 0 1.5rem;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--artemano-ink-soft, #5a4e45);
+  }
+
+  .artemano-specs__store-map {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--artemano-sand, #dcd4c8);
+  }
+
+  .artemano-specs__store-map iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    filter: grayscale(0.85) sepia(0.15) contrast(0.95);
+  }
+
+  .artemano-specs__store-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  @media screen and (max-width: 989px) {
+    .artemano-specs {
+      grid-template-columns: 1fr;
+      margin-block: 2.5rem;
+    }
+
+    .artemano-specs__table,
+    .artemano-specs__store {
+      padding: 2rem 1.25rem;
+    }
+
+    .artemano-specs__store {
+      border-left: 0;
+      border-top: 1px solid var(--artemano-line, #e2d9cc);
+    }
+
+    .artemano-specs dl > div {
+      grid-template-columns: 7rem 1fr;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Fiche technique + magasin",
+  "tag": "section",
+  "class": "artemano-specs-section",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre", "default": "Dimensions et matériaux" },
+    { "type": "text", "id": "store_eyebrow", "label": "Étiquette magasin", "default": "Voir en magasin" },
+    { "type": "text", "id": "store_name", "label": "Nom du magasin", "default": "Artemano Longueuil" },
+    { "type": "text", "id": "address", "label": "Adresse", "default": "1138, boul. Marie-Victorin, Longueuil (Québec) J4G 2H9" },
+    { "type": "text", "id": "hours", "label": "Heures", "default": "Mardi au dimanche : 10 h à 16 h · Lundi fermé" },
+    { "type": "text", "id": "phone", "label": "Téléphone", "default": "450 321-0565" }
+  ],
+  "presets": [{ "name": "Fiche technique + magasin" }]
+}
+{% endschema %}

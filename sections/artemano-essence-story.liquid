@@ -1,0 +1,161 @@
+{%- comment -%}
+  Artemano — bloc « essence » sur la fiche produit : image + panneau noyer.
+  Le contenu affiché dépend de l'essence du produit (bloc dont la clé correspond).
+  Rien ne s'affiche si l'essence du produit est inconnue ou n'a pas de bloc.
+{%- endcomment -%}
+
+{%- capture essence -%}{% render 'artemano-product-essence', product: product %}{%- endcapture -%}
+{%- assign essence = essence | strip -%}
+{%- assign story = nil -%}
+{%- for block in section.blocks -%}
+  {%- if block.settings.essence == essence -%}
+    {%- assign story = block -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if story -%}
+  <div class="artemano-story" {{ story.shopify_attributes }}>
+    <div class="artemano-story__media">
+      {%- if story.settings.image != blank -%}
+        {{
+          story.settings.image
+          | image_url: width: 1600
+          | image_tag: widths: '600, 900, 1200, 1600', sizes: '(min-width: 990px) 50vw, 100vw', loading: 'lazy', alt: ''
+        }}
+      {%- elsif product.images.size > 1 -%}
+        {{
+          product.images.last
+          | image_url: width: 1600
+          | image_tag: widths: '600, 900, 1200, 1600', sizes: '(min-width: 990px) 50vw, 100vw', loading: 'lazy', alt: '', class: 'is-product'
+        }}
+      {%- endif -%}
+    </div>
+    <div class="artemano-story__panel">
+      <p class="artemano-eyebrow artemano-story__eyebrow">{{ story.settings.eyebrow }}</p>
+      <h2 class="artemano-story__title">{{ story.settings.title }}</h2>
+      <div class="artemano-story__text">{{ story.settings.text }}</div>
+      {%- if story.settings.button_label != blank -%}
+        <a href="{{ story.settings.button_link | default: '#' }}" class="artemano-btn artemano-btn--ghost-light">
+          {{- story.settings.button_label -}}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .artemano-story {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    padding-inline: 4px;
+    min-height: 28rem;
+  }
+
+  .artemano-story__media {
+    position: relative;
+    overflow: hidden;
+    background: var(--artemano-sand, #dcd4c8);
+  }
+
+  .artemano-story__media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .artemano-story__media img.is-product {
+    object-fit: contain;
+    background: #fff;
+  }
+
+  .artemano-story__panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 4rem;
+    background: var(--artemano-walnut, #4a3426);
+    color: var(--artemano-cream, #f7f3ec);
+  }
+
+  .artemano-story__eyebrow {
+    margin: 0 0 1rem;
+    color: #d9b98c;
+  }
+
+  .artemano-story__title {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-weight: 400;
+    font-size: clamp(2rem, 3.4vw, 3rem);
+    line-height: 1.1;
+    color: var(--artemano-cream, #f7f3ec);
+  }
+
+  .artemano-story__text {
+    margin: 1.25rem 0 2rem;
+    max-width: 32rem;
+    line-height: 1.6;
+    opacity: 0.92;
+  }
+
+  .artemano-story__text p {
+    margin: 0 0 0.75rem;
+  }
+
+  @media screen and (max-width: 989px) {
+    .artemano-story {
+      grid-template-columns: 1fr;
+      padding-inline: 0;
+    }
+
+    .artemano-story__media {
+      min-height: 16rem;
+    }
+
+    .artemano-story__panel {
+      padding: 2.5rem 1.25rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Essence du produit",
+  "tag": "section",
+  "class": "artemano-story-section",
+  "enabled_on": { "templates": ["product"] },
+  "blocks": [
+    {
+      "type": "essence",
+      "name": "Essence",
+      "settings": [
+        {
+          "type": "select",
+          "id": "essence",
+          "label": "Essence",
+          "options": [
+            { "value": "suar", "label": "Suar" },
+            { "value": "palissandre", "label": "Palissandre" },
+            { "value": "manguier", "label": "Manguier" },
+            { "value": "acacia", "label": "Acacia" },
+            { "value": "teck", "label": "Teck" }
+          ],
+          "default": "suar"
+        },
+        { "type": "image_picker", "id": "image", "label": "Image (gros plan du bois)" },
+        { "type": "text", "id": "eyebrow", "label": "Étiquette", "default": "Le suar" },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Chaque dalle est unique." },
+        { "type": "richtext", "id": "text", "label": "Texte" },
+        { "type": "text", "id": "button_label", "label": "Bouton" },
+        { "type": "url", "id": "button_link", "label": "Lien du bouton" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Essence du produit" }]
+}
+{% endschema %}
