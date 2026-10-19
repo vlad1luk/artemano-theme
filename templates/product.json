@@ -441,17 +441,12 @@
         "title": "Dans la même collection",
         "limit": 4
       }
-    },
-    "sticky_cart": {
-      "type": "artemano-sticky-cart",
-      "settings": {}
     }
   },
   "order": [
     "main",
     "essence_story",
     "specs_store",
-    "related",
-    "sticky_cart"
+    "related"
   ]
 }

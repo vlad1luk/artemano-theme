@@ -539,3 +539,12 @@ html:root {
     padding-inline: 1.25rem;
   }
 }
+
+/* Cartes produits : photos détourées montrées en entier */
+.artemano-card__media {
+  background: #fff;
+}
+
+.artemano-card__image {
+  object-fit: contain;
+}

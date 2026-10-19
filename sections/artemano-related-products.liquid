@@ -3,18 +3,28 @@
 {%- endcomment -%}
 
 {%- liquid
-  # La collection la plus précise = celle qui contient le moins de produits (hors « tous les produits »)
+  # La collection la plus précise qui contient assez de produits ; sinon la plus grande
+  assign needed = section.settings.limit | plus: 1
   assign best = nil
   assign best_count = 100000
+  assign biggest = nil
+  assign biggest_count = 0
   for c in product.collections
-    if c.handle == 'all' or c.handle == 'frontpage' or c.products_count < 2
+    if c.handle == 'all' or c.handle == 'frontpage'
       continue
     endif
-    if c.products_count < best_count
+    if c.products_count >= needed and c.products_count < best_count
       assign best = c
       assign best_count = c.products_count
     endif
+    if c.products_count > biggest_count
+      assign biggest = c
+      assign biggest_count = c.products_count
+    endif
   endfor
+  if best == nil and biggest_count > 1
+    assign best = biggest
+  endif
 -%}
 
 {%- if best -%}
