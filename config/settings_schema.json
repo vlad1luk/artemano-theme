@@ -52,6 +52,59 @@
         "id": "artemano_cart_note",
         "label": "Note au-dessus du bouton de paiement",
         "default": "Ramassage gratuit à notre entrepôt de Longueuil. Les options de livraison s'affichent au paiement."
+      },
+      {
+        "type": "header",
+        "content": "Tuile éditoriale dans les collections"
+      },
+      {
+        "type": "checkbox",
+        "id": "artemano_tile_enabled",
+        "label": "Afficher la tuile",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "artemano_tile_position",
+        "label": "Après le produit n°",
+        "min": 2,
+        "max": 12,
+        "step": 1,
+        "default": 4
+      },
+      {
+        "type": "image_picker",
+        "id": "artemano_tile_image",
+        "label": "Image (gros plan du bois)"
+      },
+      {
+        "type": "text",
+        "id": "artemano_tile_eyebrow",
+        "label": "Étiquette",
+        "default": "Bois massif"
+      },
+      {
+        "type": "text",
+        "id": "artemano_tile_title",
+        "label": "Titre",
+        "default": "Aucune pièce n'est identique à une autre."
+      },
+      {
+        "type": "textarea",
+        "id": "artemano_tile_text",
+        "label": "Texte",
+        "default": "Le bois massif garde le dessin naturel de l'arbre : veines, nœuds et nuances changent d'un meuble à l'autre."
+      },
+      {
+        "type": "text",
+        "id": "artemano_tile_link_label",
+        "label": "Lien",
+        "default": "Découvrir nos essences"
+      },
+      {
+        "type": "url",
+        "id": "artemano_tile_link",
+        "label": "Adresse du lien"
       }
     ]
   },

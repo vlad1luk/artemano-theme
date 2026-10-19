@@ -74,6 +74,11 @@
                 product_view_context: 'collection'
               %}
             </li>
+            {%- if settings.artemano_tile_enabled and paginate.current_page == 1 and forloop.index == settings.artemano_tile_position and collection.products_count > settings.artemano_tile_position -%}
+              <li class="product-grid__item artemano-grid-tile-item">
+                {% render 'artemano-grid-editorial' %}
+              </li>
+            {%- endif -%}
           {% endfor %}
         {% endcapture %}
 

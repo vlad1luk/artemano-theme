@@ -1,0 +1,243 @@
+{%- comment -%}
+  Artemano — bas de page collection : bande des essences, texte « à propos » et questions fréquentes.
+{%- endcomment -%}
+
+{%- assign essences = section.blocks | where: 'type', 'essence' -%}
+{%- assign faqs = section.blocks | where: 'type', 'faq' -%}
+
+<div class="artemano-guide" id="essences">
+  {%- if essences.size > 0 -%}
+    <ul class="artemano-guide__essences list-unstyled" role="list" style="--essence-count: {{ essences.size }};">
+      {%- for block in essences -%}
+        <li {{ block.shopify_attributes }}>
+          <a
+            href="{{ block.settings.collection.url | default: '#' }}"
+            class="artemano-guide__essence"
+            style="--essence-color: {{ block.settings.color }};"
+          >
+            {%- if block.settings.image != blank -%}
+              {{
+                block.settings.image
+                | image_url: width: 900
+                | image_tag: widths: '400, 600, 900', sizes: '(min-width: 990px) 25vw, 50vw', loading: 'lazy', alt: '', class: 'artemano-guide__essence-image'
+              }}
+            {%- endif -%}
+            <span class="artemano-guide__essence-name">{{ block.settings.name }}</span>
+            <span class="artemano-guide__essence-text">{{ block.settings.text }}</span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+
+  <div class="artemano-guide__bottom artemano-container">
+    <div class="artemano-guide__about">
+      <p class="artemano-eyebrow">{{ section.settings.eyebrow }}</p>
+      <h2 class="artemano-guide__title">
+        {%- if collection -%}À propos : {{ collection.title | downcase }}{%- else -%}{{ section.settings.title }}{%- endif -%}
+      </h2>
+      <div class="artemano-guide__text">
+        {%- if collection.description != blank -%}
+          {{ collection.description }}
+        {%- else -%}
+          {{ section.settings.text }}
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if faqs.size > 0 -%}
+      <div class="artemano-guide__faq">
+        {%- for block in faqs -%}
+          <details class="artemano-guide__question" {{ block.shopify_attributes }}>
+            <summary>{{ block.settings.question }}</summary>
+            <div class="artemano-guide__answer">{{ block.settings.answer }}</div>
+          </details>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .artemano-guide {
+    margin-top: 4rem;
+  }
+
+  .artemano-guide__essences {
+    display: grid;
+    grid-template-columns: repeat(var(--essence-count), minmax(0, 1fr));
+    gap: 4px;
+    margin: 0;
+    padding: 0 4px;
+  }
+
+  .artemano-guide__essence {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 0.375rem;
+    min-height: 13rem;
+    padding: 1.5rem;
+    overflow: hidden;
+    background: var(--essence-color, #6e4b2f);
+    color: var(--artemano-cream, #f7f3ec);
+    text-decoration: none;
+  }
+
+  .artemano-guide__essence-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.55;
+    transition: transform 0.6s ease;
+  }
+
+  .artemano-guide__essence:hover .artemano-guide__essence-image {
+    transform: scale(1.04);
+  }
+
+  .artemano-guide__essence-name,
+  .artemano-guide__essence-text {
+    position: relative;
+  }
+
+  .artemano-guide__essence-name {
+    font-family: var(--font-heading--family);
+    font-size: 1.75rem;
+    line-height: 1.1;
+  }
+
+  .artemano-guide__essence-text {
+    font-size: 0.8125rem;
+    opacity: 0.88;
+  }
+
+  .artemano-guide__bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    padding-block: 4.5rem 5rem;
+  }
+
+  .artemano-guide__about .artemano-eyebrow {
+    margin: 0 0 0.75rem;
+  }
+
+  .artemano-guide__title {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-weight: 400;
+    font-size: clamp(1.75rem, 2.6vw, 2.5rem);
+    line-height: 1.15;
+    color: var(--artemano-ink, #2b2420);
+  }
+
+  .artemano-guide__text {
+    margin-top: 1rem;
+    line-height: 1.7;
+    color: var(--artemano-ink-soft, #5a4e45);
+  }
+
+  .artemano-guide__faq {
+    display: grid;
+    gap: 6px;
+    align-content: start;
+  }
+
+  .artemano-guide__question {
+    background: var(--artemano-white, #fff);
+    border: 1px solid var(--artemano-line, #e2d9cc);
+  }
+
+  .artemano-guide__question summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    list-style: none;
+    font-size: 0.9375rem;
+    color: var(--artemano-ink, #2b2420);
+  }
+
+  .artemano-guide__question summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .artemano-guide__question summary::after {
+    content: '+';
+    color: var(--artemano-ink-muted, #7d7066);
+  }
+
+  .artemano-guide__question[open] summary::after {
+    content: '–';
+  }
+
+  .artemano-guide__answer {
+    padding: 0 1.25rem 1.125rem;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--artemano-ink-soft, #5a4e45);
+  }
+
+  .artemano-guide__answer p {
+    margin: 0 0 0.5rem;
+  }
+
+  @media screen and (max-width: 989px) {
+    .artemano-guide__essences {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding: 0;
+    }
+
+    .artemano-guide__essence {
+      min-height: 9rem;
+      padding: 1rem;
+    }
+
+    .artemano-guide__bottom {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      padding-block: 3rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Essences et FAQ",
+  "tag": "section",
+  "class": "artemano-guide-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Étiquette", "default": "Bon à savoir" },
+    { "type": "text", "id": "title", "label": "Titre (hors collection)", "default": "Nos meubles en bois massif" },
+    { "type": "richtext", "id": "text", "label": "Texte si la collection n'a pas de description" }
+  ],
+  "blocks": [
+    {
+      "type": "essence",
+      "name": "Essence",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "name", "label": "Nom", "default": "Suar" },
+        { "type": "text", "id": "text", "label": "Courte description", "default": "Veinures marquées, tons chauds" },
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "image_picker", "id": "image", "label": "Image (texture du bois)" },
+        { "type": "color", "id": "color", "label": "Couleur de fond", "default": "#6E4B2F" }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Question ?" },
+        { "type": "richtext", "id": "answer", "label": "Réponse" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Essences et FAQ" }]
+}
+{% endschema %}

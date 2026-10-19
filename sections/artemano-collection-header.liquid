@@ -1,6 +1,7 @@
 {%- comment -%}
-  Artemano — en-tête de collection : fil d'Ariane, bandeau éditorial (texte + image)
-  et vignettes des sous-catégories de la pièce.
+  Artemano — en-tête de collection pleine largeur (proposition « Mosaïque », version hybride) :
+  image d'ambiance, titre, description, boutons, et vignettes des sous-catégories de la pièce.
+  Image : celle de la collection, sinon celle de la pièce, sinon un fond noyer.
 {%- endcomment -%}
 
 {%- liquid
@@ -20,276 +21,275 @@
     assign is_room = true
   endif
 
-  assign image = section.settings.fallback_image
-  if collection.image
-    assign image = collection.image
-  elsif collection.products.first.featured_image
-    assign image = collection.products.first.featured_image
+  assign image = collection.image
+  if image == blank and room
+    assign image = room.object.image
   endif
+  if image == blank
+    assign image = section.settings.fallback_image
+  endif
+
+  assign count = collection.products_count
 -%}
 
-<div class="artemano-coll">
-  <nav class="artemano-coll__crumbs artemano-container" aria-label="Fil d'Ariane">
-    <a href="{{ routes.root_url }}">Accueil</a>
-    {%- if room and is_room == false -%}
-      <span aria-hidden="true">/</span>
-      <a href="{{ room.url }}">{{ room.title }}</a>
-    {%- endif -%}
-    <span aria-hidden="true">/</span>
-    <span aria-current="page">{{ collection.title }}</span>
-  </nav>
+<div class="artemano-hero-coll{% if image != blank %} has-image{% endif %}">
+  {%- if image != blank -%}
+    {{
+      image
+      | image_url: width: 2400
+      | image_tag:
+        widths: '800, 1200, 1600, 2000, 2400',
+        sizes: '100vw',
+        loading: 'eager',
+        fetchpriority: 'high',
+        class: 'artemano-hero-coll__image',
+        alt: ''
+    }}
+  {%- endif -%}
 
-  <div class="artemano-coll__banner">
-    <div class="artemano-coll__intro">
+  <div class="artemano-hero-coll__inner artemano-container">
+    <nav class="artemano-hero-coll__crumbs" aria-label="Fil d'Ariane">
+      <a href="{{ routes.root_url }}">Accueil</a>
       {%- if room and is_room == false -%}
-        <p class="artemano-eyebrow">{{ room.title }}</p>
-      {%- elsif section.settings.room_eyebrow != blank -%}
-        <p class="artemano-eyebrow">{{ section.settings.room_eyebrow }}</p>
+        <span aria-hidden="true">/</span>
+        <a href="{{ room.url }}">{{ room.title }}</a>
       {%- endif -%}
-      <h1 class="artemano-coll__title">{{ collection.title }}</h1>
-      {%- if collection.description != blank -%}
-        <div class="artemano-coll__description">{{ collection.description }}</div>
-      {%- endif -%}
-      <p class="artemano-coll__meta">
-        <strong>{{ collection.products_count }} {% if collection.products_count > 1 %}produits{% else %}produit{% endif %}</strong>
-        {%- if section.settings.meta != blank %} · {{ section.settings.meta }}{% endif -%}
-      </p>
-    </div>
-    <div class="artemano-coll__media">
-      {%- if image != blank -%}
-        {{
-          image
-          | image_url: width: 1600
-          | image_tag:
-            widths: '600, 900, 1200, 1600',
-            sizes: '(min-width: 990px) 50vw, 100vw',
-            loading: 'eager',
-            fetchpriority: 'high',
-            alt: ''
-        }}
-      {%- else -%}
-        {{ 'collection-1' | placeholder_svg_tag: 'artemano-coll__placeholder' }}
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{{ collection.title }}</span>
+    </nav>
+
+    <div class="artemano-hero-coll__body">
+      <div class="artemano-hero-coll__text">
+        <p class="artemano-eyebrow artemano-hero-coll__eyebrow">
+          {%- if room and is_room == false -%}{{ room.title }} · {% endif -%}
+          {{ count }} {% if count > 1 %}produits{% else %}produit{% endif %}
+        </p>
+        <h1 class="artemano-hero-coll__title">{{ collection.title }}</h1>
+        {%- if collection.description != blank -%}
+          <div class="artemano-hero-coll__description">{{ collection.description | strip_html | truncatewords: 40 }}</div>
+        {%- endif -%}
+        <div class="artemano-hero-coll__actions">
+          <a href="#produits" class="artemano-btn artemano-btn--light">{{ section.settings.primary_label }}</a>
+          {%- if section.settings.secondary_label != blank -%}
+            <a href="{{ section.settings.secondary_link | default: '#' }}" class="artemano-btn artemano-btn--ghost-light">
+              {{- section.settings.secondary_label -}}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- if room and room.links.size > 0 -%}
+        <ul class="artemano-hero-coll__subcats list-unstyled" role="list">
+          {%- for child in room.links -%}
+            {%- assign sub = child.object -%}
+            {%- assign sub_image = sub.image | default: sub.products.first.featured_image -%}
+            <li>
+              <a
+                href="{{ child.url }}"
+                class="artemano-hero-coll__subcat{% if sub.handle == collection.handle %} is-current{% endif %}"
+              >
+                <span class="artemano-hero-coll__subcat-media">
+                  {%- if sub_image -%}
+                    {{
+                      sub_image
+                      | image_url: width: 300
+                      | image_tag: widths: '150, 300', sizes: '9rem', loading: 'lazy', alt: ''
+                    }}
+                  {%- endif -%}
+                </span>
+                <span class="artemano-hero-coll__subcat-name">{{ child.title }}</span>
+                {%- if sub.products_count -%}
+                  <span class="artemano-hero-coll__subcat-count">{{ sub.products_count }}</span>
+                {%- endif -%}
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
       {%- endif -%}
     </div>
   </div>
-
-  {%- if room and room.links.size > 0 -%}
-    <ul class="artemano-coll__subcats list-unstyled" role="list">
-      {%- for child in room.links -%}
-        {%- assign sub = child.object -%}
-        {%- assign sub_image = sub.image | default: sub.products.first.featured_image -%}
-        <li>
-          <a
-            href="{{ child.url }}"
-            class="artemano-coll__subcat{% if child.current or sub.handle == collection.handle %} is-current{% endif %}"
-          >
-            <span class="artemano-coll__subcat-media">
-              {%- if sub_image -%}
-                {{
-                  sub_image
-                  | image_url: width: 500
-                  | image_tag: widths: '250, 400, 500', sizes: '(min-width: 990px) 16vw, 40vw', loading: 'lazy', alt: ''
-                }}
-              {%- endif -%}
-            </span>
-            <span class="artemano-coll__subcat-label">
-              <span class="artemano-coll__subcat-name">{{ child.title }}</span>
-              {%- if sub.products_count -%}
-                <span class="artemano-coll__subcat-count">{{ sub.products_count }}</span>
-              {%- endif -%}
-            </span>
-          </a>
-        </li>
-      {%- endfor -%}
-    </ul>
-  {%- endif -%}
 </div>
+<span id="produits"></span>
 
 {% stylesheet %}
-  .artemano-coll__crumbs {
+  .artemano-hero-coll {
+    position: relative;
+    display: flex;
+    min-height: 34rem;
+    margin-inline: 4px;
+    overflow: hidden;
+    background: linear-gradient(120deg, #3a281d 0%, var(--artemano-walnut, #4a3426) 45%, #8a6a4f 100%);
+    color: var(--artemano-cream, #f7f3ec);
+  }
+
+  .artemano-hero-coll__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .artemano-hero-coll.has-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgb(43 36 32 / 0.78) 0%, rgb(43 36 32 / 0.45) 50%, rgb(43 36 32 / 0.1) 100%);
+  }
+
+  .artemano-hero-coll__inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-block: 1.5rem 3.5rem;
+  }
+
+  .artemano-hero-coll__crumbs {
     display: flex;
     flex-wrap: wrap;
     gap: 0.625rem;
-    padding-block: 1.25rem;
     font-size: 0.75rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--artemano-ink-muted, #7d7066);
+    color: rgb(247 243 236 / 0.75);
   }
 
-  .artemano-coll__crumbs a {
+  .artemano-hero-coll__crumbs a {
     color: inherit;
     text-decoration: none;
   }
 
-  .artemano-coll__crumbs a:hover {
-    color: var(--artemano-ink, #2b2420);
+  .artemano-hero-coll__crumbs a:hover,
+  .artemano-hero-coll__crumbs [aria-current] {
+    color: var(--artemano-cream, #f7f3ec);
   }
 
-  .artemano-coll__crumbs [aria-current] {
-    color: var(--artemano-ink, #2b2420);
-  }
-
-  .artemano-coll__banner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4px;
-    padding-inline: 4px;
-    min-height: 26rem;
-  }
-
-  .artemano-coll__intro {
+  .artemano-hero-coll__body {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 3.5rem 4.5rem;
-    background: var(--artemano-white, #fff);
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 3rem;
+    margin-top: 6rem;
   }
 
-  .artemano-coll__intro .artemano-eyebrow {
+  .artemano-hero-coll__text {
+    max-width: 38rem;
+  }
+
+  .artemano-hero-coll__eyebrow {
     margin: 0 0 1rem;
+    color: #d9b98c;
   }
 
-  .artemano-coll__title {
+  .artemano-hero-coll__title {
     margin: 0;
     font-family: var(--font-heading--family);
     font-weight: 400;
-    font-size: clamp(2.5rem, 4.4vw, 4rem);
-    line-height: 1.05;
-    color: var(--artemano-ink, #2b2420);
+    font-size: clamp(2.75rem, 5.5vw, 5rem);
+    line-height: 1;
+    color: var(--artemano-cream, #f7f3ec);
   }
 
-  .artemano-coll__description {
+  .artemano-hero-coll__description {
     margin-top: 1.25rem;
-    max-width: 34rem;
     font-size: 1.0625rem;
     line-height: 1.6;
-    color: var(--artemano-ink-soft, #5a4e45);
+    opacity: 0.92;
   }
 
-  .artemano-coll__description p {
+  .artemano-hero-coll__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .artemano-hero-coll__subcats {
+    display: flex;
+    gap: 6px;
     margin: 0;
+    padding: 0;
   }
 
-  .artemano-coll__meta {
-    margin: 1.75rem 0 0;
-    font-size: 0.875rem;
-    color: var(--artemano-ink-muted, #7d7066);
-  }
-
-  .artemano-coll__meta strong {
-    color: var(--artemano-ink, #2b2420);
-    font-weight: 500;
-  }
-
-  .artemano-coll__media {
-    position: relative;
-    min-height: 20rem;
-    background: var(--artemano-sand, #dcd4c8);
-    overflow: hidden;
-  }
-
-  .artemano-coll__media img,
-  .artemano-coll__placeholder {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .artemano-coll__placeholder {
-    fill: rgb(43 36 32 / 0.12);
-  }
-
-  .artemano-coll__subcats {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(10rem, 1fr);
-    gap: 4px;
-    margin: 4px 0 0;
-    padding: 0 4px;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-
-  .artemano-coll__subcats::-webkit-scrollbar {
-    display: none;
-  }
-
-  .artemano-coll__subcat {
+  .artemano-hero-coll__subcat {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    height: 100%;
-    padding: 0.875rem 0.875rem 1rem;
-    background: var(--artemano-white, #fff);
+    gap: 0.25rem;
+    width: 8.5rem;
+    padding: 0.5rem 0.5rem 0.75rem;
+    background: var(--artemano-cream, #f7f3ec);
     color: var(--artemano-ink, #2b2420);
     text-decoration: none;
-    border-bottom: 2px solid transparent;
-    transition: border-color 0.2s ease;
+    transition: transform 0.2s ease;
   }
 
-  .artemano-coll__subcat:hover,
-  .artemano-coll__subcat.is-current {
-    border-bottom-color: var(--artemano-ink, #2b2420);
+  .artemano-hero-coll__subcat:hover,
+  .artemano-hero-coll__subcat.is-current {
+    transform: translateY(-6px);
   }
 
-  .artemano-coll__subcat-media {
+  .artemano-hero-coll__subcat.is-current {
+    box-shadow: inset 0 -2px 0 var(--artemano-ink, #2b2420);
+  }
+
+  .artemano-hero-coll__subcat-media {
     position: relative;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 1;
+    margin-bottom: 0.375rem;
+    background: #fff;
     overflow: hidden;
-    background: #efe9df;
   }
 
-  .artemano-coll__subcat-media img {
+  .artemano-hero-coll__subcat-media img {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
 
-  .artemano-coll__subcat-label {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.5rem;
+  .artemano-hero-coll__subcat-name {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.25;
   }
 
-  .artemano-coll__subcat-name {
-    font-family: var(--font-heading--family);
-    font-size: 1.25rem;
-    line-height: 1.2;
-  }
-
-  .artemano-coll__subcat-count {
+  .artemano-hero-coll__subcat-count {
     font-size: 0.75rem;
     color: var(--artemano-ink-muted, #7d7066);
   }
 
   @media screen and (max-width: 989px) {
-    .artemano-coll__banner {
-      grid-template-columns: 1fr;
-      padding-inline: 0;
+    .artemano-hero-coll {
+      margin-inline: 0;
       min-height: 0;
     }
 
-    .artemano-coll__intro {
-      padding: 2rem 1.25rem;
+    .artemano-hero-coll__body {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 2rem;
+      margin-top: 3rem;
     }
 
-    .artemano-coll__media {
-      min-height: 14rem;
+    .artemano-hero-coll__inner {
+      padding-block: 1rem 2rem;
     }
 
-    .artemano-coll__subcats {
-      grid-auto-columns: 9.5rem;
-      padding: 0;
+    .artemano-hero-coll__subcats {
+      overflow-x: auto;
+      scrollbar-width: none;
     }
 
-    .artemano-coll__subcat-name {
-      font-size: 1.0625rem;
+    .artemano-hero-coll__subcats::-webkit-scrollbar {
+      display: none;
+    }
+
+    .artemano-hero-coll__subcat {
+      width: 7rem;
+      flex: none;
     }
   }
 {% endstylesheet %}
@@ -300,9 +300,10 @@
   "tag": "section",
   "class": "artemano-coll-section",
   "settings": [
-    { "type": "link_list", "id": "menu", "label": "Menu principal (pour les pièces et sous-catégories)", "default": "main-menu" },
-    { "type": "text", "id": "room_eyebrow", "label": "Étiquette quand la collection est une pièce", "default": "Collection" },
-    { "type": "text", "id": "meta", "label": "Texte après le nombre de produits", "default": "Bois massif" },
+    { "type": "link_list", "id": "menu", "label": "Menu principal (pièces et sous-catégories)", "default": "main-menu" },
+    { "type": "text", "id": "primary_label", "label": "Bouton principal", "default": "Voir les produits" },
+    { "type": "text", "id": "secondary_label", "label": "Bouton secondaire", "default": "Nous joindre" },
+    { "type": "url", "id": "secondary_link", "label": "Lien du bouton secondaire" },
     { "type": "image_picker", "id": "fallback_image", "label": "Image par défaut" }
   ],
   "presets": [{ "name": "En-tête de collection" }]
