@@ -147,7 +147,7 @@
             {%- endif %}
           "
         >
-          {%- capture formatted_highest_price -%}<bdi>{{ filter.range_max | money }}</bdi>{%- endcapture -%}
+          {%- capture formatted_highest_price -%}<bdi>{{ filter.range_max | money | strip_html }}</bdi>{%- endcapture -%}
           {{ 'content.price_filter_html' | t: price: formatted_highest_price }}
         </div>
 

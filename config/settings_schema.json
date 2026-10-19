@@ -42,6 +42,16 @@
         "type": "url",
         "id": "artemano_store_url",
         "label": "Lien magasin (adresse)"
+      },
+      {
+        "type": "header",
+        "content": "Panier"
+      },
+      {
+        "type": "text",
+        "id": "artemano_cart_note",
+        "label": "Note au-dessus du bouton de paiement",
+        "default": "Ramassage gratuit à notre entrepôt de Longueuil. Les options de livraison s'affichent au paiement."
       }
     ]
   },

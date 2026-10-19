@@ -118,9 +118,9 @@
   {%- if selected_variant.unit_price and show_unit_price %}
     {%- liquid
       if use_currency
-        assign unit_price = selected_variant.unit_price | money_with_currency
+        assign unit_price = selected_variant.unit_price | money_with_currency | strip_html
       else
-        assign unit_price = selected_variant.unit_price | money
+        assign unit_price = selected_variant.unit_price | money | strip_html
       endif
     -%}
     {% render 'unit-price', price: unit_price, measurement: selected_variant.unit_price_measurement %}

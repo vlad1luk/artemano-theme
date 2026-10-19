@@ -55,7 +55,7 @@
     "cart_type": "drawer",
     "cart_price_font": "subheading",
     "show_cart_note": false,
-    "show_add_discount_code": true,
+    "show_add_discount_code": false,
     "icon_stroke": "thin",
     "input_border_width": 1,
     "inputs_border_radius": 2,
@@ -115,7 +115,9 @@
     "artemano_store_url": "/pages/longueuil",
     "artemano_dropdown_menu": true,
     "artemano_search_placeholder": "Rechercher",
-    "artemano_logo_tagline": ""
+    "artemano_logo_tagline": "",
+    "artemano_cart_note": "Ramassage gratuit à notre entrepôt de Longueuil. Les options de livraison s'affichent au paiement.",
+    "show_accelerated_checkout_buttons": true
   },
   "presets": {
     "Default": {

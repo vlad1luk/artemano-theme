@@ -150,9 +150,9 @@
                   <span>
                     <bdi>
                       {%- if use_currency -%}
-                        {{- variant.price | money_with_currency | strip -}}
+                        {{- variant.price | money_with_currency | strip_html | strip -}}
                       {%- else -%}
-                        {{- variant.price | money | strip -}}
+                        {{- variant.price | money | strip_html | strip -}}
                       {%- endif -%}</bdi
                     >/{{ 'content.each_abbreviation' | t -}}
                   </span>
@@ -171,9 +171,9 @@
                     <span>
                       <bdi>
                         {%- if use_currency -%}
-                          {{- price_break.price | money_with_currency | strip -}}
+                          {{- price_break.price | money_with_currency | strip_html | strip -}}
                         {%- else -%}
-                          {{- price_break.price | money | strip -}}
+                          {{- price_break.price | money | strip_html | strip -}}
                         {%- endif -%}</bdi
                       >/{{ 'content.each_abbreviation' | t -}}
                     </span>
@@ -198,9 +198,9 @@
                         <span>
                           <bdi>
                             {%- if use_currency -%}
-                              {{- price_break.price | money_with_currency | strip -}}
+                              {{- price_break.price | money_with_currency | strip_html | strip -}}
                             {%- else -%}
-                              {{- price_break.price | money | strip -}}
+                              {{- price_break.price | money | strip_html | strip -}}
                             {%- endif -%}</bdi
                           >/{{ 'content.each_abbreviation' | t -}}
                         </span>
