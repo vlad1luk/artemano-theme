@@ -588,3 +588,154 @@ html:root {
   line-height: 1.5;
   color: var(--artemano-ink-soft);
 }
+
+/* --------------------------------------------------------------------------
+   Lien en capitales (« Tout voir », « Itinéraire »…)
+   -------------------------------------------------------------------------- */
+.artemano-link-caps {
+  font-family: var(--font-body--family);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--artemano-ink, #2b2420);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.artemano-link-caps:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   Texte long (pages, histoire, politiques) : lecture confortable
+   -------------------------------------------------------------------------- */
+.artemano-rte,
+.shopify-policy__body .rte,
+.main-page .rte {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--artemano-ink-soft);
+}
+
+.artemano-rte > :first-child,
+.shopify-policy__body .rte > :first-child {
+  margin-top: 0;
+}
+
+.artemano-rte > :last-child,
+.shopify-policy__body .rte > :last-child {
+  margin-bottom: 0;
+}
+
+.artemano-rte p,
+.shopify-policy__body .rte p {
+  margin: 0 0 1.125em;
+}
+
+.artemano-rte h2,
+.artemano-rte h3,
+.shopify-policy__body .rte h2,
+.shopify-policy__body .rte h3,
+.main-page .rte h2,
+.main-page .rte h3 {
+  margin: 2.25em 0 0.625em;
+  font-family: var(--font-heading--family);
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--artemano-ink);
+}
+
+.artemano-rte h2,
+.shopify-policy__body .rte h2,
+.main-page .rte h2 {
+  font-size: 1.875rem;
+}
+
+.artemano-rte h3,
+.shopify-policy__body .rte h3,
+.main-page .rte h3 {
+  font-size: 1.375rem;
+}
+
+.artemano-rte a,
+.shopify-policy__body .rte a {
+  color: var(--artemano-walnut);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.artemano-rte ul,
+.artemano-rte ol,
+.shopify-policy__body .rte ul,
+.shopify-policy__body .rte ol {
+  margin: 0 0 1.125em;
+  padding-left: 1.25em;
+}
+
+.artemano-rte li,
+.shopify-policy__body .rte li {
+  margin-bottom: 0.375em;
+}
+
+.artemano-rte strong,
+.shopify-policy__body .rte strong {
+  font-weight: 500;
+  color: var(--artemano-ink);
+}
+
+.artemano-rte img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--artemano-radius);
+}
+
+.artemano-rte blockquote {
+  margin: 1.75em 0;
+  padding-left: 1.25em;
+  border-left: 2px solid var(--artemano-sage);
+  font-family: var(--font-heading--family);
+  font-style: italic;
+  font-size: 1.375rem;
+  line-height: 1.45;
+  color: var(--artemano-ink);
+}
+
+.artemano-rte table,
+.shopify-policy__body .rte table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.artemano-rte th,
+.artemano-rte td,
+.shopify-policy__body .rte th,
+.shopify-policy__body .rte td {
+  padding: 0.625rem 0.75rem;
+  border-bottom: 1px solid var(--artemano-line);
+  text-align: left;
+}
+
+/* Pages de politiques Shopify (livraison, retours, confidentialité…) */
+.shopify-policy__container {
+  max-width: 44rem !important;
+  padding-block: 4rem 5rem !important;
+}
+
+.shopify-policy__title {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--artemano-line);
+  text-align: left !important;
+}
+
+.shopify-policy__title h1 {
+  margin: 0;
+  font-family: var(--font-heading--family);
+  font-weight: 400;
+  font-size: clamp(2.25rem, 4vw, 3.25rem);
+  line-height: 1.05;
+  color: var(--artemano-ink);
+}

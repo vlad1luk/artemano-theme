@@ -1,0 +1,166 @@
+{%- comment -%}
+  Artemano — mosaïque de photos (atelier, voyages, bois, magasin). Jusqu'à 6 photos, la 1re en grand.
+  Les cases sans photo affichent un fond bois, pour juger la mise en page avant les vraies images.
+{%- endcomment -%}
+
+<div class="artemano-mosaic artemano-container">
+  {%- if section.settings.title != blank or section.settings.eyebrow != blank -%}
+    <header class="artemano-mosaic__header">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="artemano-eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      {%- if section.settings.title != blank -%}
+        <h2 class="artemano-section-title">{{ section.settings.title }}</h2>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <div class="artemano-rte artemano-mosaic__intro">{{ section.settings.text }}</div>
+      {%- endif -%}
+    </header>
+  {%- endif -%}
+
+  <ul class="artemano-mosaic__grid list-unstyled" role="list" data-count="{{ section.blocks.size }}">
+    {%- for block in section.blocks -%}
+      {%- assign image = block.settings.image -%}
+      <li class="artemano-mosaic__tile{% if image == blank %} is-placeholder{% endif %}" {{ block.shopify_attributes }}>
+        {%- if image != blank -%}
+          {%- if forloop.first -%}
+            {%- assign tile_sizes = '(min-width: 990px) 50vw, 100vw' -%}
+          {%- else -%}
+            {%- assign tile_sizes = '(min-width: 990px) 25vw, 50vw' -%}
+          {%- endif -%}
+          {{
+            image
+            | image_url: width: 1400
+            | image_tag: widths: '400, 700, 1000, 1400', sizes: tile_sizes, loading: 'lazy', alt: image.alt | escape
+          }}
+        {%- endif -%}
+        {%- if block.settings.caption != blank -%}
+          <span class="artemano-mosaic__caption">{{ block.settings.caption }}</span>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</div>
+
+{% stylesheet %}
+  .artemano-mosaic {
+    padding-block: 5rem;
+  }
+
+  .artemano-mosaic__header {
+    max-width: 40rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .artemano-mosaic__header .artemano-eyebrow {
+    margin: 0 0 0.75rem;
+  }
+
+  .artemano-mosaic__intro {
+    margin-top: 1rem;
+  }
+
+  .artemano-mosaic__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: clamp(10rem, 17vw, 16rem);
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .artemano-mosaic__tile {
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+    background: var(--artemano-sand, #dcd4c8);
+  }
+
+  .artemano-mosaic__tile:first-child {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .artemano-mosaic__grid[data-count='4'] .artemano-mosaic__tile:nth-child(4),
+  .artemano-mosaic__grid[data-count='6'] .artemano-mosaic__tile:nth-child(6) {
+    grid-column: span 2;
+  }
+
+  .artemano-mosaic__tile.is-placeholder {
+    background:
+      repeating-linear-gradient(100deg, rgb(255 255 255 / 0.05) 0 2px, transparent 2px 16px),
+      linear-gradient(140deg, #3a281d 0%, var(--artemano-walnut-soft, #6e4b2f) 60%, #a07c5b 100%);
+  }
+
+  .artemano-mosaic__tile.is-placeholder:nth-child(even) {
+    background:
+      repeating-linear-gradient(80deg, rgb(255 255 255 / 0.06) 0 2px, transparent 2px 12px),
+      linear-gradient(140deg, #8a6a4f 0%, #c4a27e 100%);
+  }
+
+  .artemano-mosaic__tile img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  .artemano-mosaic__tile:hover img {
+    transform: scale(1.03);
+  }
+
+  .artemano-mosaic__caption {
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    padding: 0.375rem 0.625rem;
+    background: rgb(247 243 236 / 0.92);
+    color: var(--artemano-ink, #2b2420);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .artemano-mosaic {
+      padding-block: 3rem;
+    }
+
+    .artemano-mosaic__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-auto-rows: 9.5rem;
+    }
+
+    .artemano-mosaic__grid[data-count='4'] .artemano-mosaic__tile:nth-child(4),
+    .artemano-mosaic__grid[data-count='6'] .artemano-mosaic__tile:nth-child(6) {
+      grid-column: auto;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Mosaïque de photos",
+  "tag": "section",
+  "class": "artemano-mosaic-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Étiquette" },
+    { "type": "text", "id": "title", "label": "Titre" },
+    { "type": "richtext", "id": "text", "label": "Texte d'introduction" }
+  ],
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "Photo",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo" },
+        { "type": "text", "id": "caption", "label": "Légende" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Mosaïque de photos" }]
+}
+{% endschema %}

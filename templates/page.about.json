@@ -1,0 +1,159 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "artemano-page-hero",
+      "settings": {
+        "eyebrow": "Depuis 2002",
+        "title": "Notre histoire",
+        "subtitle": "<p>Plus de vingt ans de meubles en bois massif, à Longueuil.</p>",
+        "height": 36
+      }
+    },
+    "intro": {
+      "type": "artemano-split",
+      "settings": {
+        "image_side": "left",
+        "background": "cream",
+        "eyebrow": "Les débuts",
+        "title": "Une histoire de bois massif, depuis 2002",
+        "text": "<p><em>Texte à venir, tiré du livre Artemano.</em></p>",
+        "caption": ""
+      }
+    },
+    "timeline": {
+      "type": "artemano-timeline",
+      "settings": {
+        "eyebrow": "Depuis 2002",
+        "title": "Les grandes étapes"
+      },
+      "blocks": {
+        "s1": {
+          "type": "step",
+          "settings": {
+            "year": "2002",
+            "title": "La naissance d'Artemano",
+            "text": "<p><em>Texte à venir, tiré du livre Artemano.</em></p>"
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "year": "Année",
+            "title": "Étape à compléter",
+            "text": "<p><em>Texte à venir, tiré du livre Artemano.</em></p>"
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "year": "Année",
+            "title": "Étape à compléter",
+            "text": "<p><em>Texte à venir, tiré du livre Artemano.</em></p>"
+          }
+        },
+        "s4": {
+          "type": "step",
+          "settings": {
+            "year": "Aujourd'hui",
+            "title": "Le magasin de Longueuil",
+            "text": "<p>Une salle d'exposition au 1138, boul. Marie-Victorin, ouverte du mardi au dimanche.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ]
+    },
+    "wood": {
+      "type": "artemano-split",
+      "settings": {
+        "image_side": "right",
+        "background": "walnut",
+        "eyebrow": "Le bois",
+        "title": "Suar, palissandre, manguier, acacia, teck",
+        "text": "<p>Chaque essence a son grain, sa couleur et son caractère. Comme le bois est vivant, aucun meuble n'est tout à fait pareil à un autre.</p><p><em>Texte à venir, tiré du livre Artemano.</em></p>",
+        "quote": "Citation de Gianni à venir.",
+        "quote_author": "Gianni, Artemano",
+        "button_label": "Voir les meubles",
+        "button_link": "shopify://collections/living"
+      }
+    },
+    "mosaic": {
+      "type": "artemano-mosaic",
+      "settings": {
+        "eyebrow": "En images",
+        "title": "De la forêt au salon"
+      },
+      "blocks": {
+        "p1": {
+          "type": "photo",
+          "settings": {
+            "caption": "Le bois brut"
+          }
+        },
+        "p2": {
+          "type": "photo",
+          "settings": {
+            "caption": "L'atelier"
+          }
+        },
+        "p3": {
+          "type": "photo",
+          "settings": {
+            "caption": "Les finitions"
+          }
+        },
+        "p4": {
+          "type": "photo",
+          "settings": {
+            "caption": "Le magasin"
+          }
+        },
+        "p5": {
+          "type": "photo",
+          "settings": {
+            "caption": "Les détails"
+          }
+        },
+        "p6": {
+          "type": "photo",
+          "settings": {
+            "caption": "Chez nos clients"
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5",
+        "p6"
+      ]
+    },
+    "store": {
+      "type": "artemano-store",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "intro",
+    "timeline",
+    "wood",
+    "mosaic",
+    "store"
+  ]
+}

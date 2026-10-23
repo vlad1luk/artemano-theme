@@ -1,0 +1,134 @@
+{%- comment -%}
+  Artemano — ligne du temps (Notre histoire) : une étape par bloc, année en grand, photo facultative.
+{%- endcomment -%}
+
+<div class="artemano-timeline artemano-container">
+  <header class="artemano-timeline__header">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="artemano-eyebrow">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+    {%- if section.settings.title != blank -%}
+      <h2 class="artemano-section-title">{{ section.settings.title }}</h2>
+    {%- endif -%}
+  </header>
+
+  <ol class="artemano-timeline__list list-unstyled" role="list">
+    {%- for block in section.blocks -%}
+      {%- assign image = block.settings.image -%}
+      <li class="artemano-timeline__item{% if image != blank %} has-image{% endif %}" {{ block.shopify_attributes }}>
+        <p class="artemano-timeline__year">{{ block.settings.year }}</p>
+        <div class="artemano-timeline__content">
+          <h3 class="artemano-timeline__title">{{ block.settings.title }}</h3>
+          {%- if block.settings.text != blank -%}
+            <div class="artemano-rte artemano-timeline__text">{{ block.settings.text }}</div>
+          {%- endif -%}
+        </div>
+        {%- if image != blank -%}
+          <div class="artemano-timeline__media">
+            {{
+              image
+              | image_url: width: 900
+              | image_tag: widths: '400, 600, 900', sizes: '(min-width: 990px) 22rem, 100vw', loading: 'lazy', alt: image.alt | escape
+            }}
+          </div>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ol>
+</div>
+
+{% stylesheet %}
+  .artemano-timeline {
+    padding-block: 5rem;
+  }
+
+  .artemano-timeline__header {
+    max-width: 40rem;
+    margin-bottom: 3rem;
+  }
+
+  .artemano-timeline__header .artemano-eyebrow {
+    margin: 0 0 0.75rem;
+  }
+
+  .artemano-timeline__list {
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--artemano-line, #e2d9cc);
+  }
+
+  .artemano-timeline__item {
+    display: grid;
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 1rem 3rem;
+    padding-block: 2.5rem;
+    border-bottom: 1px solid var(--artemano-line, #e2d9cc);
+  }
+
+  .artemano-timeline__item.has-image {
+    grid-template-columns: 11rem minmax(0, 1fr) 22rem;
+  }
+
+  .artemano-timeline__year {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: clamp(2.25rem, 3.5vw, 3.25rem);
+    line-height: 1;
+    color: var(--artemano-walnut-soft, #6e4b2f);
+  }
+
+  .artemano-timeline__title {
+    margin: 0.25rem 0 0.75rem;
+    font-family: var(--font-heading--family);
+    font-weight: 400;
+    font-size: 1.625rem;
+    line-height: 1.2;
+    color: var(--artemano-ink, #2b2420);
+  }
+
+  .artemano-timeline__media img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 2px;
+  }
+
+  @media screen and (max-width: 989px) {
+    .artemano-timeline {
+      padding-block: 3rem;
+    }
+
+    .artemano-timeline__item,
+    .artemano-timeline__item.has-image {
+      grid-template-columns: 1fr;
+      padding-block: 2rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Ligne du temps",
+  "tag": "section",
+  "class": "artemano-timeline-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Étiquette", "default": "Depuis 2002" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Les grandes étapes" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Étape",
+      "settings": [
+        { "type": "text", "id": "year", "label": "Année", "default": "2002" },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Titre de l'étape" },
+        { "type": "richtext", "id": "text", "label": "Texte" },
+        { "type": "image_picker", "id": "image", "label": "Photo" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Ligne du temps" }]
+}
+{% endschema %}

@@ -1,0 +1,63 @@
+{%- comment -%}
+  Artemano — contenu d'une page (texte saisi dans l'admin), mis en forme pour la lecture.
+  Sert aux pages génériques et aux politiques mises en page.
+{%- endcomment -%}
+
+{%- if page.content != blank or section.settings.text != blank -%}
+  <div class="artemano-page-content artemano-container artemano-page-content--{{ section.settings.width }}">
+    <div class="artemano-rte">
+      {%- if section.settings.source == 'page' and page.content != blank -%}
+        {{ page.content }}
+      {%- else -%}
+        {{ section.settings.text }}
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .artemano-page-content {
+    padding-block: 3.5rem 5rem;
+  }
+
+  .artemano-page-content .artemano-rte {
+    max-width: 42rem;
+    margin-inline: auto;
+  }
+
+  .artemano-page-content--wide .artemano-rte {
+    max-width: 56rem;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Contenu de page",
+  "tag": "section",
+  "class": "artemano-page-content-section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "source",
+      "label": "Source du texte",
+      "options": [
+        { "value": "page", "label": "Contenu de la page (admin)" },
+        { "value": "custom", "label": "Texte ci-dessous" }
+      ],
+      "default": "page"
+    },
+    { "type": "richtext", "id": "text", "label": "Texte" },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Largeur",
+      "options": [
+        { "value": "narrow", "label": "Lecture" },
+        { "value": "wide", "label": "Large" }
+      ],
+      "default": "narrow"
+    }
+  ],
+  "presets": [{ "name": "Contenu de page" }]
+}
+{% endschema %}

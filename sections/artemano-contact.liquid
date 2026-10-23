@@ -1,0 +1,354 @@
+{%- comment -%}
+  Artemano — Nous joindre : coordonnées du magasin à gauche, formulaire de contact à droite.
+  Le formulaire envoie un courriel à l'adresse de la boutique (formulaire « contact » de Shopify).
+{%- endcomment -%}
+
+{%- liquid
+  assign phone_digits = section.settings.phone | remove: ' ' | remove: '-' | remove: '.' | remove: '(' | remove: ')'
+  assign email = section.settings.email | default: shop.email
+  assign subjects = section.settings.subjects | newline_to_br | split: '<br />'
+-%}
+
+<div class="artemano-contact artemano-container">
+  <aside class="artemano-contact__info">
+    {%- if section.settings.intro != blank -%}
+      <div class="artemano-rte artemano-contact__intro">{{ section.settings.intro }}</div>
+    {%- endif -%}
+
+    <dl class="artemano-contact__list">
+      {%- if section.settings.phone != blank -%}
+        <div>
+          <dt>Téléphone</dt>
+          <dd><a href="tel:+1{{ phone_digits }}">{{ section.settings.phone }}</a></dd>
+        </div>
+      {%- endif -%}
+      {%- if email != blank -%}
+        <div>
+          <dt>Courriel</dt>
+          <dd><a href="mailto:{{ email }}">{{ email }}</a></dd>
+        </div>
+      {%- endif -%}
+      {%- if section.settings.address != blank -%}
+        <div>
+          <dt>Magasin</dt>
+          <dd>
+            {{ section.settings.address }}
+            <br>
+            <a
+              class="artemano-link-caps"
+              href="https://www.google.com/maps/dir/?api=1&destination={{ section.settings.address | url_encode }}"
+              target="_blank"
+              rel="noopener"
+            >
+              {{- 'Itinéraire' -}}
+            </a>
+          </dd>
+        </div>
+      {%- endif -%}
+      {%- if section.settings.hours != blank -%}
+        <div>
+          <dt>Heures</dt>
+          <dd class="artemano-rte">{{ section.settings.hours }}</dd>
+        </div>
+      {%- endif -%}
+    </dl>
+  </aside>
+
+  <div class="artemano-contact__form-wrap">
+    {%- if section.settings.form_title != blank -%}
+      <h2 class="artemano-contact__title">{{ section.settings.form_title }}</h2>
+    {%- endif -%}
+
+    {%- form 'contact', id: 'ArtemanoContactForm', class: 'artemano-contact__form' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="artemano-contact__notice is-success" role="status" tabindex="-1" autofocus>
+          {{ section.settings.success_message }}
+        </p>
+      {%- elsif form.errors -%}
+        <div class="artemano-contact__notice is-error" role="alert" tabindex="-1" autofocus>
+          <p>Le message n'a pas pu être envoyé. Vérifiez les champs suivants :</p>
+          <ul>
+            {%- for field in form.errors -%}
+              <li>
+                {%- case field -%}
+                  {%- when 'email' -%}Courriel : adresse invalide
+                  {%- when 'body' -%}Message : à remplir
+                  {%- when 'form' -%}{{ form.errors.messages[field] }}
+                  {%- else -%}{{ field | capitalize }} : {{ form.errors.messages[field] }}
+                {%- endcase -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      <div class="artemano-contact__row">
+        <label class="artemano-field">
+          <span>Nom</span>
+          <input type="text" name="contact[name]" autocomplete="name" value="{{ form.name }}">
+        </label>
+        <label class="artemano-field">
+          <span>Téléphone <em>(facultatif)</em></span>
+          <input type="tel" name="contact[phone]" autocomplete="tel" value="{{ form.phone }}">
+        </label>
+      </div>
+
+      <label class="artemano-field">
+        <span>Courriel <em>*</em></span>
+        <input
+          type="email"
+          name="contact[email]"
+          autocomplete="email"
+          autocapitalize="off"
+          spellcheck="false"
+          required
+          value="{% if form.email != blank %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+          {% if form.errors contains 'email' %}aria-invalid="true"{% endif %}
+        >
+      </label>
+
+      {%- if subjects.size > 0 and section.settings.subjects != blank -%}
+        <label class="artemano-field">
+          <span>Sujet</span>
+          <select name="contact[sujet]">
+            {%- for subject in subjects -%}
+              {%- assign subject = subject | strip -%}
+              {%- if subject != blank -%}
+                <option value="{{ subject | escape }}">{{ subject }}</option>
+              {%- endif -%}
+            {%- endfor -%}
+          </select>
+        </label>
+      {%- endif -%}
+
+      <label class="artemano-field">
+        <span>Message <em>*</em></span>
+        <textarea
+          name="contact[body]"
+          rows="6"
+          required
+          placeholder="{{ section.settings.message_placeholder | escape }}"
+          {% if form.errors contains 'body' %}aria-invalid="true"{% endif %}
+        >
+          {{- form.body -}}
+        </textarea>
+      </label>
+
+      <div class="artemano-contact__actions">
+        <button type="submit" class="artemano-btn artemano-btn--dark">{{ section.settings.submit_label }}</button>
+        {%- if section.settings.response_note != blank -%}
+          <p class="artemano-contact__note">{{ section.settings.response_note }}</p>
+        {%- endif -%}
+      </div>
+    {%- endform -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .artemano-contact {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(2.5rem, 6vw, 6rem);
+    padding-block: 4rem 5rem;
+  }
+
+  .artemano-contact__intro {
+    margin-bottom: 2rem;
+  }
+
+  .artemano-contact__list {
+    display: grid;
+    gap: 1.5rem;
+    margin: 0;
+  }
+
+  .artemano-contact__list dt {
+    margin-bottom: 0.375rem;
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--artemano-ink-muted, #7d7066);
+  }
+
+  .artemano-contact__list dd {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--artemano-ink, #2b2420);
+  }
+
+  .artemano-contact__list dd > a:not(.artemano-link-caps) {
+    font-family: var(--font-heading--family);
+    font-size: 1.375rem;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .artemano-contact__list dd p {
+    margin: 0;
+  }
+
+  .artemano-contact__list .artemano-link-caps {
+    display: inline-block;
+    margin-top: 0.5rem;
+  }
+
+  .artemano-contact__form-wrap {
+    padding: clamp(1.5rem, 3vw, 2.75rem);
+    background: var(--artemano-cream, #f7f3ec);
+    border-radius: 2px;
+  }
+
+  .artemano-contact__title {
+    margin: 0 0 1.75rem;
+    font-family: var(--font-heading--family);
+    font-weight: 400;
+    font-size: clamp(1.75rem, 2.6vw, 2.25rem);
+    line-height: 1.15;
+    color: var(--artemano-ink, #2b2420);
+  }
+
+  .artemano-contact__form {
+    display: grid;
+    gap: 1.125rem;
+  }
+
+  .artemano-contact__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.125rem;
+  }
+
+  .artemano-field {
+    display: grid;
+    gap: 0.4375rem;
+  }
+
+  .artemano-field > span {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--artemano-ink-soft, #5a4e45);
+  }
+
+  .artemano-field em {
+    font-style: normal;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--artemano-ink-muted, #7d7066);
+  }
+
+  .artemano-field input,
+  .artemano-field select,
+  .artemano-field textarea {
+    width: 100%;
+    padding: 0.8125rem 0.875rem;
+    font: inherit;
+    font-size: 1rem;
+    color: var(--artemano-ink, #2b2420);
+    background: #fff;
+    border: 1px solid var(--artemano-line, #e2d9cc);
+    border-radius: 2px;
+    transition: border-color 0.2s ease;
+  }
+
+  .artemano-field textarea {
+    resize: vertical;
+    min-height: 9rem;
+  }
+
+  .artemano-field input:focus-visible,
+  .artemano-field select:focus-visible,
+  .artemano-field textarea:focus-visible {
+    outline: none;
+    border-color: var(--artemano-walnut, #4a3426);
+    box-shadow: 0 0 0 1px var(--artemano-walnut, #4a3426);
+  }
+
+  .artemano-field [aria-invalid='true'] {
+    border-color: #a8462f;
+  }
+
+  .artemano-contact__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .artemano-contact__note {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--artemano-ink-muted, #7d7066);
+  }
+
+  .artemano-contact__notice {
+    margin: 0;
+    padding: 1rem 1.125rem;
+    border-radius: 2px;
+    font-size: 0.9375rem;
+  }
+
+  .artemano-contact__notice.is-success {
+    background: rgb(94 107 79 / 0.12);
+    color: #3f4a34;
+  }
+
+  .artemano-contact__notice.is-error {
+    background: rgb(168 70 47 / 0.1);
+    color: #7c3322;
+  }
+
+  .artemano-contact__notice p,
+  .artemano-contact__notice ul {
+    margin: 0;
+  }
+
+  .artemano-contact__notice ul {
+    padding-left: 1.125rem;
+    margin-top: 0.375rem;
+  }
+
+  @media screen and (max-width: 989px) {
+    .artemano-contact {
+      grid-template-columns: 1fr;
+      padding-block: 2.5rem 3.5rem;
+    }
+  }
+
+  @media screen and (max-width: 559px) {
+    .artemano-contact__row {
+      grid-template-columns: 1fr;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Nous joindre",
+  "tag": "section",
+  "class": "artemano-contact-section",
+  "settings": [
+    { "type": "richtext", "id": "intro", "label": "Introduction" },
+    { "type": "text", "id": "phone", "label": "Téléphone", "default": "450 321-0565" },
+    { "type": "text", "id": "email", "label": "Courriel", "info": "Laisser vide pour utiliser le courriel de la boutique." },
+    { "type": "text", "id": "address", "label": "Adresse", "default": "1138, boul. Marie-Victorin, Longueuil (Québec) J4G 2H9" },
+    { "type": "richtext", "id": "hours", "label": "Heures", "default": "<p>Mardi au dimanche : 10 h à 16 h<br/>Lundi : fermé</p>" },
+    { "type": "header", "content": "Formulaire" },
+    { "type": "text", "id": "form_title", "label": "Titre", "default": "Écrivez-nous" },
+    {
+      "type": "textarea",
+      "id": "subjects",
+      "label": "Sujets proposés",
+      "info": "Un sujet par ligne. Laisser vide pour masquer le champ.",
+      "default": "Question sur un produit\nLivraison et ramassage\nVisite en magasin\nCommande en cours\nAutre"
+    },
+    { "type": "text", "id": "message_placeholder", "label": "Texte d'exemple du message", "default": "Nom du meuble, dimensions recherchées, question…" },
+    { "type": "text", "id": "submit_label", "label": "Bouton", "default": "Envoyer le message" },
+    { "type": "text", "id": "response_note", "label": "Note sous le bouton", "info": "Ex. : délai de réponse habituel." },
+    { "type": "text", "id": "success_message", "label": "Message de confirmation", "default": "Merci ! Votre message est bien parti. Nous vous répondons rapidement." }
+  ],
+  "presets": [{ "name": "Nous joindre" }]
+}
+{% endschema %}
