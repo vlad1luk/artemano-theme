@@ -30,7 +30,7 @@
         "left_image_3": "shopify://shop_images/Bed_02_-_Reduced.jpg",
         "left_image_4": "shopify://shop_images/Living_03_-_Reduced.jpg",
         "left_interval": 6,
-        "right_image": "shopify://shop_images/Slide_17.jpg"
+        "right_image": "shopify://shop_images/Slide_13.jpg"
       }
     },
     "guarantees": {
@@ -150,7 +150,7 @@
         "story_text": "<p>Deux phrases sur les essences et les artisans, à écrire avec Gianni.</p>",
         "story_link_label": "Lire notre histoire",
         "story_link": "/pages/decouvrez",
-        "image": "shopify://shop_images/Table_03_-_Reduced.jpg"
+        "image": "shopify://shop_images/Slide_05.jpg"
       },
       "blocks": {
         "p1": {
