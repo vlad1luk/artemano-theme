@@ -3,7 +3,7 @@
 {%- endcomment -%}
 
 <footer class="artemano-footer" style="--footer-cols: {{ section.blocks.size | at_least: 1 }};">
-  <div class="artemano-container">
+  <div class="artemano-footer__inner">
     {%- if section.settings.show_newsletter -%}
       <div class="artemano-footer__newsletter">
         <div>
@@ -123,9 +123,16 @@
     text-underline-offset: 3px;
   }
 
+  /* Même largeur que le hero et « Pièce par pièce » : presque bord à bord */
+  .artemano-footer__inner {
+    width: min(100% - 2 * clamp(1rem, 4vw, 4.5rem), 120rem);
+    margin-inline: auto;
+  }
+
   .artemano-footer__newsletter {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 34rem);
+    justify-content: space-between;
     align-items: center;
     gap: 2rem;
     padding-block: 4rem;
@@ -200,8 +207,8 @@
 
   .artemano-footer__main {
     display: grid;
-    grid-template-columns: 1.6fr repeat(var(--footer-cols), minmax(0, 1fr));
-    gap: 2.5rem;
+    grid-template-columns: minmax(16rem, 2fr) repeat(var(--footer-cols), minmax(0, 1fr));
+    gap: 2.5rem clamp(2.5rem, 5vw, 6rem);
     padding-block: 4rem;
   }
 
