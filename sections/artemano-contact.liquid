@@ -5,7 +5,8 @@
 
 {%- liquid
   assign phone_digits = section.settings.phone | remove: ' ' | remove: '-' | remove: '.' | remove: '(' | remove: ')'
-  assign email = section.settings.email | default: shop.email
+  assign email = section.settings.email
+  assign phone2_digits = section.settings.phone2 | remove: ' ' | remove: '-' | remove: '.' | remove: '(' | remove: ')' | split: '#' | first
   assign subjects = section.settings.subjects | newline_to_br | split: '<br />'
 -%}
 
@@ -18,8 +19,19 @@
     <dl class="artemano-contact__list">
       {%- if section.settings.phone != blank -%}
         <div>
-          <dt>Téléphone</dt>
+          <dt>{{ section.settings.phone_label }}</dt>
           <dd><a href="tel:+1{{ phone_digits }}">{{ section.settings.phone }}</a></dd>
+        </div>
+      {%- endif -%}
+      {%- if section.settings.phone2 != blank -%}
+        <div>
+          <dt>{{ section.settings.phone2_label }}</dt>
+          <dd>
+            <a href="tel:+1{{ phone2_digits }}">{{ section.settings.phone2 }}</a>
+            {%- if section.settings.phone2_hours != blank -%}
+              <br><span class="artemano-contact__sub">{{ section.settings.phone2_hours }}</span>
+            {%- endif -%}
+          </dd>
         </div>
       {%- endif -%}
       {%- if email != blank -%}
@@ -195,8 +207,14 @@
 
   .artemano-contact__form-wrap {
     padding: clamp(1.5rem, 3vw, 2.75rem);
-    background: var(--artemano-cream, #f7f3ec);
+    background: #fff;
+    border: 1px solid var(--artemano-line, #e2d9cc);
     border-radius: 2px;
+  }
+
+  .artemano-contact__sub {
+    font-size: 0.875rem;
+    color: var(--artemano-ink-muted, #7d7066);
   }
 
   .artemano-contact__title {
@@ -246,7 +264,7 @@
     font: inherit;
     font-size: 1rem;
     color: var(--artemano-ink, #2b2420);
-    background: #fff;
+    background: var(--artemano-cream, #f7f3ec);
     border: 1px solid var(--artemano-line, #e2d9cc);
     border-radius: 2px;
     transition: border-color 0.2s ease;
@@ -331,8 +349,12 @@
   "class": "artemano-contact-section",
   "settings": [
     { "type": "richtext", "id": "intro", "label": "Introduction" },
+    { "type": "text", "id": "phone_label", "label": "Titre du téléphone", "default": "Magasin de Longueuil" },
     { "type": "text", "id": "phone", "label": "Téléphone", "default": "450 321-0565" },
-    { "type": "text", "id": "email", "label": "Courriel", "info": "Laisser vide pour utiliser le courriel de la boutique." },
+    { "type": "text", "id": "phone2_label", "label": "Titre du 2e téléphone", "default": "Service à la clientèle" },
+    { "type": "text", "id": "phone2", "label": "2e téléphone", "info": "Laisser vide pour le masquer." },
+    { "type": "text", "id": "phone2_hours", "label": "Heures du 2e téléphone" },
+    { "type": "text", "id": "email", "label": "Courriel affiché", "info": "Laisser vide pour le masquer. Les messages du formulaire vont au courriel de la boutique." },
     { "type": "text", "id": "address", "label": "Adresse", "default": "1138, boul. Marie-Victorin, Longueuil (Québec) J4G 2H9" },
     { "type": "richtext", "id": "hours", "label": "Heures", "default": "<p>Mardi au dimanche : 10 h à 16 h<br/>Lundi : fermé</p>" },
     { "type": "header", "content": "Formulaire" },

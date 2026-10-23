@@ -81,9 +81,19 @@
     grid-row: span 2;
   }
 
-  .artemano-mosaic__grid[data-count='4'] .artemano-mosaic__tile:nth-child(4),
-  .artemano-mosaic__grid[data-count='6'] .artemano-mosaic__tile:nth-child(6) {
+  /* Remplir la grille selon le nombre de photos (1 grande + petites) */
+  .artemano-mosaic__grid[data-count='2'] .artemano-mosaic__tile:nth-child(2) {
     grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .artemano-mosaic__grid[data-count='3'] .artemano-mosaic__tile:not(:first-child),
+  .artemano-mosaic__grid[data-count='4'] .artemano-mosaic__tile:nth-child(4) {
+    grid-column: span 2;
+  }
+
+  .artemano-mosaic__grid[data-count='6'] .artemano-mosaic__tile:nth-child(6) {
+    grid-column: span 4;
   }
 
   .artemano-mosaic__tile.is-placeholder {
@@ -133,9 +143,15 @@
       grid-auto-rows: 9.5rem;
     }
 
+    .artemano-mosaic__grid .artemano-mosaic__tile:not(:first-child) {
+      grid-column: auto;
+      grid-row: auto;
+    }
+
+    .artemano-mosaic__grid[data-count='2'] .artemano-mosaic__tile:nth-child(2),
     .artemano-mosaic__grid[data-count='4'] .artemano-mosaic__tile:nth-child(4),
     .artemano-mosaic__grid[data-count='6'] .artemano-mosaic__tile:nth-child(6) {
-      grid-column: auto;
+      grid-column: span 2;
     }
   }
 {% endstylesheet %}
