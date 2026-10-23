@@ -15,7 +15,8 @@
         "eyebrow": "Depuis 2002",
         "title": "Notre histoire",
         "subtitle": "<p>Plus de vingt ans de meubles en bois massif, à Longueuil.</p>",
-        "height": 36
+        "height": 36,
+        "image": "shopify://shop_images/HP2-1920X1080.jpg"
       }
     },
     "intro": {
@@ -26,7 +27,8 @@
         "eyebrow": "Les débuts",
         "title": "Une histoire de bois massif, depuis 2002",
         "text": "<p><em>Texte à venir, tiré du livre Artemano.</em></p>",
-        "caption": ""
+        "caption": "",
+        "image": "shopify://shop_images/Slide_03.jpg"
       }
     },
     "timeline": {
@@ -87,7 +89,8 @@
         "quote": "Citation de Gianni à venir.",
         "quote_author": "Gianni, Artemano",
         "button_label": "Voir les meubles",
-        "button_link": "shopify://collections/living"
+        "button_link": "shopify://collections/living",
+        "image": "shopify://shop_images/Slide_06.jpg"
       }
     },
     "mosaic": {
@@ -100,37 +103,43 @@
         "p1": {
           "type": "photo",
           "settings": {
-            "caption": "Le bois brut"
+            "image": "shopify://shop_images/Slide_07.jpg",
+            "caption": ""
           }
         },
         "p2": {
           "type": "photo",
           "settings": {
-            "caption": "L'atelier"
+            "image": "shopify://shop_images/Slide_13.jpg",
+            "caption": ""
           }
         },
         "p3": {
           "type": "photo",
           "settings": {
-            "caption": "Les finitions"
+            "image": "shopify://shop_images/HP1-1920X1080.jpg",
+            "caption": ""
           }
         },
         "p4": {
           "type": "photo",
           "settings": {
-            "caption": "Le magasin"
+            "image": "shopify://shop_images/HP4-1920X1080.jpg",
+            "caption": ""
           }
         },
         "p5": {
           "type": "photo",
           "settings": {
-            "caption": "Les détails"
+            "image": "shopify://shop_images/Slide_11.jpg",
+            "caption": ""
           }
         },
         "p6": {
           "type": "photo",
           "settings": {
-            "caption": "Chez nos clients"
+            "image": "shopify://shop_images/LONGUEUIL.png",
+            "caption": "Le magasin de Longueuil"
           }
         }
       },

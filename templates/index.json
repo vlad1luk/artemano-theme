@@ -24,7 +24,13 @@
         "right_eyebrow": "Offre",
         "right_title": "Nouveautés de la saison",
         "right_button_label": "Voir l'offre",
-        "right_button_link": "/collections/all"
+        "right_button_link": "/collections/all",
+        "left_image": "shopify://shop_images/Living_02_-_Reduced.jpg",
+        "left_image_2": "shopify://shop_images/Table_02_-_Reduced.jpg",
+        "left_image_3": "shopify://shop_images/Bed_02_-_Reduced.jpg",
+        "left_image_4": "shopify://shop_images/Living_03_-_Reduced.jpg",
+        "left_interval": 6,
+        "right_image": "shopify://shop_images/Slide_17.jpg"
       }
     },
     "guarantees": {
@@ -85,28 +91,32 @@
           "type": "room",
           "settings": {
             "collection": "living",
-            "title": "Salon"
+            "title": "Salon",
+            "image": "shopify://shop_images/Living.jpg"
           }
         },
         "r2": {
           "type": "room",
           "settings": {
             "collection": "dining",
-            "title": "Salle à manger"
+            "title": "Salle à manger",
+            "image": "shopify://shop_images/Dining_05.jpg"
           }
         },
         "r3": {
           "type": "room",
           "settings": {
             "collection": "bedroom",
-            "title": "Chambre"
+            "title": "Chambre",
+            "image": "shopify://shop_images/Bedroom_01.jpg"
           }
         },
         "r4": {
           "type": "room",
           "settings": {
             "collection": "accessory",
-            "title": "Accessoires"
+            "title": "Accessoires",
+            "image": "shopify://shop_images/HomePage_5152_x_3435.jpg"
           }
         }
       },
@@ -139,7 +149,8 @@
         "story_title": "Du bois choisi à la main, depuis 2002",
         "story_text": "<p>Deux phrases sur les essences et les artisans, à écrire avec Gianni.</p>",
         "story_link_label": "Lire notre histoire",
-        "story_link": "/pages/decouvrez"
+        "story_link": "/pages/decouvrez",
+        "image": "shopify://shop_images/Table_03_-_Reduced.jpg"
       },
       "blocks": {
         "p1": {

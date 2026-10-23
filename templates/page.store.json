@@ -19,51 +19,13 @@
         "button_link": "https://www.google.com/maps/dir/?api=1&destination=1138+boul.+Marie-Victorin+Longueuil+QC+J4G+2H9",
         "button2_label": "Nous joindre",
         "button2_link": "shopify://pages/contact-us",
-        "height": 32
+        "height": 36,
+        "image": "shopify://shop_images/LONGUEUIL.png"
       }
     },
     "store": {
       "type": "artemano-store",
       "settings": {}
-    },
-    "mosaic": {
-      "type": "artemano-mosaic",
-      "settings": {
-        "eyebrow": "La salle d'exposition",
-        "title": "Un aperçu du magasin"
-      },
-      "blocks": {
-        "p1": {
-          "type": "photo",
-          "settings": {
-            "caption": ""
-          }
-        },
-        "p2": {
-          "type": "photo",
-          "settings": {
-            "caption": ""
-          }
-        },
-        "p3": {
-          "type": "photo",
-          "settings": {
-            "caption": ""
-          }
-        },
-        "p4": {
-          "type": "photo",
-          "settings": {
-            "caption": ""
-          }
-        }
-      },
-      "block_order": [
-        "p1",
-        "p2",
-        "p3",
-        "p4"
-      ]
     },
     "content": {
       "type": "artemano-page-content",
@@ -71,12 +33,26 @@
         "source": "page",
         "width": "narrow"
       }
+    },
+    "outside": {
+      "type": "artemano-split",
+      "settings": {
+        "image": "shopify://shop_images/06.jpg",
+        "image_side": "left",
+        "background": "white",
+        "eyebrow": "Sur place",
+        "title": "Les meubles exposés en vrai",
+        "text": "<p>Comparez les essences, les finis et les dimensions avant d'acheter, et repartez avec votre meuble grâce au ramassage en magasin.</p>",
+        "caption": "1138, boul. Marie-Victorin, Longueuil",
+        "button_label": "Nous joindre",
+        "button_link": "shopify://pages/contact-us"
+      }
     }
   },
   "order": [
     "hero",
     "store",
-    "mosaic",
+    "outside",
     "content"
   ]
 }

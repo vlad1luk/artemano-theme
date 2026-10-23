@@ -21,7 +21,24 @@
     assign is_room = true
   endif
 
-  assign image = collection.image
+  # Image d'ambiance : celle choisie pour cette collection dans la section, sinon l'image de la collection,
+  # sinon celle choisie pour la pièce, sinon l'image de la pièce, sinon l'image par défaut
+  assign image = blank
+  assign room_override = blank
+  for block in section.blocks
+    if block.settings.collection.handle == collection.handle and block.settings.image != blank
+      assign image = block.settings.image
+    endif
+    if room and block.settings.collection.handle == room.object.handle and block.settings.image != blank
+      assign room_override = block.settings.image
+    endif
+  endfor
+  if image == blank
+    assign image = collection.image
+  endif
+  if image == blank
+    assign image = room_override
+  endif
   if image == blank and room
     assign image = room.object.image
   endif
@@ -305,6 +322,16 @@
     { "type": "text", "id": "secondary_label", "label": "Bouton secondaire", "default": "Nous joindre" },
     { "type": "url", "id": "secondary_link", "label": "Lien du bouton secondaire" },
     { "type": "image_picker", "id": "fallback_image", "label": "Image par défaut" }
+  ],
+  "blocks": [
+    {
+      "type": "ambiance",
+      "name": "Image d'une collection",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection ou pièce", "info": "Une pièce (ex. Salon) donne aussi son image à ses sous-catégories qui n'en ont pas." },
+        { "type": "image_picker", "id": "image", "label": "Image d'ambiance" }
+      ]
+    }
   ],
   "presets": [{ "name": "En-tête de collection" }]
 }

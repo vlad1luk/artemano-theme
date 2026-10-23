@@ -15,8 +15,21 @@
         "menu": "artemano-principal",
         "primary_label": "Voir les produits",
         "secondary_label": "Nous joindre",
-        "secondary_link": "shopify://pages/contact-us"
-      }
+        "secondary_link": "shopify://pages/contact-us",
+        "fallback_image": "shopify://shop_images/Table_03_-_Reduced.jpg"
+      },
+      "blocks": {
+        "amb_bedroom": {
+          "type": "ambiance",
+          "settings": {
+            "collection": "bedroom",
+            "image": "shopify://shop_images/Bed_02_-_Reduced.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "amb_bedroom"
+      ]
     },
     "main": {
       "type": "main-collection",

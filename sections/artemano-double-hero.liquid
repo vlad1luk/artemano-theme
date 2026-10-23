@@ -38,7 +38,24 @@
       endif
     -%}
     <div class="artemano-hero__panel artemano-hero__panel--{{ side }}">
-      <div class="artemano-hero__media">
+      {%- liquid
+        assign slides = ''
+        assign slide_count = 0
+        if side == 'left'
+          for n in (2..5)
+            assign k_extra = 'left_image_' | append: n
+            if section.settings[k_extra] != blank
+              assign slide_count = slide_count | plus: 1
+            endif
+          endfor
+        endif
+      -%}
+      <div
+        class="artemano-hero__media{% if slide_count > 0 %} is-slideshow{% endif %}"
+        {% if slide_count > 0 %}
+          data-artemano-slides data-interval="{{ section.settings.left_interval | times: 1000 }}"
+        {% endif %}
+      >
         {%- if image != blank -%}
           {{
             image
@@ -48,9 +65,32 @@
               sizes: sizes,
               loading: 'eager',
               fetchpriority: 'high',
-              class: 'artemano-hero__image',
+              class: 'artemano-hero__image is-active',
               alt: image_alt
           }}
+          {%- if slide_count > 0 -%}
+            {%- for n in (2..5) -%}
+              {%- assign k_extra = 'left_image_' | append: n -%}
+              {%- assign extra = section.settings[k_extra] -%}
+              {%- if extra != blank -%}
+                {%- assign extra_alt = extra.alt | escape -%}
+                {{
+                  extra
+                  | image_url: width: 2400
+                  | image_tag:
+                    widths: '600, 900, 1200, 1600, 2000, 2400',
+                    sizes: sizes,
+                    loading: 'lazy',
+                    class: 'artemano-hero__image',
+                    alt: extra_alt
+                }}
+              {%- endif -%}
+            {%- endfor -%}
+            <div class="artemano-hero__dots" aria-hidden="true">
+              <span class="is-active"></span>
+              {%- for n in (1..slide_count) -%}<span></span>{%- endfor -%}
+            </div>
+          {%- endif -%}
         {%- else -%}
           <div class="artemano-hero__placeholder">
             {{ 'lifestyle-1' | placeholder_svg_tag: 'artemano-hero__placeholder-svg' }}
@@ -84,6 +124,29 @@
   {%- endfor -%}
 </div>
 
+<script>
+  (function () {
+    var root = document.currentScript && document.currentScript.previousElementSibling;
+    if (!root) return;
+    var box = root.querySelector('[data-artemano-slides]');
+    if (!box) return;
+    var imgs = box.querySelectorAll('img');
+    var dots = box.querySelectorAll('.artemano-hero__dots span');
+    if (imgs.length < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var i = 0;
+    var delay = parseInt(box.getAttribute('data-interval'), 10) || 6000;
+    setInterval(function () {
+      if (document.hidden) return;
+      imgs[i].classList.remove('is-active');
+      if (dots[i]) dots[i].classList.remove('is-active');
+      i = (i + 1) % imgs.length;
+      imgs[i].loading = 'eager';
+      imgs[i].classList.add('is-active');
+      if (dots[i]) dots[i].classList.add('is-active');
+    }, delay);
+  })();
+</script>
+
 {% stylesheet %}
   .artemano-hero {
     display: grid;
@@ -114,6 +177,38 @@
 
   .artemano-hero__media img {
     object-fit: cover;
+  }
+
+  /* Carrousel en fondu (image de gauche) */
+  .artemano-hero__media.is-slideshow img {
+    opacity: 0;
+    transition: opacity 1.4s ease;
+  }
+
+  .artemano-hero__media.is-slideshow img.is-active {
+    opacity: 1;
+  }
+
+  .artemano-hero__dots {
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    bottom: 1.25rem;
+    display: flex;
+    gap: 0.5rem;
+    transform: translateX(-50%);
+  }
+
+  .artemano-hero__dots span {
+    width: 0.4375rem;
+    height: 0.4375rem;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.45);
+    transition: background-color 0.4s ease;
+  }
+
+  .artemano-hero__dots span.is-active {
+    background: #fff;
   }
 
   .artemano-hero__placeholder-svg {
@@ -230,6 +325,11 @@
     },
     { "type": "header", "content": "Grande image (gauche)" },
     { "type": "image_picker", "id": "left_image", "label": "Image" },
+    { "type": "image_picker", "id": "left_image_2", "label": "Image 2 (carrousel)" },
+    { "type": "image_picker", "id": "left_image_3", "label": "Image 3 (carrousel)" },
+    { "type": "image_picker", "id": "left_image_4", "label": "Image 4 (carrousel)" },
+    { "type": "image_picker", "id": "left_image_5", "label": "Image 5 (carrousel)" },
+    { "type": "range", "id": "left_interval", "label": "Durée par image", "min": 3, "max": 10, "step": 1, "unit": "s", "default": 6 },
     { "type": "text", "id": "left_eyebrow", "label": "Étiquette", "default": "Collection" },
     { "type": "text", "id": "left_title", "label": "Titre", "default": "Le bois massif, pièce par pièce" },
     { "type": "text", "id": "left_button_label", "label": "Bouton 1", "default": "Magasiner" },
