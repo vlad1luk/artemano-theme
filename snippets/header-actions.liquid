@@ -64,8 +64,16 @@
   {{- block.shopify_attributes -}}
 >
   {%- if settings.artemano_store_label != blank -%}
+    {%- liquid
+      # Garder la langue courante (/fr/...) sur un lien relatif
+      assign store_url = settings.artemano_store_url | default: routes.root_url
+      assign first_char = store_url | slice: 0
+      if first_char == '/' and routes.root_url != '/'
+        assign store_url = routes.root_url | append: store_url
+      endif
+    -%}
     <a
-      href="{{ settings.artemano_store_url | default: routes.root_url }}"
+      href="{{ store_url }}"
       class="header-actions__action header-actions__store{% if display_style == 'text' %} header-actions__text-style{% endif %}"
     >
       <span class="svg-wrapper" aria-hidden="true">
