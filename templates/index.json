@@ -16,14 +16,14 @@
         "height": 620,
         "height_mobile": 460,
         "left_eyebrow": "Collection",
-        "left_title": "Le bois massif, pièce par pièce",
-        "left_button_label": "Magasiner",
+        "left_title": "Solid wood, piece by piece",
+        "left_button_label": "Shop",
         "left_button_link": "/collections/all",
-        "left_button2_label": "Trouver un magasin",
+        "left_button2_label": "Find a store",
         "left_button2_link": "",
-        "right_eyebrow": "Offre",
-        "right_title": "Nouveautés de la saison",
-        "right_button_label": "Voir l'offre",
+        "right_eyebrow": "Offer",
+        "right_title": "New this season",
+        "right_button_label": "See the offer",
         "right_button_link": "/collections/all",
         "left_image": "shopify://shop_images/Living_02_-_Reduced.jpg",
         "left_image_2": "shopify://shop_images/Table_02_-_Reduced.jpg",
@@ -40,32 +40,32 @@
           "type": "item",
           "settings": {
             "icon": "truck",
-            "title": "Livraison au Québec",
-            "detail": "Zones et tarifs à confirmer"
+            "title": "Delivery in Quebec",
+            "detail": "Areas and rates to be confirmed"
           }
         },
         "g2": {
           "type": "item",
           "settings": {
             "icon": "pin",
-            "title": "Ramassage gratuit",
-            "detail": "À notre magasin de Longueuil"
+            "title": "Free pickup",
+            "detail": "At our Longueuil store"
           }
         },
         "g3": {
           "type": "item",
           "settings": {
             "icon": "shield",
-            "title": "Garantie",
-            "detail": "Détails à confirmer"
+            "title": "Warranty",
+            "detail": "Details to be confirmed"
           }
         },
         "g4": {
           "type": "item",
           "settings": {
             "icon": "tree",
-            "title": "100 % bois massif",
-            "detail": "Fabriqué à la main"
+            "title": "100% solid wood",
+            "detail": "Handcrafted"
           }
         }
       },
@@ -82,16 +82,16 @@
     "rooms": {
       "type": "artemano-rooms",
       "settings": {
-        "title": "Pièce par pièce",
-        "subtitle": "Des meubles en bois massif pour chaque pièce de la maison.",
-        "cta_label": "Découvrir"
+        "title": "Room by room",
+        "subtitle": "Solid wood furniture for every room in the house.",
+        "cta_label": "Discover"
       },
       "blocks": {
         "r1": {
           "type": "room",
           "settings": {
             "collection": "living",
-            "title": "Salon",
+            "title": "Living room",
             "image": "shopify://shop_images/Living.jpg"
           }
         },
@@ -99,7 +99,7 @@
           "type": "room",
           "settings": {
             "collection": "dining",
-            "title": "Salle à manger",
+            "title": "Dining room",
             "image": "shopify://shop_images/Dining_05.jpg"
           }
         },
@@ -107,7 +107,7 @@
           "type": "room",
           "settings": {
             "collection": "bedroom",
-            "title": "Chambre",
+            "title": "Bedroom",
             "image": "shopify://shop_images/Bedroom_01.jpg"
           }
         },
@@ -115,7 +115,7 @@
           "type": "room",
           "settings": {
             "collection": "accessory",
-            "title": "Accessoires",
+            "title": "Accessories",
             "image": "shopify://shop_images/HomePage_5152_x_3435.jpg"
           }
         }
@@ -130,25 +130,25 @@
     "best_sellers": {
       "type": "artemano-featured-products",
       "settings": {
-        "title": "Meilleurs vendeurs",
+        "title": "Best sellers",
         "collection": "living",
         "limit": 8,
-        "view_all_label": "Tout voir"
+        "view_all_label": "View all"
       }
     },
     "signature": {
       "type": "artemano-signature",
       "settings": {
-        "eyebrow": "Notre signature",
+        "eyebrow": "Our signature",
         "big": "100 %",
-        "big_suffix": "bois massif",
-        "text": "<p>Nos créations partagent la beauté du bois travaillé à la main et transmettent notre amour du bois.</p>",
-        "button_label": "Découvrir nos essences",
+        "big_suffix": "solid wood",
+        "text": "<p>Our pieces share the beauty of hand-worked wood and carry our love of the material.</p>",
+        "button_label": "Discover our woods",
         "button_link": "/collections/all",
-        "story_eyebrow": "Notre histoire",
-        "story_title": "Du bois choisi à la main, depuis 2002",
-        "story_text": "<p>Deux phrases sur les essences et les artisans, à écrire avec Gianni.</p>",
-        "story_link_label": "Lire notre histoire",
+        "story_eyebrow": "Our story",
+        "story_title": "Wood chosen by hand, since 2002",
+        "story_text": "<p>Two sentences about the woods and the craftspeople, to be written with Gianni.</p>",
+        "story_link_label": "Read our story",
         "story_link": "/pages/notre-histoire",
         "image": "shopify://shop_images/Slide_05.jpg"
       },
@@ -156,22 +156,22 @@
         "p1": {
           "type": "point",
           "settings": {
-            "label": "Essences",
-            "text": "Suar, palissandre, manguier"
+            "label": "Woods",
+            "text": "Suar, rosewood, mango wood"
           }
         },
         "p2": {
           "type": "point",
           "settings": {
-            "label": "Pièces uniques",
-            "text": "Chaque veinure est différente"
+            "label": "One-of-a-kind pieces",
+            "text": "No two grains are the same"
           }
         },
         "p3": {
           "type": "point",
           "settings": {
-            "label": "Garantie 1 an",
-            "text": "Contre les défauts de fabrication"
+            "label": "1-year warranty",
+            "text": "Against manufacturing defects"
           }
         }
       },
@@ -193,15 +193,15 @@
     "store": {
       "type": "artemano-store",
       "settings": {
-        "eyebrow": "Notre magasin",
-        "title": "Venez voir et toucher le bois",
+        "eyebrow": "Our store",
+        "title": "Come see and touch the wood",
         "store_name": "Artemano Longueuil",
-        "address": "1138, boul. Marie-Victorin, Longueuil (Québec) J4G 2H9",
-        "hours": "<p>Mardi au dimanche : 10 h à 16 h · Lundi fermé</p>",
+        "address": "1138 Marie-Victorin Blvd., Longueuil, Quebec J4G 2H9",
+        "hours": "<p>Tuesday to Sunday: 10 a.m. to 4 p.m. · Closed Mondays</p>",
         "phone": "450 321-0565",
-        "visit_label": "Nous joindre",
+        "visit_label": "Contact us",
         "visit_link": "/pages/contact",
-        "directions_label": "Itinéraire",
+        "directions_label": "Directions",
         "map_query": "1138 boulevard Marie-Victorin, Longueuil, QC J4G 2H9"
       }
     }

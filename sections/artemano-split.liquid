@@ -44,7 +44,7 @@
         </blockquote>
       {%- endif -%}
       {%- if section.settings.button_label != blank -%}
-        <a href="{{ section.settings.button_link | default: '#' }}" class="artemano-btn artemano-btn--{% if section.settings.background == 'walnut' %}light{% else %}dark{% endif %}">
+        <a href="{% render 'artemano-url', url: section.settings.button_link %}" class="artemano-btn artemano-btn--{% if section.settings.background == 'walnut' %}light{% else %}dark{% endif %}">
           {{- section.settings.button_label -}}
         </a>
       {%- endif -%}

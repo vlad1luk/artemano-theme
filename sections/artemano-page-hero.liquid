@@ -37,12 +37,12 @@
       {%- if section.settings.button_label != blank or section.settings.button2_label != blank -%}
         <div class="artemano-page-hero__actions">
           {%- if section.settings.button_label != blank -%}
-            <a href="{{ section.settings.button_link | default: '#' }}" class="artemano-btn artemano-btn--{% if image != blank %}light{% else %}dark{% endif %}">
+            <a href="{% render 'artemano-url', url: section.settings.button_link %}" class="artemano-btn artemano-btn--{% if image != blank %}light{% else %}dark{% endif %}">
               {{- section.settings.button_label -}}
             </a>
           {%- endif -%}
           {%- if section.settings.button2_label != blank -%}
-            <a href="{{ section.settings.button2_link | default: '#' }}" class="artemano-btn artemano-btn--{% if image != blank %}ghost-light{% else %}outline{% endif %}">
+            <a href="{% render 'artemano-url', url: section.settings.button2_link %}" class="artemano-btn artemano-btn--{% if image != blank %}ghost-light{% else %}outline{% endif %}">
               {{- section.settings.button2_label -}}
             </a>
           {%- endif -%}

@@ -15,7 +15,7 @@
       "type": "artemano-utility-bar",
       "settings": {
         "menu": "artemano-utilitaire",
-        "announcement": "Ramassage gratuit à notre magasin de Longueuil",
+        "announcement": "Free pickup at our Longueuil store",
         "announcement_link": "",
         "background_color": "#4A3426",
         "text_color": "#F7F3EC"

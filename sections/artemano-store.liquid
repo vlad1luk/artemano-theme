@@ -29,7 +29,7 @@
 
     <div class="artemano-store__actions">
       {%- if section.settings.visit_label != blank -%}
-        <a href="{{ section.settings.visit_link | default: '#' }}" class="artemano-btn artemano-btn--dark">{{ section.settings.visit_label }}</a>
+        <a href="{% render 'artemano-url', url: section.settings.visit_link %}" class="artemano-btn artemano-btn--dark">{{ section.settings.visit_label }}</a>
       {%- endif -%}
       <a href="{{ directions_url }}" class="artemano-btn artemano-btn--outline" target="_blank" rel="noopener">
         {{- section.settings.directions_label -}}

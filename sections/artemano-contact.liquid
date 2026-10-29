@@ -36,13 +36,13 @@
       {%- endif -%}
       {%- if email != blank -%}
         <div>
-          <dt>Courriel</dt>
+          <dt>{{ 'artemano.contact.email' | t }}</dt>
           <dd><a href="mailto:{{ email }}">{{ email }}</a></dd>
         </div>
       {%- endif -%}
       {%- if section.settings.address != blank -%}
         <div>
-          <dt>Magasin</dt>
+          <dt>{{ 'artemano.contact.store' | t }}</dt>
           <dd>
             {{ section.settings.address }}
             <br>
@@ -52,14 +52,14 @@
               target="_blank"
               rel="noopener"
             >
-              {{- 'Itinéraire' -}}
+              {{- 'artemano.directions' | t -}}
             </a>
           </dd>
         </div>
       {%- endif -%}
       {%- if section.settings.hours != blank -%}
         <div>
-          <dt>Heures</dt>
+          <dt>{{ 'artemano.contact.hours' | t }}</dt>
           <dd class="artemano-rte">{{ section.settings.hours }}</dd>
         </div>
       {%- endif -%}
@@ -78,13 +78,13 @@
         </p>
       {%- elsif form.errors -%}
         <div class="artemano-contact__notice is-error" role="alert" tabindex="-1" autofocus>
-          <p>Le message n'a pas pu être envoyé. Vérifiez les champs suivants :</p>
+          <p>{{ 'artemano.contact.error_intro' | t }}</p>
           <ul>
             {%- for field in form.errors -%}
               <li>
                 {%- case field -%}
-                  {%- when 'email' -%}Courriel : adresse invalide
-                  {%- when 'body' -%}Message : à remplir
+                  {%- when 'email' -%}{{ 'artemano.contact.error_email' | t }}
+                  {%- when 'body' -%}{{ 'artemano.contact.error_body' | t }}
                   {%- when 'form' -%}{{ form.errors.messages[field] }}
                   {%- else -%}{{ field | capitalize }} : {{ form.errors.messages[field] }}
                 {%- endcase -%}
@@ -96,17 +96,17 @@
 
       <div class="artemano-contact__row">
         <label class="artemano-field">
-          <span>Nom</span>
+          <span>{{ 'artemano.contact.name' | t }}</span>
           <input type="text" name="contact[name]" autocomplete="name" value="{{ form.name }}">
         </label>
         <label class="artemano-field">
-          <span>Téléphone <em>(facultatif)</em></span>
+          <span>{{ 'artemano.contact.phone' | t }} <em>{{ 'artemano.contact.optional' | t }}</em></span>
           <input type="tel" name="contact[phone]" autocomplete="tel" value="{{ form.phone }}">
         </label>
       </div>
 
       <label class="artemano-field">
-        <span>Courriel <em>*</em></span>
+        <span>{{ 'artemano.contact.email' | t }} <em>*</em></span>
         <input
           type="email"
           name="contact[email]"
@@ -121,7 +121,7 @@
 
       {%- if subjects.size > 0 and section.settings.subjects != blank -%}
         <label class="artemano-field">
-          <span>Sujet</span>
+          <span>{{ 'artemano.contact.subject' | t }}</span>
           <select name="contact[sujet]">
             {%- for subject in subjects -%}
               {%- assign subject = subject | strip -%}
@@ -134,7 +134,7 @@
       {%- endif -%}
 
       <label class="artemano-field">
-        <span>Message <em>*</em></span>
+        <span>{{ 'artemano.contact.message' | t }} <em>*</em></span>
         <textarea
           name="contact[body]"
           rows="6"

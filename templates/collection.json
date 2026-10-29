@@ -13,8 +13,8 @@
       "type": "artemano-collection-header",
       "settings": {
         "menu": "artemano-principal",
-        "primary_label": "Voir les produits",
-        "secondary_label": "Nous joindre",
+        "primary_label": "See the products",
+        "secondary_label": "Contact us",
         "secondary_link": "shopify://pages/contact",
         "fallback_image": "shopify://shop_images/Table_03_-_Reduced.jpg"
       },
@@ -169,16 +169,16 @@
     "guide": {
       "type": "artemano-collection-guide",
       "settings": {
-        "eyebrow": "Bon à savoir",
-        "title": "Nos meubles en bois massif",
-        "text": "<p>Des meubles en bois massif sélectionnés par Artemano depuis 2002, à voir dans notre magasin de Longueuil.</p>"
+        "eyebrow": "Good to know",
+        "title": "Our solid wood furniture",
+        "text": "<p>Solid wood furniture selected by Artemano since 2002, on display at our Longueuil store.</p>"
       },
       "blocks": {
         "e1": {
           "type": "essence",
           "settings": {
             "name": "Suar",
-            "text": "Veinures marquées, tons chauds",
+            "text": "Bold grain, warm tones",
             "collection": "suar",
             "color": "#7A5236"
           }
@@ -186,8 +186,8 @@
         "e2": {
           "type": "essence",
           "settings": {
-            "name": "Palissandre",
-            "text": "Bois dense aux veines contrastées",
+            "name": "Rosewood",
+            "text": "Dense wood with contrasting grain",
             "collection": "rosewood",
             "color": "#5B3A28"
           }
@@ -195,8 +195,8 @@
         "e3": {
           "type": "essence",
           "settings": {
-            "name": "Manguier",
-            "text": "Grain fin, nuances variées",
+            "name": "Mango wood",
+            "text": "Fine grain, varied shades",
             "collection": "mango",
             "color": "#8C6A48"
           }
@@ -204,29 +204,29 @@
         "f1": {
           "type": "faq",
           "settings": {
-            "question": "Comment entretenir un meuble en bois massif ?",
-            "answer": "<p>Époussetez avec un chiffon sec ou légèrement humide, utilisez des sous-verres et des napperons, et évitez de placer le meuble près d'une source de chaleur ou en plein soleil.</p>"
+            "question": "How do I care for solid wood furniture?",
+            "answer": "<p>Dust with a dry or slightly damp cloth, use coasters and placemats, and keep the piece away from heat sources and direct sunlight.</p>"
           }
         },
         "f2": {
           "type": "faq",
           "settings": {
-            "question": "Comment se passe la livraison ?",
-            "answer": "<p>Le ramassage est gratuit à notre entrepôt de Longueuil. Pour la livraison à domicile, les options et les tarifs s'affichent au moment du paiement.</p>"
+            "question": "How does delivery work?",
+            "answer": "<p>Pickup is free at our Longueuil warehouse. For home delivery, options and rates are shown at checkout.</p>"
           }
         },
         "f3": {
           "type": "faq",
           "settings": {
-            "question": "Puis-je voir un meuble avant de l'acheter ?",
-            "answer": "<p>Oui, venez nous voir au 1138, boul. Marie-Victorin à Longueuil, du mardi au dimanche de 10 h à 16 h. Appelez-nous au 450 321-0565 pour vérifier qu'une pièce est en salle de montre.</p>"
+            "question": "Can I see a piece before buying it?",
+            "answer": "<p>Yes, visit us at 1138 Marie-Victorin Blvd. in Longueuil, Tuesday to Sunday from 10 a.m. to 4 p.m. Call us at 450 321-0565 to check that a piece is in the showroom.</p>"
           }
         },
         "f4": {
           "type": "faq",
           "settings": {
-            "question": "Chaque pièce est-elle identique à la photo ?",
-            "answer": "<p>Le bois massif est un matériau naturel : la veinure, les nœuds et la teinte varient d'une pièce à l'autre. C'est ce qui rend chaque meuble unique.</p>"
+            "question": "Will my piece look exactly like the photo?",
+            "answer": "<p>Solid wood is a natural material: the grain, knots and colour vary from one piece to the next. That's what makes each piece of furniture unique.</p>"
           }
         }
       },

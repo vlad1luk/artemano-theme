@@ -2,7 +2,7 @@
   Tuile éditoriale insérée dans la grille des collections (réglages du thème, section « Artemano »).
 {%- enddoc -%}
 <a
-  href="{{ settings.artemano_tile_link | default: '#essences' }}"
+  href="{% render 'artemano-url', url: settings.artemano_tile_link, fallback: '#essences' %}"
   class="artemano-grid-tile{% if settings.artemano_tile_image != blank %} has-image{% endif %}"
 >
   {%- if settings.artemano_tile_image != blank -%}

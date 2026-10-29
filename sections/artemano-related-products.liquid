@@ -31,7 +31,7 @@
   <div class="artemano-products artemano-related artemano-container">
     <header class="artemano-products__header">
       <h2 class="artemano-section-title">{{ section.settings.title }}</h2>
-      <a href="{{ best.url }}" class="artemano-link-caps">Tout voir : {{ best.title }}</a>
+      <a href="{{ best.url }}" class="artemano-link-caps">{{ 'artemano.view_all_named' | t: title: best.title }}</a>
     </header>
     <div class="artemano-products__grid">
       {%- assign shown = 0 -%}

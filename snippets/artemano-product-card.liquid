@@ -24,15 +24,15 @@
   if essence == blank
     assign tags = product.tags | join: ' ' | downcase
     if tags contains 'suar'
-      assign essence = 'Suar massif'
+      assign essence = 'artemano.essence.suar' | t
     elsif tags contains 'rosewood' or tags contains 'palissandre'
-      assign essence = 'Palissandre massif'
+      assign essence = 'artemano.essence.palissandre' | t
     elsif tags contains 'mango' or tags contains 'manguier'
-      assign essence = 'Manguier massif'
+      assign essence = 'artemano.essence.manguier' | t
     elsif tags contains 'acacia'
-      assign essence = 'Acacia massif'
+      assign essence = 'artemano.essence.acacia' | t
     elsif tags contains 'teak' or tags contains 'teck'
-      assign essence = 'Teck massif'
+      assign essence = 'artemano.essence.teck' | t
     endif
   endif
 -%}
@@ -67,7 +67,7 @@
     {%- endif -%}
 
     {%- unless product.available -%}
-      <span class="artemano-card__badge">Bientôt disponible</span>
+      <span class="artemano-card__badge">{{ 'artemano.coming_soon' | t }}</span>
     {%- endunless -%}
   </div>
 
@@ -116,7 +116,8 @@
   {%- endif -%}
   <p class="artemano-card__price">
     {%- if product.price_varies -%}
-      À partir de {{ product.price_min | money_without_trailing_zeros | strip_html }}
+      {%- assign price_min = product.price_min | money_without_trailing_zeros | strip_html -%}
+      {{ 'artemano.price_from' | t: price: price_min }}
     {%- else -%}
       {{ product.price | money_without_trailing_zeros | strip_html }}
     {%- endif -%}

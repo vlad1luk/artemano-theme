@@ -350,5 +350,74 @@
       "success_moderated": "Commentaire publié, en attente de modération",
       "success": "Commentaire publié"
     }
+  },
+  "artemano": {
+    "breadcrumb": "Fil d'Ariane",
+    "home": "Accueil",
+    "products_count": {
+      "one": "{{ count }} produit",
+      "other": "{{ count }} produits"
+    },
+    "previous": "Précédent",
+    "next": "Suivant",
+    "view_all": "Tout voir",
+    "view_all_named": "Tout voir : {{ title }}",
+    "about_named": "À propos : {{ title }}",
+    "stars_label": "{{ stars }} sur 5",
+    "product_name_placeholder": "Nom du produit",
+    "coming_soon": "Bientôt disponible",
+    "price_from": "À partir de {{ price }}",
+    "directions": "Itinéraire",
+    "call_store": "Appeler le magasin",
+    "essence": {
+      "suar": "Suar massif",
+      "palissandre": "Palissandre massif",
+      "manguier": "Manguier massif",
+      "acacia": "Acacia massif",
+      "teck": "Teck massif"
+    },
+    "specs": {
+      "essence": "Essence",
+      "dimensions": "Dimensions",
+      "weight": "Poids",
+      "finish": "Fini",
+      "seats": "Places",
+      "care": "Entretien",
+      "sku": "Référence"
+    },
+    "contact": {
+      "email": "Courriel",
+      "store": "Magasin",
+      "hours": "Heures",
+      "name": "Nom",
+      "phone": "Téléphone",
+      "optional": "(facultatif)",
+      "subject": "Sujet",
+      "message": "Message",
+      "error_intro": "Le message n'a pas pu être envoyé. Vérifiez les champs suivants :",
+      "error_email": "Courriel : adresse invalide",
+      "error_body": "Message : à remplir"
+    },
+    "rdv": {
+      "label": "Prendre rendez-vous en magasin",
+      "hint": "Envie de voir la pièce en vrai ? Prenez rendez-vous, c'est gratuit et sans engagement.",
+      "eyebrow": "Magasin de Longueuil",
+      "title": "Voir ce meuble en personne",
+      "intro": "Choisissez un moment : on prépare la pièce et on vous appelle pour confirmer le rendez-vous.",
+      "piece_note": "Pièce que vous souhaitez voir",
+      "date": "Jour souhaité",
+      "moment": "Moment",
+      "morning": "Avant-midi (10 h à 13 h)",
+      "afternoon": "Après-midi (13 h à 16 h)",
+      "details": "Une précision ?",
+      "details_placeholder": "Dimensions, couleur, nombre de chaises…",
+      "submit": "Demander le rendez-vous",
+      "footnote": "Mardi au dimanche, 10 h à 16 h · 1138, boul. Marie-Victorin, Longueuil",
+      "success_title": "Demande envoyée.",
+      "success_text": "On vous appelle pour confirmer le jour et l'heure. À bientôt au magasin !",
+      "error": "La demande n'a pas pu être envoyée. Vérifiez le courriel et les champs obligatoires.",
+      "closed_monday": "Le magasin est fermé le lundi. Choisissez un autre jour.",
+      "close": "Fermer"
+    }
   }
 }

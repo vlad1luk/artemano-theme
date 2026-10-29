@@ -108,12 +108,12 @@
         {%- if b1_label != blank or b2_label != blank -%}
           <div class="artemano-hero__actions">
             {%- if b1_label != blank -%}
-              <a href="{{ b1_link | default: routes.all_products_collection_url }}" class="artemano-btn artemano-btn--light">
+              <a href="{% render 'artemano-url', url: b1_link, fallback: routes.all_products_collection_url %}" class="artemano-btn artemano-btn--light">
                 {{- b1_label -}}
               </a>
             {%- endif -%}
             {%- if b2_label != blank -%}
-              <a href="{{ b2_link | default: '#' }}" class="artemano-btn artemano-btn--ghost-light">
+              <a href="{% render 'artemano-url', url: b2_link %}" class="artemano-btn artemano-btn--ghost-light">
                 {{- b2_label -}}
               </a>
             {%- endif -%}

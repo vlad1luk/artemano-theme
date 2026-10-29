@@ -10,16 +10,9 @@
   assign essence = product.metafields.custom.essence.value
   if essence == blank
     case essence_key
-      when 'suar'
-        assign essence = 'Suar massif'
-      when 'palissandre'
-        assign essence = 'Palissandre massif'
-      when 'manguier'
-        assign essence = 'Manguier massif'
-      when 'acacia'
-        assign essence = 'Acacia massif'
-      when 'teck'
-        assign essence = 'Teck massif'
+      when 'suar', 'palissandre', 'manguier', 'acacia', 'teck'
+        assign essence_t = 'artemano.essence.' | append: essence_key
+        assign essence = essence_t | t
     endcase
   endif
 
@@ -50,13 +43,13 @@
   <div class="artemano-specs__table">
     <h2 class="artemano-specs__title">{{ section.settings.title }}</h2>
     <dl>
-      {%- if essence != blank -%}<div><dt>Essence</dt><dd>{{ essence }}</dd></div>{%- endif -%}
-      {%- if dimensions != blank -%}<div><dt>Dimensions</dt><dd>{{ dimensions }}</dd></div>{%- endif -%}
-      {%- if product.metafields.custom.poids != blank -%}<div><dt>Poids</dt><dd>{{ product.metafields.custom.poids.value }}</dd></div>{%- endif -%}
-      {%- if finish != blank -%}<div><dt>Fini</dt><dd>{{ finish }}</dd></div>{%- endif -%}
-      {%- if product.metafields.custom.places != blank -%}<div><dt>Places</dt><dd>{{ product.metafields.custom.places.value }}</dd></div>{%- endif -%}
-      {%- if product.metafields.custom.entretien != blank -%}<div><dt>Entretien</dt><dd>{{ product.metafields.custom.entretien.value }}</dd></div>{%- endif -%}
-      {%- if product.selected_or_first_available_variant.sku != blank -%}<div><dt>Référence</dt><dd>{{ product.selected_or_first_available_variant.sku }}</dd></div>{%- endif -%}
+      {%- if essence != blank -%}<div><dt>{{ 'artemano.specs.essence' | t }}</dt><dd>{{ essence }}</dd></div>{%- endif -%}
+      {%- if dimensions != blank -%}<div><dt>{{ 'artemano.specs.dimensions' | t }}</dt><dd>{{ dimensions }}</dd></div>{%- endif -%}
+      {%- if product.metafields.custom.poids != blank -%}<div><dt>{{ 'artemano.specs.weight' | t }}</dt><dd>{{ product.metafields.custom.poids.value }}</dd></div>{%- endif -%}
+      {%- if finish != blank -%}<div><dt>{{ 'artemano.specs.finish' | t }}</dt><dd>{{ finish }}</dd></div>{%- endif -%}
+      {%- if product.metafields.custom.places != blank -%}<div><dt>{{ 'artemano.specs.seats' | t }}</dt><dd>{{ product.metafields.custom.places.value }}</dd></div>{%- endif -%}
+      {%- if product.metafields.custom.entretien != blank -%}<div><dt>{{ 'artemano.specs.care' | t }}</dt><dd>{{ product.metafields.custom.entretien.value }}</dd></div>{%- endif -%}
+      {%- if product.selected_or_first_available_variant.sku != blank -%}<div><dt>{{ 'artemano.specs.sku' | t }}</dt><dd>{{ product.selected_or_first_available_variant.sku }}</dd></div>{%- endif -%}
     </dl>
   </div>
 
@@ -77,8 +70,8 @@
       ></iframe>
     </div>
     <div class="artemano-specs__store-actions">
-      <a class="artemano-btn artemano-btn--dark" href="https://www.google.com/maps/dir/?api=1&destination={{ map_query }}" target="_blank" rel="noopener">Itinéraire</a>
-      <a class="artemano-btn artemano-btn--outline" href="tel:{{ section.settings.phone | remove: ' ' | remove: '-' | remove: '.' }}">Appeler le magasin</a>
+      <a class="artemano-btn artemano-btn--dark" href="https://www.google.com/maps/dir/?api=1&destination={{ map_query }}" target="_blank" rel="noopener">{{ 'artemano.directions' | t }}</a>
+      <a class="artemano-btn artemano-btn--outline" href="tel:{{ section.settings.phone | remove: ' ' | remove: '-' | remove: '.' }}">{{ 'artemano.call_store' | t }}</a>
     </div>
   </div>
 </div>

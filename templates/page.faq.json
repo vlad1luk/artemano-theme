@@ -12,67 +12,67 @@
     "hero": {
       "type": "artemano-page-hero",
       "settings": {
-        "eyebrow": "Bon à savoir",
-        "title": "Questions fréquentes",
-        "subtitle": "<p>Livraison, ramassage, entretien du bois : les réponses aux questions qu'on nous pose le plus souvent.</p>",
+        "eyebrow": "Good to know",
+        "title": "Frequently asked questions",
+        "subtitle": "<p>Delivery, pickup, wood care: answers to the questions we hear most often.</p>",
         "height": 32
       }
     },
     "faq": {
       "type": "artemano-collection-guide",
       "settings": {
-        "eyebrow": "Une autre question ?",
-        "title": "On est là pour vous conseiller",
-        "text": "<p>Appelez-nous au <a href=\"tel:+14503210565\">450 321-0565</a> ou écrivez-nous. Vous pouvez aussi passer au magasin de Longueuil pour voir les meubles en personne.</p>"
+        "eyebrow": "Another question?",
+        "title": "We're here to help",
+        "text": "<p>Call us at <a href=\"tel:+14503210565\">450 321-0565</a> or write to us. You can also drop by the Longueuil store to see the furniture in person.</p>"
       },
       "blocks": {
         "q1": {
           "type": "faq",
           "settings": {
-            "question": "Livrez-vous chez moi ?",
-            "answer": "<p>Oui. Les frais de livraison dépendent de la distance depuis notre magasin de Longueuil. Le montant exact s'affiche au moment de payer, et vous pouvez nous appeler pour une estimation.</p>"
+            "question": "Do you deliver to my home?",
+            "answer": "<p>Yes. Delivery fees depend on the distance from our Longueuil store. The exact amount is shown at checkout, and you can call us for an estimate.</p>"
           }
         },
         "q2": {
           "type": "faq",
           "settings": {
-            "question": "Puis-je ramasser ma commande au magasin ?",
-            "answer": "<p>Oui, choisissez le ramassage au moment de payer. Nous vous avisons dès que la commande est prête au 1138, boul. Marie-Victorin, à Longueuil.</p>"
+            "question": "Can I pick up my order at the store?",
+            "answer": "<p>Yes, choose pickup at checkout. We'll let you know as soon as your order is ready at 1138 Marie-Victorin Blvd. in Longueuil.</p>"
           }
         },
         "q3": {
           "type": "faq",
           "settings": {
-            "question": "Les meubles sont-ils vraiment en bois massif ?",
-            "answer": "<p>Oui. Le bois massif bouge un peu avec l'humidité et chaque pièce a son propre grain : ce sont des signes de vrai bois, pas des défauts.</p>"
+            "question": "Is the furniture really solid wood?",
+            "answer": "<p>Yes. Solid wood moves a little with humidity and each piece has its own grain: these are signs of real wood, not defects.</p>"
           }
         },
         "q4": {
           "type": "faq",
           "settings": {
-            "question": "Comment entretenir un meuble en bois massif ?",
-            "answer": "<p>Essuyez avec un linge doux et sec, évitez les produits abrasifs et la chaleur directe, et utilisez des sous-verres. Chaque fiche produit précise l'entretien propre à son fini.</p>"
+            "question": "How do I care for solid wood furniture?",
+            "answer": "<p>Wipe with a soft, dry cloth, avoid abrasive products and direct heat, and use coasters. Each product page explains the care specific to its finish.</p>"
           }
         },
         "q5": {
           "type": "faq",
           "settings": {
-            "question": "Y a-t-il une garantie ?",
-            "answer": "<p>Nos meubles sont garantis un an contre les défauts de fabrication.</p>"
+            "question": "Is there a warranty?",
+            "answer": "<p>Our furniture is guaranteed for one year against manufacturing defects.</p>"
           }
         },
         "q6": {
           "type": "faq",
           "settings": {
-            "question": "Puis-je retourner un meuble ?",
-            "answer": "<p>Consultez notre <a href=\"/pages/politique-de-retour\">politique de retour</a> pour les délais et les conditions, ou appelez-nous avant de commander si vous hésitez.</p>"
+            "question": "Can I return a piece?",
+            "answer": "<p>See our <a href=\"/pages/politique-de-retour\">return policy</a> for timelines and conditions, or call us before ordering if you're unsure.</p>"
           }
         },
         "q7": {
           "type": "faq",
           "settings": {
-            "question": "Quelles sont vos heures d'ouverture ?",
-            "answer": "<p>Du mardi au dimanche, de 10 h à 16 h. Le magasin est fermé le lundi.</p>"
+            "question": "What are your opening hours?",
+            "answer": "<p>Tuesday to Sunday, 10 a.m. to 4 p.m. The store is closed on Mondays.</p>"
           }
         }
       },

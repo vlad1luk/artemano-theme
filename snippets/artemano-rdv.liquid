@@ -26,7 +26,8 @@
     class="button button-secondary artemano-rdv__open"
     data-artemano-rdv-open="ArtemanoRdv-{{ product.id }}"
   >
-    {{- settings.artemano_rdv_label | default: 'Prendre rendez-vous en magasin' -}}
+    {%- assign rdv_label = 'artemano.rdv.label' | t -%}
+    {{- settings.artemano_rdv_label | default: rdv_label -}}
   </button>
 {%- elsif rdv_ok and part == 'dialog' -%}
   {%- liquid
@@ -38,8 +39,9 @@
       assign product_label = product.title | append: ' — ' | append: variant.title
     endunless
   -%}
+  {%- assign rdv_hint = 'artemano.rdv.hint' | t -%}
   <p class="artemano-rdv__hint">
-    {{- settings.artemano_rdv_hint -}}
+    {{- settings.artemano_rdv_hint | default: rdv_hint -}}
   </p>
 
   <dialog
@@ -47,6 +49,7 @@
     class="artemano-rdv"
     aria-labelledby="{{ dialog_id }}-title"
     data-product-title="{{ product.title | escape }}"
+    data-closed-monday="{{ 'artemano.rdv.closed_monday' | t | escape }}"
   >
     <script type="application/json" data-rdv-variants>
       {
@@ -57,25 +60,25 @@
     </script>
 
     <div class="artemano-rdv__panel">
-      <button type="button" class="artemano-rdv__close" data-artemano-rdv-close aria-label="Fermer">
+      <button type="button" class="artemano-rdv__close" data-artemano-rdv-close aria-label="{{ 'artemano.rdv.close' | t }}">
         <span aria-hidden="true">×</span>
       </button>
 
-      <p class="artemano-eyebrow">Magasin de Longueuil</p>
-      <h2 class="artemano-rdv__title" id="{{ dialog_id }}-title">Voir ce meuble en personne</h2>
+      <p class="artemano-eyebrow">{{ 'artemano.rdv.eyebrow' | t }}</p>
+      <h2 class="artemano-rdv__title" id="{{ dialog_id }}-title">{{ 'artemano.rdv.title' | t }}</h2>
       <p class="artemano-rdv__intro">
-        Choisissez un moment : on prépare la pièce et on vous appelle pour confirmer le rendez-vous.
+        {{ 'artemano.rdv.intro' | t }}
       </p>
 
       {%- form 'contact', id: form_id, class: 'artemano-rdv__form' -%}
         {%- if form.posted_successfully? -%}
           <div class="artemano-contact__notice is-success" role="status" data-rdv-posted>
-            <p><strong>Demande envoyée.</strong> On vous appelle pour confirmer le jour et l'heure. À bientôt au magasin !</p>
+            <p><strong>{{ 'artemano.rdv.success_title' | t }}</strong> {{ 'artemano.rdv.success_text' | t }}</p>
           </div>
         {%- else -%}
           {%- if form.errors -%}
             <div class="artemano-contact__notice is-error" role="alert" data-rdv-posted>
-              <p>La demande n'a pas pu être envoyée. Vérifiez le courriel et les champs obligatoires.</p>
+              <p>{{ 'artemano.rdv.error' | t }}</p>
             </div>
           {%- endif -%}
 
@@ -93,23 +96,23 @@
             {%- endif -%}
             <span>
               <span class="artemano-rdv__product-name" data-rdv-product-label>{{ product_label }}</span>
-              <span class="artemano-rdv__product-note">Pièce que vous souhaitez voir</span>
+              <span class="artemano-rdv__product-note">{{ 'artemano.rdv.piece_note' | t }}</span>
             </span>
           </div>
 
           <div class="artemano-contact__row">
             <label class="artemano-field">
-              <span>Nom <em>*</em></span>
+              <span>{{ 'artemano.contact.name' | t }} <em>*</em></span>
               <input type="text" name="contact[name]" autocomplete="name" required>
             </label>
             <label class="artemano-field">
-              <span>Téléphone <em>*</em></span>
+              <span>{{ 'artemano.contact.phone' | t }} <em>*</em></span>
               <input type="tel" name="contact[phone]" autocomplete="tel" required>
             </label>
           </div>
 
           <label class="artemano-field">
-            <span>Courriel <em>*</em></span>
+            <span>{{ 'artemano.contact.email' | t }} <em>*</em></span>
             <input
               type="email"
               name="contact[email]"
@@ -123,31 +126,31 @@
 
           <div class="artemano-contact__row">
             <label class="artemano-field">
-              <span>Jour souhaité <em>*</em></span>
+              <span>{{ 'artemano.rdv.date' | t }} <em>*</em></span>
               <input type="date" name="contact[Jour souhaité]" required data-rdv-date>
             </label>
             <label class="artemano-field">
-              <span>Moment</span>
+              <span>{{ 'artemano.rdv.moment' | t }}</span>
               <select name="contact[Moment]">
-                <option value="Avant-midi (10 h à 13 h)">Avant-midi (10 h à 13 h)</option>
-                <option value="Après-midi (13 h à 16 h)">Après-midi (13 h à 16 h)</option>
+                <option value="Avant-midi (10 h à 13 h)">{{ 'artemano.rdv.morning' | t }}</option>
+                <option value="Après-midi (13 h à 16 h)">{{ 'artemano.rdv.afternoon' | t }}</option>
               </select>
             </label>
           </div>
 
           <label class="artemano-field">
-            <span>Une précision ? <em>(facultatif)</em></span>
+            <span>{{ 'artemano.rdv.details' | t }} <em>{{ 'artemano.contact.optional' | t }}</em></span>
             <textarea
               name="contact[body]"
               rows="3"
-              placeholder="Dimensions, couleur, nombre de chaises…"
+              placeholder="{{ 'artemano.rdv.details_placeholder' | t | escape }}"
             ></textarea>
           </label>
 
           <div class="artemano-rdv__actions">
-            <button type="submit" class="artemano-btn artemano-btn--dark">Demander le rendez-vous</button>
+            <button type="submit" class="artemano-btn artemano-btn--dark">{{ 'artemano.rdv.submit' | t }}</button>
             <p class="artemano-rdv__small">
-              Mardi au dimanche, 10 h à 16 h · 1138, boul. Marie-Victorin, Longueuil
+              {{ 'artemano.rdv.footnote' | t }}
             </p>
           </div>
         {%- endif -%}
@@ -192,7 +195,8 @@
         var date = event.target.closest('[data-rdv-date]');
         if (!date) return;
         var picked = date.value ? new Date(date.value + 'T12:00:00') : null;
-        date.setCustomValidity(picked && picked.getDay() === 1 ? 'Le magasin est fermé le lundi. Choisissez un autre jour.' : '');
+        var dlg = date.closest('dialog');
+        date.setCustomValidity(picked && picked.getDay() === 1 ? (dlg && dlg.dataset.closedMonday) || '' : '');
       });
 
       document.addEventListener('click', function (event) {

@@ -15,25 +15,25 @@
       "type": "artemano-footer",
       "settings": {
         "show_newsletter": true,
-        "newsletter_title": "10 % sur votre première commande",
-        "newsletter_text": "Inscrivez-vous à l'infolettre : votre code arrive par courriel. Inspirations et nouveautés une fois par mois, désabonnement en un clic.",
-        "email_placeholder": "Votre courriel",
-        "subscribe_label": "S'abonner",
-        "success_message": "Merci ! Votre code de bienvenue est en route vers votre boîte courriel.",
-        "brand_text": "Meubles modernes en bois massif inspirés par la nature, depuis 2002."
+        "newsletter_title": "10% off your first order",
+        "newsletter_text": "Sign up for our newsletter: your code arrives by email. Inspiration and new arrivals once a month, unsubscribe in one click.",
+        "email_placeholder": "Your email",
+        "subscribe_label": "Subscribe",
+        "success_message": "Thank you! Your welcome code is on its way to your inbox.",
+        "brand_text": "Modern solid wood furniture inspired by nature, since 2002."
       },
       "blocks": {
         "c1": {
           "type": "menu",
           "settings": {
-            "title": "Magasiner",
+            "title": "Shop",
             "menu": "artemano-pied-magasiner"
           }
         },
         "c2": {
           "type": "menu",
           "settings": {
-            "title": "Aide",
+            "title": "Help",
             "menu": "artemano-pied-aide"
           }
         },

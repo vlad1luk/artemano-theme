@@ -65,8 +65,8 @@
   {%- endif -%}
 
   <div class="artemano-hero-coll__inner artemano-container">
-    <nav class="artemano-hero-coll__crumbs" aria-label="Fil d'Ariane">
-      <a href="{{ routes.root_url }}">Accueil</a>
+    <nav class="artemano-hero-coll__crumbs" aria-label="{{ 'artemano.breadcrumb' | t }}">
+      <a href="{{ routes.root_url }}">{{ 'artemano.home' | t }}</a>
       {%- if room and is_room == false -%}
         <span aria-hidden="true">/</span>
         <a href="{{ room.url }}">{{ room.title }}</a>
@@ -79,7 +79,7 @@
       <div class="artemano-hero-coll__text">
         <p class="artemano-eyebrow artemano-hero-coll__eyebrow">
           {%- if room and is_room == false -%}{{ room.title }} · {% endif -%}
-          {{ count }} {% if count > 1 %}produits{% else %}produit{% endif %}
+          {{ 'artemano.products_count' | t: count: count }}
         </p>
         <h1 class="artemano-hero-coll__title">{{ collection.title }}</h1>
         {%- if collection.description != blank -%}
@@ -88,7 +88,7 @@
         <div class="artemano-hero-coll__actions">
           <a href="#produits" class="artemano-btn artemano-btn--light">{{ section.settings.primary_label }}</a>
           {%- if section.settings.secondary_label != blank -%}
-            <a href="{{ section.settings.secondary_link | default: '#' }}" class="artemano-btn artemano-btn--ghost-light">
+            <a href="{% render 'artemano-url', url: section.settings.secondary_link %}" class="artemano-btn artemano-btn--ghost-light">
               {{- section.settings.secondary_label -}}
             </a>
           {%- endif -%}
@@ -96,7 +96,11 @@
       </div>
 
       {%- if room and room.links.size > 0 -%}
-        <ul class="artemano-hero-coll__subcats list-unstyled" role="list">
+        <div class="artemano-hero-coll__subnav" data-subcats>
+          <button type="button" class="artemano-hero-coll__arrow artemano-hero-coll__arrow--prev" data-subcats-prev aria-label="{{ 'artemano.previous' | t }}" hidden>
+            <span aria-hidden="true">‹</span>
+          </button>
+        <ul class="artemano-hero-coll__subcats list-unstyled" role="list" data-subcats-track>
           {%- for child in room.links -%}
             {%- assign sub = child.object -%}
             {%- assign sub_image = sub.image | default: sub.products.first.featured_image -%}
@@ -122,11 +126,63 @@
             </li>
           {%- endfor -%}
         </ul>
+          <button type="button" class="artemano-hero-coll__arrow artemano-hero-coll__arrow--next" data-subcats-next aria-label="{{ 'artemano.next' | t }}" hidden>
+            <span aria-hidden="true">›</span>
+          </button>
+        </div>
       {%- endif -%}
     </div>
   </div>
 </div>
 <span id="produits"></span>
+
+<script>
+  (function () {
+    // Vignettes des sous-catégories : défilement horizontal (molette, glisser, flèches)
+    document.querySelectorAll('[data-subcats]').forEach(function (wrap) {
+      if (wrap.dataset.ready) return;
+      wrap.dataset.ready = '1';
+      var track = wrap.querySelector('[data-subcats-track]');
+      var prev = wrap.querySelector('[data-subcats-prev]');
+      var next = wrap.querySelector('[data-subcats-next]');
+      if (!track) return;
+
+      function update() {
+        var max = track.scrollWidth - track.clientWidth;
+        var overflow = max > 4;
+        wrap.classList.toggle('is-overflowing', overflow);
+        prev.hidden = !overflow || track.scrollLeft <= 4;
+        next.hidden = !overflow || track.scrollLeft >= max - 4;
+        wrap.classList.toggle('at-start', track.scrollLeft <= 4);
+        wrap.classList.toggle('at-end', track.scrollLeft >= max - 4);
+      }
+      function step(dir) {
+        track.scrollBy({ left: dir * track.clientWidth * 0.8, behavior: 'smooth' });
+      }
+      prev.addEventListener('click', function () { step(-1); });
+      next.addEventListener('click', function () { step(1); });
+      track.addEventListener('scroll', update, { passive: true });
+      // Molette verticale → défilement horizontal, seulement s'il reste de la place
+      track.addEventListener('wheel', function (e) {
+        if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+        var max = track.scrollWidth - track.clientWidth;
+        if (max <= 0) return;
+        if ((e.deltaY < 0 && track.scrollLeft <= 0) || (e.deltaY > 0 && track.scrollLeft >= max)) return;
+        e.preventDefault();
+        track.scrollLeft += e.deltaY;
+      }, { passive: false });
+      window.addEventListener('resize', update);
+
+      // Montre la sous-catégorie courante si elle est hors champ
+      var current = track.querySelector('.is-current');
+      if (current) {
+        var left = current.parentElement.offsetLeft - track.offsetLeft;
+        if (left + current.offsetWidth > track.clientWidth) track.scrollLeft = left - track.clientWidth / 2 + current.offsetWidth / 2;
+      }
+      update();
+    });
+  })();
+</script>
 
 {% stylesheet %}
   .artemano-hero-coll {
@@ -192,6 +248,8 @@
   }
 
   .artemano-hero-coll__text {
+    flex: 0 1 34rem;
+    min-width: 18rem;
     max-width: 38rem;
   }
 
@@ -223,11 +281,81 @@
     margin-top: 2rem;
   }
 
+  .artemano-hero-coll__subnav {
+    position: relative;
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
   .artemano-hero-coll__subcats {
     display: flex;
     gap: 6px;
     margin: 0;
+    /* place pour l'effet de survol (translateY) sans couper le haut des vignettes */
+    padding: 8px 0 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: 0.25rem;
+    scrollbar-width: none;
+  }
+
+  .artemano-hero-coll__subcats::-webkit-scrollbar {
+    display: none;
+  }
+
+  .artemano-hero-coll__subcats > li {
+    flex: none;
+    scroll-snap-align: start;
+  }
+
+  /* Fondu sur le bord quand il reste des vignettes à voir */
+  .artemano-hero-coll__subnav.is-overflowing:not(.at-end) .artemano-hero-coll__subcats {
+    mask-image: linear-gradient(90deg, #000 calc(100% - 4rem), transparent);
+  }
+
+  .artemano-hero-coll__subnav.is-overflowing:not(.at-start):not(.at-end) .artemano-hero-coll__subcats {
+    mask-image: linear-gradient(90deg, transparent, #000 4rem, #000 calc(100% - 4rem), transparent);
+  }
+
+  .artemano-hero-coll__subnav.is-overflowing.at-end:not(.at-start) .artemano-hero-coll__subcats {
+    mask-image: linear-gradient(90deg, transparent, #000 4rem);
+  }
+
+  .artemano-hero-coll__arrow {
+    position: absolute;
+    top: calc(50% + 4px);
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
     padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--artemano-cream, #f7f3ec);
+    color: var(--artemano-ink, #2b2420);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgb(43 36 32 / 0.25);
+    transform: translateY(-50%);
+  }
+
+  .artemano-hero-coll__arrow[hidden] {
+    display: none;
+  }
+
+  .artemano-hero-coll__arrow--prev {
+    left: -0.75rem;
+  }
+
+  .artemano-hero-coll__arrow--next {
+    right: -0.75rem;
+  }
+
+  .artemano-hero-coll__arrow:hover {
+    background: #fff;
   }
 
   .artemano-hero-coll__subcat {
@@ -295,13 +423,13 @@
       padding-block: 1rem 2rem;
     }
 
-    .artemano-hero-coll__subcats {
-      overflow-x: auto;
-      scrollbar-width: none;
+    .artemano-hero-coll__arrow {
+      display: none;
     }
 
-    .artemano-hero-coll__subcats::-webkit-scrollbar {
-      display: none;
+    .artemano-hero-coll__text {
+      flex: none;
+      min-width: 0;
     }
 
     .artemano-hero-coll__subcat {

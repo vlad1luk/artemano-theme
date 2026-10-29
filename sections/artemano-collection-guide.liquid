@@ -34,7 +34,7 @@
     <div class="artemano-guide__about">
       <p class="artemano-eyebrow">{{ section.settings.eyebrow }}</p>
       <h2 class="artemano-guide__title">
-        {%- if collection -%}À propos : {{ collection.title | downcase }}{%- else -%}{{ section.settings.title }}{%- endif -%}
+        {%- if collection -%}{%- assign coll_title = collection.title | downcase -%}{{ 'artemano.about_named' | t: title: coll_title }}{%- else -%}{{ section.settings.title }}{%- endif -%}
       </h2>
       <div class="artemano-guide__text">
         {%- if collection.description != blank -%}

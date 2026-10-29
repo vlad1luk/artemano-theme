@@ -371,5 +371,74 @@
       "default_title": "Default Title",
       "sticky_add_to_cart": "Quick add to cart bar"
     }
+  },
+  "artemano": {
+    "breadcrumb": "Breadcrumb",
+    "home": "Home",
+    "products_count": {
+      "one": "{{ count }} product",
+      "other": "{{ count }} products"
+    },
+    "previous": "Previous",
+    "next": "Next",
+    "view_all": "View all",
+    "view_all_named": "View all: {{ title }}",
+    "about_named": "About: {{ title }}",
+    "stars_label": "{{ stars }} out of 5",
+    "product_name_placeholder": "Product name",
+    "coming_soon": "Coming soon",
+    "price_from": "From {{ price }}",
+    "directions": "Directions",
+    "call_store": "Call the store",
+    "essence": {
+      "suar": "Solid suar",
+      "palissandre": "Solid rosewood",
+      "manguier": "Solid mango wood",
+      "acacia": "Solid acacia",
+      "teck": "Solid teak"
+    },
+    "specs": {
+      "essence": "Wood",
+      "dimensions": "Dimensions",
+      "weight": "Weight",
+      "finish": "Finish",
+      "seats": "Seats",
+      "care": "Care",
+      "sku": "SKU"
+    },
+    "contact": {
+      "email": "Email",
+      "store": "Store",
+      "hours": "Hours",
+      "name": "Name",
+      "phone": "Phone",
+      "optional": "(optional)",
+      "subject": "Subject",
+      "message": "Message",
+      "error_intro": "Your message could not be sent. Please check the following fields:",
+      "error_email": "Email: invalid address",
+      "error_body": "Message: required"
+    },
+    "rdv": {
+      "label": "Book an in-store appointment",
+      "hint": "Want to see the piece for real? Book an appointment, it's free and with no obligation.",
+      "eyebrow": "Longueuil store",
+      "title": "See this piece in person",
+      "intro": "Pick a time: we'll get the piece ready and call you to confirm the appointment.",
+      "piece_note": "The piece you'd like to see",
+      "date": "Preferred day",
+      "moment": "Time of day",
+      "morning": "Morning (10 a.m. to 1 p.m.)",
+      "afternoon": "Afternoon (1 p.m. to 4 p.m.)",
+      "details": "Anything to add?",
+      "details_placeholder": "Dimensions, colour, number of chairs…",
+      "submit": "Request the appointment",
+      "footnote": "Tuesday to Sunday, 10 a.m. to 4 p.m. · 1138 Marie-Victorin Blvd., Longueuil",
+      "success_title": "Request sent.",
+      "success_text": "We'll call you to confirm the day and time. See you at the store!",
+      "error": "Your request could not be sent. Please check your email and the required fields.",
+      "closed_monday": "The store is closed on Mondays. Please choose another day.",
+      "close": "Close"
+    }
   }
 }

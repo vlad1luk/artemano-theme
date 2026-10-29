@@ -7,16 +7,9 @@
 {%- liquid
   assign key = key | strip
   case key
-    when 'suar'
-      assign label = 'Suar massif'
-    when 'palissandre'
-      assign label = 'Palissandre massif'
-    when 'manguier'
-      assign label = 'Manguier massif'
-    when 'acacia'
-      assign label = 'Acacia massif'
-    when 'teck'
-      assign label = 'Teck massif'
+    when 'suar', 'palissandre', 'manguier', 'acacia', 'teck'
+      assign label_key = 'artemano.essence.' | append: key
+      assign label = label_key | t
     else
       assign label = ''
   endcase

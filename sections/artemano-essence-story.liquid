@@ -36,7 +36,7 @@
       <h2 class="artemano-story__title">{{ story.settings.title }}</h2>
       <div class="artemano-story__text">{{ story.settings.text }}</div>
       {%- if story.settings.button_label != blank -%}
-        <a href="{{ story.settings.button_link | default: '#' }}" class="artemano-btn artemano-btn--ghost-light">
+        <a href="{% render 'artemano-url', url: story.settings.button_link %}" class="artemano-btn artemano-btn--ghost-light">
           {{- story.settings.button_label -}}
         </a>
       {%- endif -%}

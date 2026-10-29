@@ -28,7 +28,7 @@
       {%- endif -%}
 
       {%- if section.settings.button_label != blank -%}
-        <a href="{{ section.settings.button_link | default: '#' }}" class="artemano-btn artemano-btn--light">
+        <a href="{% render 'artemano-url', url: section.settings.button_link %}" class="artemano-btn artemano-btn--light">
           {{- section.settings.button_label -}}
         </a>
       {%- endif -%}
@@ -61,7 +61,7 @@
           <div class="artemano-signature__card-text">{{ section.settings.story_text }}</div>
         {%- endif -%}
         {%- if section.settings.story_link_label != blank -%}
-          <a href="{{ section.settings.story_link | default: '#' }}" class="artemano-text-link">
+          <a href="{% render 'artemano-url', url: section.settings.story_link %}" class="artemano-text-link">
             {{- section.settings.story_link_label -}}
           </a>
         {%- endif -%}

@@ -12,12 +12,12 @@
     "hero": {
       "type": "artemano-page-hero",
       "settings": {
-        "eyebrow": "Erreur 404",
-        "title": "Cette page est introuvable",
-        "subtitle": "<p>Le lien est peut-être erroné ou le produit n'est plus offert. Voici de quoi reprendre la visite.</p>",
-        "button_label": "Retour à l'accueil",
+        "eyebrow": "Error 404",
+        "title": "We can't find this page",
+        "subtitle": "<p>The link may be wrong, or the product is no longer available. Here's where to pick up your visit.</p>",
+        "button_label": "Back to home",
         "button_link": "/",
-        "button2_label": "Nous joindre",
+        "button2_label": "Contact us",
         "button2_link": "shopify://pages/contact",
         "height": 32
       }
@@ -25,37 +25,37 @@
     "rooms": {
       "type": "artemano-rooms",
       "settings": {
-        "title": "Pièce par pièce",
-        "subtitle": "Des meubles en bois massif pour chaque pièce de la maison.",
-        "cta_label": "Découvrir"
+        "title": "Room by room",
+        "subtitle": "Solid wood furniture for every room in the house.",
+        "cta_label": "Discover"
       },
       "blocks": {
         "r1": {
           "type": "room",
           "settings": {
             "collection": "living",
-            "title": "Salon"
+            "title": "Living room"
           }
         },
         "r2": {
           "type": "room",
           "settings": {
             "collection": "dining",
-            "title": "Salle à manger"
+            "title": "Dining room"
           }
         },
         "r3": {
           "type": "room",
           "settings": {
             "collection": "bedroom",
-            "title": "Chambre"
+            "title": "Bedroom"
           }
         },
         "r4": {
           "type": "room",
           "settings": {
             "collection": "accessory",
-            "title": "Accessoires"
+            "title": "Accessories"
           }
         }
       },

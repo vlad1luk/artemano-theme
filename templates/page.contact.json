@@ -12,15 +12,25 @@
     "hero": {
       "type": "artemano-page-hero",
       "settings": {
-        "eyebrow": "Service-conseil",
-        "title": "Nous joindre",
-        "subtitle": "<p>Une question sur un meuble, une livraison ou une visite ? Appelez-nous, écrivez-nous ou passez au magasin de Longueuil.</p>",
+        "eyebrow": "Expert advice",
+        "title": "Contact us",
+        "subtitle": "<p>A question about a piece, a delivery or a visit? Call us, write to us or drop by the Longueuil store.</p>",
         "height": 32
       }
     },
     "contact": {
       "type": "artemano-contact",
-      "settings": {}
+      "settings": {
+        "phone_label": "Longueuil store",
+        "phone2_label": "Customer service",
+        "address": "1138 Marie-Victorin Blvd., Longueuil, Quebec J4G 2H9",
+        "hours": "<p>Tuesday to Sunday: 10 a.m. to 4 p.m.<br/>Monday: closed</p>",
+        "form_title": "Write to us",
+        "subjects": "Question about a product\nDelivery and pickup\nStore visit\nOrder in progress\nOther",
+        "message_placeholder": "Name of the piece, dimensions you need, your question…",
+        "submit_label": "Send the message",
+        "success_message": "Thank you! Your message is on its way. We'll get back to you shortly."
+      }
     }
   },
   "order": [

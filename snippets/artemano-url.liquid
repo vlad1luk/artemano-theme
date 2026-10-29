@@ -1,0 +1,24 @@
+{%- doc -%}
+  Lien interne dans la bonne langue : ajoute le préfixe de langue (ex. /fr) aux liens relatifs
+  saisis à la main dans l'éditeur (« /pages/contact », « /collections/all »). Les liens choisis
+  dans le sélecteur (shopify://…) et les liens externes restent tels quels.
+
+  @param {string} url - Le lien
+  @param {string} [fallback] - Lien si vide (par défaut « # »)
+{%- enddoc -%}
+{%- liquid
+  assign u = url | default: fallback | default: '#'
+  assign first = u | slice: 0
+  assign second = u | slice: 1
+  if first == '/' and second != '/' and request.locale.primary == false
+    assign root = routes.root_url
+    assign root_slash = root | append: '/'
+    assign head = u | slice: 0, root_slash.size
+    if u == '/'
+      assign u = root
+    elsif head != root_slash and u != root
+      assign u = root | append: u
+    endif
+  endif
+  echo u
+-%}

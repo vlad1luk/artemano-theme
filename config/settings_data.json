@@ -114,16 +114,16 @@
     "show_installments": false,
     "artemano_store_url": "/pages/notre-magasin",
     "artemano_dropdown_menu": true,
-    "artemano_search_placeholder": "Rechercher",
+    "artemano_search_placeholder": "Search",
     "artemano_logo_tagline": "",
-    "artemano_cart_note": "Ramassage gratuit à notre entrepôt de Longueuil. Les options de livraison s'affichent au paiement.",
+    "artemano_cart_note": "Free pickup at our Longueuil warehouse. Delivery options are shown at checkout.",
     "show_accelerated_checkout_buttons": true,
     "artemano_tile_enabled": true,
     "artemano_tile_position": 4,
-    "artemano_tile_eyebrow": "Bois massif",
-    "artemano_tile_title": "Aucune pièce n'est identique à une autre.",
-    "artemano_tile_text": "Le bois massif garde le dessin naturel de l'arbre : veines, nœuds et nuances changent d'un meuble à l'autre.",
-    "artemano_tile_link_label": "Découvrir nos essences"
+    "artemano_tile_eyebrow": "Solid wood",
+    "artemano_tile_title": "No two pieces are alike.",
+    "artemano_tile_text": "Solid wood keeps the natural pattern of the tree: grain, knots and shades change from one piece to the next.",
+    "artemano_tile_link_label": "Discover our woods"
   },
   "presets": {
     "Default": {

@@ -22,7 +22,7 @@
 
     {%- for block in section.blocks -%}
       <figure class="artemano-reviews__item" {{ block.shopify_attributes }}>
-        <p class="artemano-reviews__stars artemano-reviews__stars--small" aria-label="{{ block.settings.stars }} sur 5">
+        <p class="artemano-reviews__stars artemano-reviews__stars--small" aria-label="{{ 'artemano.stars_label' | t: stars: block.settings.stars }}">
           {%- for i in (1..block.settings.stars) -%}★{%- endfor -%}
         </p>
         <blockquote class="artemano-reviews__quote">« {{ block.settings.quote }} »</blockquote>

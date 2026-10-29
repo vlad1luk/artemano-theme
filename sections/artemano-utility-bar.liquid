@@ -16,7 +16,7 @@
 
     <p class="artemano-utility__announcement">
       {%- if section.settings.announcement_link != blank -%}
-        <a href="{{ section.settings.announcement_link }}">{{ section.settings.announcement }}</a>
+        <a href="{% render 'artemano-url', url: section.settings.announcement_link %}">{{ section.settings.announcement }}</a>
       {%- else -%}
         {{ section.settings.announcement }}
       {%- endif -%}

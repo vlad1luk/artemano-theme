@@ -54,7 +54,7 @@
               {%- endfor -%}
               <li>
                 <a href="{{ link.url }}" class="artemano-subnav__link artemano-subnav__link--all">
-                  {{- section.settings.all_label | default: 'Tout voir' }} →
+                  {%- assign all_default = 'artemano.view_all' | t -%}{{- section.settings.all_label | default: all_default }} →
                 </a>
               </li>
             </ul>

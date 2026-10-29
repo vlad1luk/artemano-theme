@@ -12,9 +12,9 @@
     "hero": {
       "type": "artemano-page-hero",
       "settings": {
-        "eyebrow": "Depuis 2002",
-        "title": "Notre histoire",
-        "subtitle": "<p>Plus de vingt ans de meubles en bois massif, à Longueuil.</p>",
+        "eyebrow": "Since 2002",
+        "title": "Our story",
+        "subtitle": "<p>More than twenty years of solid wood furniture in Longueuil.</p>",
         "height": 36,
         "image": "shopify://shop_images/HP2-1920X1080.jpg"
       }
@@ -24,9 +24,9 @@
       "settings": {
         "image_side": "left",
         "background": "cream",
-        "eyebrow": "Les débuts",
-        "title": "Une histoire de bois massif, depuis 2002",
-        "text": "<p><em>Texte à venir, tiré du livre Artemano.</em></p>",
+        "eyebrow": "The beginnings",
+        "title": "A solid wood story, since 2002",
+        "text": "<p><em>Text to come, from the Artemano book.</em></p>",
         "caption": "",
         "image": "shopify://shop_images/Slide_03.jpg"
       }
@@ -34,40 +34,40 @@
     "timeline": {
       "type": "artemano-timeline",
       "settings": {
-        "eyebrow": "Depuis 2002",
-        "title": "Les grandes étapes"
+        "eyebrow": "Since 2002",
+        "title": "Milestones"
       },
       "blocks": {
         "s1": {
           "type": "step",
           "settings": {
             "year": "2002",
-            "title": "La naissance d'Artemano",
-            "text": "<p><em>Texte à venir, tiré du livre Artemano.</em></p>"
+            "title": "Artemano is born",
+            "text": "<p><em>Text to come, from the Artemano book.</em></p>"
           }
         },
         "s2": {
           "type": "step",
           "settings": {
-            "year": "Année",
-            "title": "Étape à compléter",
-            "text": "<p><em>Texte à venir, tiré du livre Artemano.</em></p>"
+            "year": "Year",
+            "title": "Milestone to complete",
+            "text": "<p><em>Text to come, from the Artemano book.</em></p>"
           }
         },
         "s3": {
           "type": "step",
           "settings": {
-            "year": "Année",
-            "title": "Étape à compléter",
-            "text": "<p><em>Texte à venir, tiré du livre Artemano.</em></p>"
+            "year": "Year",
+            "title": "Milestone to complete",
+            "text": "<p><em>Text to come, from the Artemano book.</em></p>"
           }
         },
         "s4": {
           "type": "step",
           "settings": {
-            "year": "Aujourd'hui",
-            "title": "Le magasin de Longueuil",
-            "text": "<p>Une salle d'exposition au 1138, boul. Marie-Victorin, ouverte du mardi au dimanche.</p>"
+            "year": "Today",
+            "title": "The Longueuil store",
+            "text": "<p>A showroom at 1138 Marie-Victorin Blvd., open Tuesday to Sunday.</p>"
           }
         }
       },
@@ -83,12 +83,12 @@
       "settings": {
         "image_side": "right",
         "background": "walnut",
-        "eyebrow": "Le bois",
-        "title": "Suar, palissandre, manguier, acacia, teck",
-        "text": "<p>Chaque essence a son grain, sa couleur et son caractère. Comme le bois est vivant, aucun meuble n'est tout à fait pareil à un autre.</p><p><em>Texte à venir, tiré du livre Artemano.</em></p>",
-        "quote": "Citation de Gianni à venir.",
+        "eyebrow": "The wood",
+        "title": "Suar, rosewood, mango wood, acacia, teak",
+        "text": "<p>Each wood has its own grain, colour and character. Because wood is alive, no two pieces of furniture are quite the same.</p><p><em>Text to come, from the Artemano book.</em></p>",
+        "quote": "Quote from Gianni to come.",
         "quote_author": "Gianni, Artemano",
-        "button_label": "Voir les meubles",
+        "button_label": "See the furniture",
         "button_link": "shopify://collections/living",
         "image": "shopify://shop_images/Slide_06.jpg"
       }
@@ -96,8 +96,8 @@
     "mosaic": {
       "type": "artemano-mosaic",
       "settings": {
-        "eyebrow": "En images",
-        "title": "De la forêt au salon"
+        "eyebrow": "In pictures",
+        "title": "From the forest to the living room"
       },
       "blocks": {
         "p1": {
@@ -139,7 +139,7 @@
           "type": "photo",
           "settings": {
             "image": "shopify://shop_images/LONGUEUIL.png",
-            "caption": "Le magasin de Longueuil"
+            "caption": "The Longueuil store"
           }
         }
       },
@@ -154,7 +154,15 @@
     },
     "store": {
       "type": "artemano-store",
-      "settings": {}
+      "settings": {
+        "eyebrow": "Our store",
+        "title": "Come see and touch the wood",
+        "store_name": "Artemano Longueuil",
+        "address": "1138 Marie-Victorin Blvd., Longueuil, Quebec J4G 2H9",
+        "hours": "<p>Tuesday to Sunday: 10 a.m. to 4 p.m. · Closed Mondays</p>",
+        "visit_label": "Plan a visit",
+        "directions_label": "Directions"
+      }
     }
   },
   "order": [

@@ -227,7 +227,7 @@
             "contact_button": {
               "type": "button",
               "settings": {
-                "label": "Une question ? Nous joindre",
+                "label": "A question? Contact us",
                 "link": "shopify://pages/contact",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
@@ -320,7 +320,7 @@
                 "row_delivery": {
                   "type": "_accordion-row",
                   "settings": {
-                    "heading": "Livraison et ramassage",
+                    "heading": "Delivery and pickup",
                     "open_by_default": false,
                     "icon": "none",
                     "width": 20
@@ -329,7 +329,7 @@
                     "deliv": {
                       "type": "text",
                       "settings": {
-                        "text": "<p>Ramassage gratuit à notre entrepôt de Longueuil.</p><p>Livraison à domicile : les options et les tarifs s'affichent au moment du paiement.</p>",
+                        "text": "<p>Free pickup at our Longueuil warehouse.</p><p>Home delivery: options and rates are shown at checkout.</p>",
                         "width": "100%",
                         "max_width": "normal",
                         "alignment": "left",
@@ -394,10 +394,10 @@
           "type": "essence",
           "settings": {
             "essence": "suar",
-            "eyebrow": "Le suar",
-            "title": "Chaque dalle est unique.",
-            "text": "<p>Le suar est un bois tropical aux veinures marquées et aux nuances chaudes. Taillée dans le bois massif, chaque pièce garde le dessin naturel de l'arbre : aucune n'est identique.</p>",
-            "button_label": "Voir tout le suar",
+            "eyebrow": "Suar",
+            "title": "Every slab is unique.",
+            "text": "<p>Suar is a tropical wood with bold grain and warm tones. Cut from solid wood, each piece keeps the natural pattern of the tree: no two are alike.</p>",
+            "button_label": "See all suar",
             "button_link": "/collections/suar"
           }
         },
@@ -405,10 +405,10 @@
           "type": "essence",
           "settings": {
             "essence": "palissandre",
-            "eyebrow": "Le palissandre",
-            "title": "Un bois dense, fait pour durer.",
-            "text": "<p>Le palissandre est un bois dur aux tons chauds et aux veines contrastées. Sa densité en fait un choix solide pour les meubles du quotidien.</p>",
-            "button_label": "Voir tout le palissandre",
+            "eyebrow": "Rosewood",
+            "title": "A dense wood, built to last.",
+            "text": "<p>Rosewood is a hardwood with warm tones and contrasting grain. Its density makes it a solid choice for everyday furniture.</p>",
+            "button_label": "See all rosewood",
             "button_link": "/collections/rosewood"
           }
         },
@@ -416,10 +416,10 @@
           "type": "essence",
           "settings": {
             "essence": "manguier",
-            "eyebrow": "Le manguier",
-            "title": "Un bois dur aux nuances variées.",
-            "text": "<p>Le manguier est un bois dur au grain fin, dont les teintes varient d'une planche à l'autre. Chaque meuble a donc son propre caractère.</p>",
-            "button_label": "Voir tout le manguier",
+            "eyebrow": "Mango wood",
+            "title": "A hardwood with varied shades.",
+            "text": "<p>Mango wood is a fine-grained hardwood whose colour varies from one board to the next. Each piece of furniture has its own character.</p>",
+            "button_label": "See all mango wood",
             "button_link": "/collections/mango"
           }
         }
@@ -433,12 +433,18 @@
     },
     "specs_store": {
       "type": "artemano-product-specs",
-      "settings": {}
+      "settings": {
+        "title": "Dimensions and materials",
+        "store_eyebrow": "See it in store",
+        "store_name": "Artemano Longueuil",
+        "address": "1138 Marie-Victorin Blvd., Longueuil, Quebec J4G 2H9",
+        "hours": "Tuesday to Sunday: 10 a.m. to 4 p.m. · Closed Mondays"
+      }
     },
     "related": {
       "type": "artemano-related-products",
       "settings": {
-        "title": "Dans la même collection",
+        "title": "From the same collection",
         "limit": 4
       }
     }
