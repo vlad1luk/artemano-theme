@@ -228,7 +228,7 @@
               "type": "button",
               "settings": {
                 "label": "Une question ? Nous joindre",
-                "link": "shopify://pages/contact-us",
+                "link": "shopify://pages/contact",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
                 "width": "custom",

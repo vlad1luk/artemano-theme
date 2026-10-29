@@ -15,7 +15,7 @@
         "menu": "artemano-principal",
         "primary_label": "Voir les produits",
         "secondary_label": "Nous joindre",
-        "secondary_link": "shopify://pages/contact-us",
+        "secondary_link": "shopify://pages/contact",
         "fallback_image": "shopify://shop_images/Table_03_-_Reduced.jpg"
       },
       "blocks": {

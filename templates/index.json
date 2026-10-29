@@ -149,7 +149,7 @@
         "story_title": "Du bois choisi à la main, depuis 2002",
         "story_text": "<p>Deux phrases sur les essences et les artisans, à écrire avec Gianni.</p>",
         "story_link_label": "Lire notre histoire",
-        "story_link": "/pages/decouvrez",
+        "story_link": "/pages/notre-histoire",
         "image": "shopify://shop_images/Slide_05.jpg"
       },
       "blocks": {
@@ -200,7 +200,7 @@
         "hours": "<p>Mardi au dimanche : 10 h à 16 h · Lundi fermé</p>",
         "phone": "450 321-0565",
         "visit_label": "Nous joindre",
-        "visit_link": "/pages/contact-us",
+        "visit_link": "/pages/contact",
         "directions_label": "Itinéraire",
         "map_query": "1138 boulevard Marie-Victorin, Longueuil, QC J4G 2H9"
       }

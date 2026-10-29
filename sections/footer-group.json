@@ -26,22 +26,22 @@
         "c1": {
           "type": "menu",
           "settings": {
-            "title": "Aide",
-            "menu": "footer-3"
+            "title": "Magasiner",
+            "menu": "artemano-pied-magasiner"
           }
         },
         "c2": {
           "type": "menu",
           "settings": {
-            "title": "Achats et politiques",
-            "menu": "footer-2"
+            "title": "Aide",
+            "menu": "artemano-pied-aide"
           }
         },
         "c3": {
           "type": "menu",
           "settings": {
-            "title": "À propos",
-            "menu": "decouvrez"
+            "title": "Artemano",
+            "menu": "artemano-pied-artemano"
           }
         }
       },
