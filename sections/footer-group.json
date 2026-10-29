@@ -15,11 +15,11 @@
       "type": "artemano-footer",
       "settings": {
         "show_newsletter": true,
-        "newsletter_title": "Inspirations et nouveautés, une fois par mois",
-        "newsletter_text": "Désabonnement en un clic.",
+        "newsletter_title": "10 % sur votre première commande",
+        "newsletter_text": "Inscrivez-vous à l'infolettre : votre code arrive par courriel. Inspirations et nouveautés une fois par mois, désabonnement en un clic.",
         "email_placeholder": "Votre courriel",
         "subscribe_label": "S'abonner",
-        "success_message": "Merci ! Vous êtes inscrit.",
+        "success_message": "Merci ! Votre code de bienvenue est en route vers votre boîte courriel.",
         "brand_text": "Meubles modernes en bois massif inspirés par la nature, depuis 2002."
       },
       "blocks": {
