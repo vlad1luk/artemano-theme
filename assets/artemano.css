@@ -946,3 +946,16 @@ html:root {
     grid-template-columns: 1fr;
   }
 }
+
+/* Descriptions collées depuis Word (Calibri 13px, fond blanc, couleurs) : on rend la main au thème */
+.rte [style],
+.text-block [style],
+.artemano-rte [style] {
+  font-family: inherit !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+  color: inherit !important;
+  background-color: transparent !important;
+  white-space: normal !important;
+  text-align: inherit !important;
+}
