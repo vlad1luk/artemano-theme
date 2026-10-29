@@ -230,18 +230,24 @@
             add_to_cart_text: add_to_cart_text
           %}
 
-          {% content_for 'block',
-            type: 'accelerated-checkout',
-            id: 'accelerated-checkout',
-            can_add_to_cart: can_add_to_cart,
-            form_obj: form
-          %}
+          {%- capture artemano_rdv -%}{% render 'artemano-rdv', part: 'check', product: product %}{%- endcapture -%}
+          {%- if artemano_rdv == '1' -%}
+            {% render 'artemano-rdv', part: 'button', product: product %}
+          {%- else -%}
+            {% content_for 'block',
+              type: 'accelerated-checkout',
+              id: 'accelerated-checkout',
+              can_add_to_cart: can_add_to_cart,
+              form_obj: form
+            %}
+          {%- endif -%}
         </div>
         {%- if block_settings.gift_card_form and product.gift_card? -%}
           </span>
         {%- endif -%}
       {%- endform -%}
     </product-form-component>
+    {% render 'artemano-rdv', part: 'dialog', product: product %}
   {%- else -%}
     <div class="product-form-buttons">
       <button

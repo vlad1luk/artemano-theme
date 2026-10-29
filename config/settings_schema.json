@@ -48,6 +48,34 @@
         "content": "Panier"
       },
       {
+        "type": "header",
+        "content": "Rendez-vous en magasin"
+      },
+      {
+        "type": "checkbox",
+        "id": "artemano_rdv_enabled",
+        "label": "Remplacer « Acheter maintenant » par « Prendre rendez-vous »",
+        "default": true
+      },
+      {
+        "type": "number",
+        "id": "artemano_rdv_min_price",
+        "label": "À partir de ce prix ($)",
+        "default": 500
+      },
+      {
+        "type": "text",
+        "id": "artemano_rdv_label",
+        "label": "Texte du bouton",
+        "default": "Prendre rendez-vous en magasin"
+      },
+      {
+        "type": "text",
+        "id": "artemano_rdv_hint",
+        "label": "Note sous les boutons",
+        "default": "Envie de voir la pièce en vrai ? Prenez rendez-vous, c'est gratuit et sans engagement."
+      },
+      {
         "type": "text",
         "id": "artemano_cart_note",
         "label": "Note au-dessus du bouton de paiement",
