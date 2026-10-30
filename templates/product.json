@@ -241,7 +241,7 @@
             "reassurance": {
               "type": "custom-liquid",
               "settings": {
-                "custom_liquid": "{%- capture essence -%}{% render 'artemano-product-essence', product: product %}{%- endcapture -%}\n<ul class=\"artemano-pdp__reassure list-unstyled\">\n  <li>Ramassage gratuit à notre entrepôt de Longueuil</li>\n  <li>Garantie 1 an contre les défauts de fabrication</li>\n  {%- if essence != blank -%}<li>Bois massif : chaque pièce a sa propre veinure</li>{%- endif -%}\n</ul>"
+                "custom_liquid": "{%- capture essence -%}{% render 'artemano-product-essence', product: product %}{%- endcapture -%}\n<ul class=\"artemano-pdp__reassure list-unstyled\">\n  <li>{{ 'artemano.reassure.pickup' | t }}</li>\n  <li>{{ 'artemano.reassure.warranty' | t }}</li>\n  {%- if essence != blank -%}<li>{{ 'artemano.reassure.grain' | t }}</li>{%- endif -%}\n</ul>"
               },
               "blocks": {}
             },
@@ -308,7 +308,7 @@
                     "dims": {
                       "type": "custom-liquid",
                       "settings": {
-                        "custom_liquid": "<dl class=\"artemano-pdp__specs\">\n  {%- for option in product.options_with_values -%}\n    {%- assign n = option.name | downcase -%}\n    {%- if n contains 'dimension' or n contains 'size' or n contains 'taille' -%}\n      <div><dt>{{ option.name }}</dt><dd>{{ option.values | join: ' · ' }}</dd></div>\n    {%- endif -%}\n  {%- endfor -%}\n  {%- if product.metafields.custom.dimensions != blank -%}<div><dt>Dimensions</dt><dd>{{ product.metafields.custom.dimensions.value }}</dd></div>{%- endif -%}\n  {%- if product.metafields.custom.poids != blank -%}<div><dt>Poids</dt><dd>{{ product.metafields.custom.poids.value }}</dd></div>{%- endif -%}\n</dl>"
+                        "custom_liquid": "<dl class=\"artemano-pdp__specs\">\n  {%- for option in product.options_with_values -%}\n    {%- assign n = option.name | downcase -%}\n    {%- if n contains 'dimension' or n contains 'size' or n contains 'taille' -%}\n      <div><dt>{{ option.name }}</dt><dd>{{ option.values | join: ' · ' }}</dd></div>\n    {%- endif -%}\n  {%- endfor -%}\n  {%- if product.metafields.custom.dimensions != blank -%}<div><dt>{{ 'artemano.specs.dimensions' | t }}</dt><dd>{{ product.metafields.custom.dimensions.value }}</dd></div>{%- endif -%}\n  {%- if product.metafields.custom.poids != blank -%}<div><dt>{{ 'artemano.specs.weight' | t }}</dt><dd>{{ product.metafields.custom.poids.value }}</dd></div>{%- endif -%}\n</dl>"
                       },
                       "blocks": {}
                     }

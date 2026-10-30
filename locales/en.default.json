@@ -373,6 +373,11 @@
     }
   },
   "artemano": {
+    "reassure": {
+      "pickup": "Free pickup at our Longueuil warehouse",
+      "warranty": "1-year warranty against manufacturing defects",
+      "grain": "Solid wood: every piece has its own grain"
+    },
     "breadcrumb": "Breadcrumb",
     "home": "Home",
     "products_count": {

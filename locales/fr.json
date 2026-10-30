@@ -352,6 +352,11 @@
     }
   },
   "artemano": {
+    "reassure": {
+      "pickup": "Ramassage gratuit à notre entrepôt de Longueuil",
+      "warranty": "Garantie 1 an contre les défauts de fabrication",
+      "grain": "Bois massif : chaque pièce a sa propre veinure"
+    },
     "breadcrumb": "Fil d'Ariane",
     "home": "Accueil",
     "products_count": {
