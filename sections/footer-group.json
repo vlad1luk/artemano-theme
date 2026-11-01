@@ -50,9 +50,29 @@
         "c2",
         "c3"
       ]
+    },
+    "artemano_popup": {
+      "type": "artemano-newsletter-popup",
+      "settings": {
+        "enabled": true,
+        "delay": 4,
+        "days": 14,
+        "show_on_mobile": true,
+        "image": "shopify://shop_images/Living_02_-_Reduced.jpg",
+        "eyebrow": "Welcome to Artemano",
+        "title": "10% off your first order",
+        "text": "Join our newsletter and receive your welcome code by email. New arrivals and inspiration once a month, unsubscribe anytime.",
+        "email_placeholder": "Your email",
+        "subscribe_label": "Get my 10% off",
+        "dismiss_label": "No thanks",
+        "note": "By subscribing, you agree to receive our emails. You can unsubscribe at any time.",
+        "success_message": "Thank you! Your welcome code is on its way to your inbox.",
+        "continue_label": "Continue shopping"
+      }
     }
   },
   "order": [
-    "artemano_footer"
+    "artemano_footer",
+    "artemano_popup"
   ]
 }

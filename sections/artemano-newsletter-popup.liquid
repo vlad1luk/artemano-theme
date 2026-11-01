@@ -1,0 +1,396 @@
+{%- comment -%}
+  Artemano — fenêtre d'infolettre (offre de bienvenue) à l'arrivée sur le site.
+  - S'ouvre après quelques secondes, une seule fois par visiteur pendant X jours (mémorisé dans le navigateur).
+  - Ne s'affiche pas au panier, ni aux clients connectés déjà abonnés, ni après une inscription.
+  - L'inscription passe par le formulaire « customer » de Shopify : le client est abonné au marketing par
+    courriel, ce qui déclenche l'automatisation « Bienvenue » (code de 10 %).
+  - Après l'envoi, Shopify recharge la page : la fenêtre se rouvre pour afficher le message de confirmation.
+{%- endcomment -%}
+
+{%- liquid
+  assign show_popup = section.settings.enabled
+  if template.name == 'cart' or template.name == 'password' or template.name == 'gift_card'
+    assign show_popup = false
+  endif
+  if customer and customer.accepts_marketing
+    assign show_popup = false
+  endif
+  if request.design_mode
+    assign show_popup = true
+  endif
+-%}
+
+{%- if show_popup -%}
+  <dialog
+    id="ArtemanoPopup"
+    class="artemano-popup{% if section.settings.image == blank %} artemano-popup--no-image{% endif %}"
+    aria-labelledby="ArtemanoPopupTitle"
+    data-artemano-popup
+    data-delay="{{ section.settings.delay }}"
+    data-days="{{ section.settings.days }}"
+    data-mobile="{{ section.settings.show_on_mobile }}"
+    data-design-mode="{{ request.design_mode }}"
+    {{ section.shopify_attributes }}
+  >
+    <div class="artemano-popup__panel">
+      {%- if section.settings.image != blank -%}
+        <div class="artemano-popup__media">
+          {{
+            section.settings.image
+            | image_url: width: 900
+            | image_tag: widths: '450, 700, 900', sizes: '(min-width: 750px) 22rem, 0px', loading: 'lazy', alt: ''
+          }}
+        </div>
+      {%- endif -%}
+
+      <div class="artemano-popup__body">
+        <button type="button" class="artemano-popup__close" data-popup-close aria-label="{{ 'artemano.rdv.close' | t }}">
+          <span aria-hidden="true">×</span>
+        </button>
+
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="artemano-eyebrow artemano-popup__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h2 class="artemano-popup__title" id="ArtemanoPopupTitle">{{ section.settings.title }}</h2>
+
+        {%- form 'customer', id: 'ArtemanoPopupForm', class: 'artemano-popup__form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter,popup-bienvenue">
+          {%- if form.posted_successfully? -%}
+            <p class="artemano-popup__success" role="status" data-popup-posted="success">
+              {{ section.settings.success_message }}
+            </p>
+            <button type="button" class="artemano-btn artemano-btn--dark artemano-popup__submit" data-popup-close>
+              {{- section.settings.continue_label -}}
+            </button>
+          {%- else -%}
+            {%- if section.settings.text != blank -%}
+              <p class="artemano-popup__text">{{ section.settings.text }}</p>
+            {%- endif -%}
+
+            <label for="ArtemanoPopupEmail" class="visually-hidden">{{ section.settings.email_placeholder }}</label>
+            <input
+              id="ArtemanoPopupEmail"
+              type="email"
+              name="contact[email]"
+              class="artemano-popup__input"
+              placeholder="{{ section.settings.email_placeholder | escape }}"
+              autocomplete="email"
+              autocapitalize="off"
+              spellcheck="false"
+              required
+              {% if form.errors %}aria-invalid="true" aria-describedby="ArtemanoPopupError"{% endif %}
+            >
+            {%- if form.errors -%}
+              <p class="artemano-popup__error" id="ArtemanoPopupError" role="alert" data-popup-posted="error">
+                {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+              </p>
+            {%- endif -%}
+
+            <button type="submit" class="artemano-btn artemano-btn--dark artemano-popup__submit">
+              {{- section.settings.subscribe_label -}}
+            </button>
+            <button type="button" class="artemano-popup__dismiss" data-popup-close>
+              {{- section.settings.dismiss_label -}}
+            </button>
+
+            {%- if section.settings.note != blank -%}
+              <p class="artemano-popup__note">{{ section.settings.note }}</p>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    (function () {
+      var dialog = document.getElementById('ArtemanoPopup');
+      if (!dialog || dialog.dataset.ready) return;
+      dialog.dataset.ready = '1';
+
+      var KEY = 'artemano-popup';
+      var DAY = 24 * 60 * 60 * 1000;
+
+      function read() {
+        try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { return null; }
+      }
+      function write(state) {
+        try { localStorage.setItem(KEY, JSON.stringify({ state: state, at: Date.now() })); } catch (e) {}
+      }
+      function open() {
+        if (dialog.open) return;
+        if (typeof dialog.showModal === 'function') dialog.showModal();
+        else dialog.setAttribute('open', '');
+      }
+      function close() {
+        var stored = read();
+        if (!stored || stored.state !== 'subscribed') write('dismissed');
+        if (dialog.open && typeof dialog.close === 'function') dialog.close();
+        else dialog.removeAttribute('open');
+      }
+
+      dialog.addEventListener('click', function (event) {
+        if (event.target.closest('[data-popup-close]') || event.target === dialog) close();
+      });
+      dialog.addEventListener('cancel', function (event) {
+        event.preventDefault();
+        close();
+      });
+      var form = dialog.querySelector('form');
+      if (form) form.addEventListener('submit', function () { write('subscribed'); });
+
+      // Retour après l'envoi du formulaire : on rouvre la fenêtre pour montrer le résultat
+      // (le formulaire du pied de page est aussi un formulaire « customer » : on vérifie l'ancre)
+      var posted = dialog.querySelector('[data-popup-posted]');
+      if (posted) {
+        var success = posted.dataset.popupPosted === 'success';
+        if (success) write('subscribed');
+        if (location.hash === '#ArtemanoPopupForm') {
+          if (!success) write('dismissed');
+          open();
+        }
+        return;
+      }
+
+      // Éditeur de thème : visible seulement quand la section est sélectionnée
+      if (dialog.dataset.designMode === 'true') {
+        document.addEventListener('shopify:section:select', function (e) {
+          if (dialog.contains(e.target) || e.target === dialog) open();
+        });
+        document.addEventListener('shopify:section:deselect', function () {
+          if (dialog.open) dialog.close();
+        });
+        return;
+      }
+
+      if (dialog.dataset.mobile === 'false' && window.matchMedia('(max-width: 749px)').matches) return;
+
+      var stored = read();
+      if (stored) {
+        if (stored.state === 'subscribed') return;
+        var days = parseInt(dialog.dataset.days, 10) || 0;
+        if (Date.now() - stored.at < days * DAY) return;
+      }
+
+      var delay = (parseInt(dialog.dataset.delay, 10) || 0) * 1000;
+      setTimeout(function () {
+        // Pas par-dessus une autre fenêtre déjà ouverte (panier, rendez-vous, menu…)
+        if (document.querySelector('dialog[open]:not(#ArtemanoPopup)')) return;
+        open();
+      }, delay);
+    })();
+  </script>
+{%- endif -%}
+
+{% stylesheet %}
+  .artemano-popup {
+    width: min(46rem, 100% - 2rem);
+    max-height: calc(100dvh - 2rem);
+    margin: auto;
+    padding: 0;
+    border: 0;
+    border-radius: var(--artemano-radius, 4px);
+    background: var(--artemano-cream, #f7f3ec);
+    color: var(--artemano-ink, #2b2420);
+    box-shadow: 0 24px 60px rgb(43 36 32 / 0.3);
+    overflow: hidden;
+  }
+
+  .artemano-popup::backdrop {
+    background: rgb(43 36 32 / 0.55);
+  }
+
+  .artemano-popup[open] {
+    animation: artemano-popup-in 0.35s ease;
+  }
+
+  @keyframes artemano-popup-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+
+  .artemano-popup__panel {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    min-height: 26rem;
+  }
+
+  .artemano-popup--no-image {
+    width: min(30rem, 100% - 2rem);
+  }
+
+  .artemano-popup--no-image .artemano-popup__panel {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .artemano-popup__media {
+    position: relative;
+    background: var(--artemano-walnut, #4a3426);
+  }
+
+  .artemano-popup__media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .artemano-popup__body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2.75rem 2.5rem 2.25rem;
+    overflow-y: auto;
+  }
+
+  .artemano-popup__close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: inherit;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .artemano-popup__close:hover {
+    background: rgb(43 36 32 / 0.08);
+  }
+
+  .artemano-popup__eyebrow {
+    margin: 0 0 0.75rem;
+  }
+
+  .artemano-popup__title {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-weight: 400;
+    font-size: clamp(1.875rem, 4vw, 2.5rem);
+    line-height: 1.1;
+    color: var(--artemano-ink, #2b2420);
+  }
+
+  .artemano-popup__form {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .artemano-popup__text {
+    margin: 0 0 0.5rem;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--artemano-ink-soft, #5a4e45);
+  }
+
+  .artemano-popup__input {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0 1rem;
+    border: 1px solid var(--artemano-line, #e2d9cc);
+    border-radius: var(--artemano-radius, 4px);
+    background: #fff;
+    color: inherit;
+    font: inherit;
+    font-size: 1rem;
+  }
+
+  .artemano-popup__input:focus {
+    outline: 2px solid var(--artemano-walnut, #4a3426);
+    outline-offset: 1px;
+  }
+
+  .artemano-popup__submit {
+    width: 100%;
+  }
+
+  .artemano-popup__dismiss {
+    justify-self: center;
+    padding: 0.25rem;
+    border: 0;
+    background: none;
+    color: var(--artemano-ink-soft, #5a4e45);
+    font: inherit;
+    font-size: 0.8125rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .artemano-popup__note {
+    margin: 0.25rem 0 0;
+    font-size: 0.75rem;
+    line-height: 1.45;
+    color: var(--artemano-ink-muted, #7d7066);
+  }
+
+  .artemano-popup__success {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .artemano-popup__error {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: #a3361f;
+  }
+
+  @media screen and (max-width: 749px) {
+    .artemano-popup {
+      width: min(26rem, 100% - 1.5rem);
+    }
+
+    .artemano-popup__panel {
+      grid-template-columns: 1fr;
+      min-height: 0;
+    }
+
+    .artemano-popup__media {
+      height: 9rem;
+    }
+
+    .artemano-popup__body {
+      padding: 2rem 1.5rem 1.5rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Fenêtre infolettre",
+  "tag": "section",
+  "class": "artemano-popup-section",
+  "settings": [
+    { "type": "checkbox", "id": "enabled", "label": "Afficher la fenêtre", "default": true },
+    { "type": "range", "id": "delay", "label": "Délai avant l'ouverture", "min": 0, "max": 30, "step": 1, "unit": "s", "default": 4 },
+    { "type": "range", "id": "days", "label": "Ne plus la montrer pendant (après fermeture)", "min": 1, "max": 60, "step": 1, "unit": "j", "default": 14 },
+    { "type": "checkbox", "id": "show_on_mobile", "label": "Afficher sur mobile", "default": true },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "header", "content": "Textes" },
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "Welcome to Artemano" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "10% off your first order" },
+    { "type": "textarea", "id": "text", "label": "Texte", "default": "Join our newsletter and receive your welcome code by email. New arrivals and inspiration once a month, unsubscribe anytime." },
+    { "type": "text", "id": "email_placeholder", "label": "Champ courriel", "default": "Your email" },
+    { "type": "text", "id": "subscribe_label", "label": "Bouton", "default": "Get my 10% off" },
+    { "type": "text", "id": "dismiss_label", "label": "Lien « Non merci »", "default": "No thanks" },
+    { "type": "textarea", "id": "note", "label": "Petite note (consentement)", "default": "By subscribing, you agree to receive our emails. You can unsubscribe at any time." },
+    { "type": "textarea", "id": "success_message", "label": "Message après l'inscription", "default": "Thank you! Your welcome code is on its way to your inbox." },
+    { "type": "text", "id": "continue_label", "label": "Bouton après l'inscription", "default": "Continue shopping" }
+  ],
+  "presets": [{ "name": "Fenêtre infolettre" }]
+}
+{% endschema %}
