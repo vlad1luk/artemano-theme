@@ -9,8 +9,14 @@
   assign base_km = section.settings.base_km
   assign per_km = section.settings.per_km
   assign free_threshold = section.settings.free_threshold
-  assign base_money = base_price | times: 100 | money_without_trailing_zeros
-  assign per_km_money = per_km | times: 100 | money_without_trailing_zeros
+  # Format manuel : le format monétaire de la boutique entoure les montants d'un <span class=hidden>
+  if request.locale.iso_code contains 'fr'
+    assign base_money = base_price | append: ' $'
+    assign per_km_money = per_km | append: ' $'
+  else
+    assign base_money = '$' | append: base_price
+    assign per_km_money = '$' | append: per_km
+  endif
 -%}
 
 <div class="artemano-delivery artemano-container">
