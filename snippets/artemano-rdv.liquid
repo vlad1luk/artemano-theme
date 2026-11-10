@@ -52,11 +52,13 @@
       document.addEventListener('click', function (event) {
         var link = event.target.closest('[data-artemano-rdv-link]');
         if (!link) return;
-        var input = document.querySelector('form[data-type="add-to-cart-form"] input[name="id"]');
-        if (!input || !input.value) return;
+        var form = link.closest('form');
+        var input = form && form.querySelector('input[name="id"]');
+        var id = new URLSearchParams(location.search).get('variant') || (input && input.value);
+        if (!id) return;
         var url = new URL(link.href, location.origin);
         if (url.searchParams.has('variante')) {
-          url.searchParams.set('variante', input.value);
+          url.searchParams.set('variante', id);
           link.href = url.toString();
         }
       });
