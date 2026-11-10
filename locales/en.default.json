@@ -424,6 +424,16 @@
       "error_email": "Email: invalid address",
       "error_body": "Message: required"
     },
+    "delivery": {
+      "per_km": "/km",
+      "free": "Free",
+      "calc_eyebrow": "Estimate",
+      "calc_title": "How much will my delivery cost?",
+      "calc_note": "Enter the distance between our Longueuil store and your home. This is an estimate: the exact amount is confirmed when your delivery is scheduled.",
+      "distance": "Distance from the store (km)",
+      "order_total": "Purchase amount ($)",
+      "estimate": "Estimated delivery fee"
+    },
     "rdv": {
       "label": "Book an in-store appointment",
       "hint": "Want to see the piece for real? Book an appointment, it's free and with no obligation.",

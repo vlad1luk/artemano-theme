@@ -403,6 +403,16 @@
       "error_email": "Courriel : adresse invalide",
       "error_body": "Message : à remplir"
     },
+    "delivery": {
+      "per_km": "/km",
+      "free": "Gratuit",
+      "calc_eyebrow": "Estimation",
+      "calc_title": "Combien coûtera ma livraison ?",
+      "calc_note": "Entrez la distance entre notre magasin de Longueuil et chez vous. C'est une estimation : le montant exact est confirmé au moment de planifier la livraison.",
+      "distance": "Distance du magasin (km)",
+      "order_total": "Montant de l'achat ($)",
+      "estimate": "Frais de livraison estimés"
+    },
     "rdv": {
       "label": "Prendre rendez-vous en magasin",
       "hint": "Envie de voir la pièce en vrai ? Prenez rendez-vous, c'est gratuit et sans engagement.",

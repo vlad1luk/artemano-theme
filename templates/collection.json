@@ -212,7 +212,7 @@
           "type": "faq",
           "settings": {
             "question": "How does delivery work?",
-            "answer": "<p>Pickup is free at our Longueuil warehouse. For home delivery, options and rates are shown at checkout.</p>"
+            "answer": "<p>Pickup is free at our Longueuil store. Home delivery is $175 within 30 km, then $3 per additional km, and free within 30 km for purchases of $3,000 or more. <a href=\"/pages/livraison\">See delivery details</a>.</p>"
           }
         },
         "f3": {

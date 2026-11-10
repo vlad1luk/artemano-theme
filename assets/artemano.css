@@ -745,8 +745,13 @@ html:root {
    -------------------------------------------------------------------------- */
 .artemano-rdv__open {
   flex: 1 1 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 3.25rem;
   white-space: normal;
+  text-align: center;
+  text-decoration: none;
 }
 
 .artemano-rdv__hint {

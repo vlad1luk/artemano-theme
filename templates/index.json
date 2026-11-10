@@ -40,8 +40,9 @@
           "type": "item",
           "settings": {
             "icon": "truck",
-            "title": "Delivery in Quebec",
-            "detail": "Areas and rates to be confirmed"
+            "title": "Home delivery",
+            "detail": "$175 within 30 km, free from $3,000",
+            "link": "/pages/livraison"
           }
         },
         "g2": {

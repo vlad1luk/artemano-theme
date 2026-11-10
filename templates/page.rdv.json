@@ -1,0 +1,28 @@
+{
+  "sections": {
+    "hero": {
+      "type": "artemano-page-hero",
+      "settings": {
+        "eyebrow": "Longueuil store",
+        "title": "Book a store visit",
+        "subtitle": "<p>See and touch the furniture before you choose. Free, no obligation: we get the piece ready and call you to confirm.</p>",
+        "height": 32
+      }
+    },
+    "rdv": {
+      "type": "artemano-rdv-page",
+      "settings": {
+        "intro": "<p>Our team welcomes you at the store to show you the pieces, the wood species and the finishes. Tell us when you'd like to come, we take care of the rest.</p>",
+        "address": "1138 Marie-Victorin Blvd., Longueuil, Quebec J4G 2H9",
+        "hours": "<p>Tuesday to Sunday: 10 a.m. to 4 p.m.<br/>Monday: closed</p>",
+        "phone_label": "Longueuil store",
+        "phone": "450 321-0565",
+        "form_title": "Choose your visit"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "rdv"
+  ]
+}

@@ -3,11 +3,12 @@
   Remplace « Acheter maintenant » à partir du prix choisi dans Réglages du thème › Artemano.
 
   part: 'check'  → affiche « 1 » si le produit est admissible (sert aux conditions)
-  part: 'button' → bouton qui ouvre la fenêtre (à placer dans le formulaire d'achat)
-  part: 'dialog' → fenêtre et formulaire de demande (à placer HORS du formulaire d'achat)
+  part: 'button' → lien vers la page /pages/rendez-vous avec la pièce (?produit=…&variante=…)
+  part: 'dialog' → petite phrase sous les boutons + mise à jour du modèle choisi dans le lien
+                   (nom gardé pour ne pas toucher au bloc d'achat)
 
-  La demande part par le formulaire de contact Shopify : le magasin la reçoit par courriel
-  avec le produit, le modèle choisi, le lien, la date et le moment souhaités.
+  La page à part permet de mesurer les visites (demande de Cedrick). Le formulaire est dans
+  sections/artemano-rdv-page.liquid.
 {%- endcomment -%}
 
 {%- liquid
@@ -21,200 +22,43 @@
 {%- if part == 'check' -%}
   {%- if rdv_ok -%}1{%- endif -%}
 {%- elsif rdv_ok and part == 'button' -%}
-  <button
-    type="button"
-    class="button button-secondary artemano-rdv__open"
-    data-artemano-rdv-open="ArtemanoRdv-{{ product.id }}"
-  >
-    {%- assign rdv_label = 'artemano.rdv.label' | t -%}
-    {{- settings.artemano_rdv_label | default: rdv_label -}}
-  </button>
-{%- elsif rdv_ok and part == 'dialog' -%}
   {%- liquid
-    assign dialog_id = 'ArtemanoRdv-' | append: product.id
-    assign form_id = 'ArtemanoRdvForm-' | append: product.id
+    assign rdv_page = pages['rendez-vous'].url | default: '/pages/rendez-vous'
+    assign rdv_href = rdv_page | append: '?produit=' | append: product.handle
     assign variant = product.selected_or_first_available_variant
-    assign product_label = product.title
     unless product.has_only_default_variant
-      assign product_label = product.title | append: ' — ' | append: variant.title
+      assign rdv_href = rdv_href | append: '&variante=' | append: variant.id
     endunless
+    assign rdv_label = 'artemano.rdv.label' | t
   -%}
+  <a
+    href="{% render 'artemano-url', url: rdv_href %}"
+    class="button button-secondary artemano-rdv__open"
+    data-artemano-rdv-link
+  >
+    {{- settings.artemano_rdv_label | default: rdv_label -}}
+  </a>
+{%- elsif rdv_ok and part == 'dialog' -%}
   {%- assign rdv_hint = 'artemano.rdv.hint' | t -%}
   <p class="artemano-rdv__hint">
     {{- settings.artemano_rdv_hint | default: rdv_hint -}}
   </p>
 
-  <dialog
-    id="{{ dialog_id }}"
-    class="artemano-rdv"
-    aria-labelledby="{{ dialog_id }}-title"
-    data-product-title="{{ product.title | escape }}"
-    data-closed-monday="{{ 'artemano.rdv.closed_monday' | t | escape }}"
-  >
-    <script type="application/json" data-rdv-variants>
-      {
-        {%- for v in product.variants -%}
-          "{{ v.id }}": {{ v.title | json }}{% unless forloop.last %},{% endunless %}
-        {%- endfor -%}
-      }
-    </script>
-
-    <div class="artemano-rdv__panel">
-      <button type="button" class="artemano-rdv__close" data-artemano-rdv-close aria-label="{{ 'artemano.rdv.close' | t }}">
-        <span aria-hidden="true">×</span>
-      </button>
-
-      <p class="artemano-eyebrow">{{ 'artemano.rdv.eyebrow' | t }}</p>
-      <h2 class="artemano-rdv__title" id="{{ dialog_id }}-title">{{ 'artemano.rdv.title' | t }}</h2>
-      <p class="artemano-rdv__intro">
-        {{ 'artemano.rdv.intro' | t }}
-      </p>
-
-      {%- form 'contact', id: form_id, class: 'artemano-rdv__form' -%}
-        {%- if form.posted_successfully? -%}
-          <div class="artemano-contact__notice is-success" role="status" data-rdv-posted>
-            <p><strong>{{ 'artemano.rdv.success_title' | t }}</strong> {{ 'artemano.rdv.success_text' | t }}</p>
-          </div>
-        {%- else -%}
-          {%- if form.errors -%}
-            <div class="artemano-contact__notice is-error" role="alert" data-rdv-posted>
-              <p>{{ 'artemano.rdv.error' | t }}</p>
-            </div>
-          {%- endif -%}
-
-          <input type="hidden" name="contact[Demande]" value="Rendez-vous en magasin">
-          <input type="hidden" name="contact[Produit]" value="{{ product_label | escape }}" data-rdv-product>
-          <input type="hidden" name="contact[Lien du produit]" value="{{ shop.url }}{{ product.url }}">
-
-          <div class="artemano-rdv__product">
-            {%- if product.featured_image -%}
-              {{
-                product.featured_image
-                | image_url: width: 160
-                | image_tag: loading: 'lazy', alt: '', class: 'artemano-rdv__thumb'
-              }}
-            {%- endif -%}
-            <span>
-              <span class="artemano-rdv__product-name" data-rdv-product-label>{{ product_label }}</span>
-              <span class="artemano-rdv__product-note">{{ 'artemano.rdv.piece_note' | t }}</span>
-            </span>
-          </div>
-
-          <div class="artemano-contact__row">
-            <label class="artemano-field">
-              <span>{{ 'artemano.contact.name' | t }} <em>*</em></span>
-              <input type="text" name="contact[name]" autocomplete="name" required>
-            </label>
-            <label class="artemano-field">
-              <span>{{ 'artemano.contact.phone' | t }} <em>*</em></span>
-              <input type="tel" name="contact[phone]" autocomplete="tel" required>
-            </label>
-          </div>
-
-          <label class="artemano-field">
-            <span>{{ 'artemano.contact.email' | t }} <em>*</em></span>
-            <input
-              type="email"
-              name="contact[email]"
-              autocomplete="email"
-              autocapitalize="off"
-              spellcheck="false"
-              required
-              value="{% if customer %}{{ customer.email }}{% endif %}"
-            >
-          </label>
-
-          <div class="artemano-contact__row">
-            <label class="artemano-field">
-              <span>{{ 'artemano.rdv.date' | t }} <em>*</em></span>
-              <input type="date" name="contact[Jour souhaité]" required data-rdv-date>
-            </label>
-            <label class="artemano-field">
-              <span>{{ 'artemano.rdv.moment' | t }}</span>
-              <select name="contact[Moment]">
-                <option value="Avant-midi (10 h à 13 h)">{{ 'artemano.rdv.morning' | t }}</option>
-                <option value="Après-midi (13 h à 16 h)">{{ 'artemano.rdv.afternoon' | t }}</option>
-              </select>
-            </label>
-          </div>
-
-          <label class="artemano-field">
-            <span>{{ 'artemano.rdv.details' | t }} <em>{{ 'artemano.contact.optional' | t }}</em></span>
-            <textarea
-              name="contact[body]"
-              rows="3"
-              placeholder="{{ 'artemano.rdv.details_placeholder' | t | escape }}"
-            ></textarea>
-          </label>
-
-          <div class="artemano-rdv__actions">
-            <button type="submit" class="artemano-btn artemano-btn--dark">{{ 'artemano.rdv.submit' | t }}</button>
-            <p class="artemano-rdv__small">
-              {{ 'artemano.rdv.footnote' | t }}
-            </p>
-          </div>
-        {%- endif -%}
-      {%- endform -%}
-    </div>
-  </dialog>
-
   <script>
-    // Un seul gestionnaire pour toute la page : Horizon peut réafficher le bloc d'achat
-    // quand on change de modèle, donc on cherche toujours la fenêtre au moment du clic.
+    // Le modèle choisi (couleur, format…) suit dans le lien au moment du clic
     (function () {
-      if (window.artemanoRdvReady) return;
-      window.artemanoRdvReady = true;
-
-      function iso(d) {
-        return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-      }
-
-      function prepare(dialog) {
-        var variants = {};
-        try { variants = JSON.parse(dialog.querySelector('[data-rdv-variants]').textContent); } catch (e) {}
-        var input = document.querySelector('form[data-type="add-to-cart-form"] input[name="id"]');
-        var v = input && variants[input.value];
-        var title = dialog.dataset.productTitle;
-        var label = v && v !== 'Default Title' ? title + ' — ' + v : title;
-        var hidden = dialog.querySelector('[data-rdv-product]');
-        var shown = dialog.querySelector('[data-rdv-product-label]');
-        if (hidden) hidden.value = label;
-        if (shown) shown.textContent = label;
-
-        // Jours possibles : de demain à dans 60 jours, sauf le lundi (magasin fermé)
-        var date = dialog.querySelector('[data-rdv-date]');
-        if (date && !date.min) {
-          var start = new Date(); start.setDate(start.getDate() + 1);
-          var end = new Date(); end.setDate(end.getDate() + 60);
-          date.min = iso(start);
-          date.max = iso(end);
-        }
-      }
-
-      document.addEventListener('input', function (event) {
-        var date = event.target.closest('[data-rdv-date]');
-        if (!date) return;
-        var picked = date.value ? new Date(date.value + 'T12:00:00') : null;
-        var dlg = date.closest('dialog');
-        date.setCustomValidity(picked && picked.getDay() === 1 ? (dlg && dlg.dataset.closedMonday) || '' : '');
-      });
-
+      if (window.artemanoRdvLinkReady) return;
+      window.artemanoRdvLinkReady = true;
       document.addEventListener('click', function (event) {
-        var trigger = event.target.closest('[data-artemano-rdv-open]');
-        if (trigger) {
-          var dialog = document.getElementById(trigger.getAttribute('data-artemano-rdv-open'));
-          if (dialog) { event.preventDefault(); prepare(dialog); dialog.showModal(); }
-          return;
+        var link = event.target.closest('[data-artemano-rdv-link]');
+        if (!link) return;
+        var input = document.querySelector('form[data-type="add-to-cart-form"] input[name="id"]');
+        if (!input || !input.value) return;
+        var url = new URL(link.href, location.origin);
+        if (url.searchParams.has('variante')) {
+          url.searchParams.set('variante', input.value);
+          link.href = url.toString();
         }
-        var close = event.target.closest('[data-artemano-rdv-close]');
-        if (close) { close.closest('dialog').close(); return; }
-        if (event.target.matches && event.target.matches('dialog.artemano-rdv')) event.target.close();
-      });
-
-      // Après l'envoi, Shopify recharge la page : on rouvre la fenêtre pour montrer le résultat
-      document.addEventListener('DOMContentLoaded', function () {
-        var posted = document.querySelector('dialog.artemano-rdv [data-rdv-posted]');
-        if (posted) posted.closest('dialog').showModal();
       });
     })();
   </script>

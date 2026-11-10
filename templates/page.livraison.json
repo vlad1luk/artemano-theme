@@ -1,0 +1,80 @@
+{
+  "sections": {
+    "hero": {
+      "type": "artemano-page-hero",
+      "settings": {
+        "eyebrow": "Good to know",
+        "title": "Delivery and pickup",
+        "subtitle": "<p>Pick up your furniture for free at our Longueuil store, or have it delivered to your home. Simple rates, calculated from the store.</p>",
+        "height": 32
+      }
+    },
+    "rates": {
+      "type": "artemano-delivery",
+      "settings": {
+        "base_price": 175,
+        "base_km": 30,
+        "per_km": 3,
+        "free_threshold": 3000,
+        "pickup_label": "Store pickup",
+        "pickup_price": "Free",
+        "pickup_detail": "<p>At 1138 Marie-Victorin Blvd. in Longueuil. We call you as soon as your order is ready.</p>",
+        "zone_label": "Delivery 0 to 30 km",
+        "zone_detail": "<p>Flat rate for any address within 30 km of our Longueuil store.</p>",
+        "beyond_label": "From the 31st km",
+        "beyond_detail": "<p>Added to the flat rate for each additional kilometre.</p>",
+        "free_title": "Free delivery from $3,000",
+        "free_text": "<p>For a purchase of $3,000 or more, delivery is free within 30 km. Beyond that, only the additional kilometres are charged.</p>"
+      }
+    },
+    "faq": {
+      "type": "artemano-collection-guide",
+      "settings": {
+        "eyebrow": "Questions",
+        "title": "Delivery in detail",
+        "text": "<p>For an exact quote before you order, call us at <a href=\"tel:+14503210565\">450 321-0565</a>.</p>"
+      },
+      "blocks": {
+        "q1": {
+          "type": "faq",
+          "settings": {
+            "question": "How is the distance calculated?",
+            "answer": "<p>From our Longueuil store (1138 Marie-Victorin Blvd.) to your address. The first 30 km are included in the flat rate; each kilometre after that is $3.</p>"
+          }
+        },
+        "q2": {
+          "type": "faq",
+          "settings": {
+            "question": "Can you give me an example?",
+            "answer": "<p>A $1,500 purchase delivered 50 km from the store: $175 + 20 km × $3 = $235.</p><p>The same delivery for a purchase of $3,000 or more: only the 20 additional km, so 20 × $3 = $60.</p>"
+          }
+        },
+        "q3": {
+          "type": "faq",
+          "settings": {
+            "question": "Do you deliver far from Longueuil?",
+            "answer": "<p>Yes. The rate stays the same: $3 per kilometre beyond the first 30 km. For a home 400 km away, that is 370 additional km.</p>"
+          }
+        },
+        "q4": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I pick up my order myself?",
+            "answer": "<p>Yes, pickup is free. Choose it at checkout and we'll call you as soon as your order is ready at the store.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ]
+    }
+  },
+  "order": [
+    "hero",
+    "rates",
+    "faq"
+  ]
+}

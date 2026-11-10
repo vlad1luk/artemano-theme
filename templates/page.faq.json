@@ -30,7 +30,7 @@
           "type": "faq",
           "settings": {
             "question": "Do you deliver to my home?",
-            "answer": "<p>Yes. Delivery fees depend on the distance from our Longueuil store. The exact amount is shown at checkout, and you can call us for an estimate.</p>"
+            "answer": "<p>Yes. Delivery is $175 within 30 km of our Longueuil store, then $3 per additional km. It is free within 30 km for purchases of $3,000 or more. <a href=\"/pages/livraison\">See delivery and pickup</a>.</p>"
           }
         },
         "q2": {

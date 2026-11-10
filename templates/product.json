@@ -329,7 +329,7 @@
                     "deliv": {
                       "type": "text",
                       "settings": {
-                        "text": "<p>Free pickup at our Longueuil warehouse.</p><p>Home delivery: options and rates are shown at checkout.</p>",
+                        "text": "<p>Free pickup at our Longueuil store.</p><p>Home delivery: $175 within 30 km, then $3 per additional km. Free within 30 km for purchases of $3,000 or more.</p><p><a href=\"/pages/livraison\">See delivery details</a></p>",
                         "width": "100%",
                         "max_width": "normal",
                         "alignment": "left",

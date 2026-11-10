@@ -1,0 +1,305 @@
+{%- comment -%}
+  Artemano — tarifs de livraison + calculateur de frais (page Livraison et ramassage).
+  Les montants du calculateur viennent des réglages de la section : si Artemano change ses tarifs,
+  on les change ici ET dans Réglages › Expédition et livraison (ce que le paiement facture).
+{%- endcomment -%}
+
+{%- liquid
+  assign base_price = section.settings.base_price
+  assign base_km = section.settings.base_km
+  assign per_km = section.settings.per_km
+  assign free_threshold = section.settings.free_threshold
+  assign base_money = base_price | times: 100 | money_without_trailing_zeros
+  assign per_km_money = per_km | times: 100 | money_without_trailing_zeros
+-%}
+
+<div class="artemano-delivery artemano-container">
+  <div class="artemano-delivery__rates">
+    <article class="artemano-delivery__card">
+      <p class="artemano-delivery__label">{{ section.settings.pickup_label }}</p>
+      <p class="artemano-delivery__price">{{ section.settings.pickup_price }}</p>
+      <div class="artemano-delivery__detail">{{ section.settings.pickup_detail }}</div>
+    </article>
+
+    <article class="artemano-delivery__card">
+      <p class="artemano-delivery__label">{{ section.settings.zone_label }}</p>
+      <p class="artemano-delivery__price">{{ base_money }}</p>
+      <div class="artemano-delivery__detail">{{ section.settings.zone_detail }}</div>
+    </article>
+
+    <article class="artemano-delivery__card">
+      <p class="artemano-delivery__label">{{ section.settings.beyond_label }}</p>
+      <p class="artemano-delivery__price">+ {{ per_km_money }}<small>{{ 'artemano.delivery.per_km' | t }}</small></p>
+      <div class="artemano-delivery__detail">{{ section.settings.beyond_detail }}</div>
+    </article>
+  </div>
+
+  {%- if section.settings.free_title != blank -%}
+    <div class="artemano-delivery__free">
+      <p class="artemano-delivery__free-title">{{ section.settings.free_title }}</p>
+      <div class="artemano-delivery__free-text">{{ section.settings.free_text }}</div>
+    </div>
+  {%- endif -%}
+
+  <div
+    class="artemano-delivery__calc"
+    data-delivery-calc
+    data-base="{{ base_price }}"
+    data-km="{{ base_km }}"
+    data-per-km="{{ per_km }}"
+    data-threshold="{{ free_threshold }}"
+    data-free-label="{{ 'artemano.delivery.free' | t | escape }}"
+  >
+    <div class="artemano-delivery__calc-intro">
+      <p class="artemano-eyebrow">{{ 'artemano.delivery.calc_eyebrow' | t }}</p>
+      <h2 class="artemano-delivery__calc-title">{{ 'artemano.delivery.calc_title' | t }}</h2>
+      <p class="artemano-delivery__calc-note">{{ 'artemano.delivery.calc_note' | t }}</p>
+    </div>
+
+    <div class="artemano-delivery__calc-form">
+      <label class="artemano-field">
+        <span>{{ 'artemano.delivery.distance' | t }}</span>
+        <input type="number" inputmode="numeric" min="0" max="2000" step="1" value="20" data-calc-km>
+      </label>
+      <label class="artemano-field">
+        <span>{{ 'artemano.delivery.order_total' | t }}</span>
+        <input type="number" inputmode="numeric" min="0" step="50" value="1500" data-calc-total>
+      </label>
+      <div class="artemano-delivery__calc-result" aria-live="polite">
+        <span class="artemano-delivery__calc-result-label">{{ 'artemano.delivery.estimate' | t }}</span>
+        <span class="artemano-delivery__calc-amount" data-calc-amount>{{ base_money }}</span>
+        <span class="artemano-delivery__calc-breakdown" data-calc-breakdown></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.querySelector('[data-delivery-calc]');
+    if (!root || root.dataset.ready) return;
+    root.dataset.ready = '1';
+
+    var base = parseFloat(root.dataset.base);
+    var baseKm = parseFloat(root.dataset.km);
+    var perKm = parseFloat(root.dataset.perKm);
+    var threshold = parseFloat(root.dataset.threshold);
+    var locale = document.documentElement.lang || 'fr-CA';
+    var fmt = new Intl.NumberFormat(locale.indexOf('fr') === 0 ? 'fr-CA' : 'en-CA', {
+      style: 'currency', currency: 'CAD', maximumFractionDigits: 0
+    });
+
+    var km = root.querySelector('[data-calc-km]');
+    var total = root.querySelector('[data-calc-total]');
+    var amount = root.querySelector('[data-calc-amount]');
+    var breakdown = root.querySelector('[data-calc-breakdown]');
+
+    function update() {
+      var d = Math.max(0, Math.ceil(parseFloat(km.value) || 0));
+      var t = Math.max(0, parseFloat(total.value) || 0);
+      var extraKm = Math.max(0, d - baseKm);
+      var zone = t >= threshold ? 0 : base;
+      var fee = zone + extraKm * perKm;
+
+      amount.textContent = fee === 0 ? root.dataset.freeLabel : fmt.format(fee);
+      var parts = [(zone === 0 ? root.dataset.freeLabel : fmt.format(zone)) + ' (0–' + baseKm + ' km)'];
+      if (extraKm > 0) parts.push(extraKm + ' km × ' + fmt.format(perKm) + ' = ' + fmt.format(extraKm * perKm));
+      breakdown.textContent = parts.join(' + ');
+    }
+
+    km.addEventListener('input', update);
+    total.addEventListener('input', update);
+    update();
+  })();
+</script>
+
+{% stylesheet %}
+  .artemano-delivery {
+    display: grid;
+    gap: 2rem;
+    padding-block: 3.5rem 4rem;
+  }
+
+  .artemano-delivery__rates {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .artemano-delivery__card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.75rem 1.75rem 1.5rem;
+    border: 1px solid var(--artemano-line);
+    border-radius: var(--artemano-radius);
+    background: var(--artemano-white, #fff);
+  }
+
+  .artemano-delivery__label {
+    margin: 0;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--artemano-ink-muted);
+  }
+
+  .artemano-delivery__price {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: clamp(2rem, 3.4vw, 2.75rem);
+    line-height: 1.1;
+    color: var(--artemano-walnut);
+  }
+
+  .artemano-delivery__price small {
+    margin-left: 0.15em;
+    font-family: var(--font-body--family);
+    font-size: 0.9375rem;
+    color: var(--artemano-ink-soft);
+  }
+
+  .artemano-delivery__detail,
+  .artemano-delivery__detail p {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--artemano-ink-soft);
+  }
+
+  .artemano-delivery__free {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    align-items: center;
+    gap: 1rem 2rem;
+    padding: 1.75rem 2rem;
+    border-radius: var(--artemano-radius);
+    background: var(--artemano-walnut);
+    color: var(--artemano-cream);
+  }
+
+  .artemano-delivery__free-title {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    line-height: 1.15;
+  }
+
+  .artemano-delivery__free-text,
+  .artemano-delivery__free-text p {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: rgb(247 243 236 / 0.85);
+  }
+
+  .artemano-delivery__calc {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    gap: 2rem 3rem;
+    padding: 2.25rem 2rem;
+    border: 1px solid var(--artemano-line);
+    border-radius: var(--artemano-radius);
+    background: var(--artemano-cream);
+  }
+
+  .artemano-delivery__calc-title {
+    margin: 0.5rem 0 0.75rem;
+    font-family: var(--font-heading--family);
+    font-weight: 400;
+    font-size: clamp(1.625rem, 2.8vw, 2.125rem);
+    line-height: 1.15;
+  }
+
+  .artemano-delivery__calc-note {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--artemano-ink-soft);
+  }
+
+  .artemano-delivery__calc-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    align-content: start;
+  }
+
+  .artemano-delivery__calc-result {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: 0.25rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: var(--artemano-radius);
+    background: var(--artemano-white, #fff);
+    border: 1px solid var(--artemano-line);
+  }
+
+  .artemano-delivery__calc-result-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--artemano-ink-muted);
+  }
+
+  .artemano-delivery__calc-amount {
+    font-family: var(--font-heading--family);
+    font-size: 2.25rem;
+    line-height: 1.1;
+    color: var(--artemano-walnut);
+  }
+
+  .artemano-delivery__calc-breakdown {
+    font-size: 0.8125rem;
+    color: var(--artemano-ink-soft);
+  }
+
+  @media screen and (max-width: 989px) {
+    .artemano-delivery__rates,
+    .artemano-delivery__free,
+    .artemano-delivery__calc {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media screen and (max-width: 559px) {
+    .artemano-delivery__calc-form {
+      grid-template-columns: 1fr;
+    }
+
+    .artemano-delivery__calc,
+    .artemano-delivery__free {
+      padding: 1.5rem 1.25rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tarifs de livraison",
+  "tag": "section",
+  "class": "artemano-delivery-section",
+  "settings": [
+    { "type": "header", "content": "Tarifs (servent aussi au calculateur)" },
+    { "type": "paragraph", "content": "Ces montants n'affichent que l'information. Ce qui est facturé au paiement se règle dans Réglages › Expédition et livraison." },
+    { "type": "number", "id": "base_price", "label": "Prix fixe de la zone de base ($)", "default": 175 },
+    { "type": "number", "id": "base_km", "label": "Rayon de la zone de base (km)", "default": 30 },
+    { "type": "number", "id": "per_km", "label": "Prix par km au-delà ($)", "default": 3 },
+    { "type": "number", "id": "free_threshold", "label": "Achat minimum pour la zone de base gratuite ($)", "default": 3000 },
+    { "type": "header", "content": "Ramassage" },
+    { "type": "text", "id": "pickup_label", "label": "Titre", "default": "Store pickup" },
+    { "type": "text", "id": "pickup_price", "label": "Prix", "default": "Free" },
+    { "type": "richtext", "id": "pickup_detail", "label": "Détail", "default": "<p>At 1138 Marie-Victorin Blvd. in Longueuil. We call you as soon as your order is ready.</p>" },
+    { "type": "header", "content": "Zone de base" },
+    { "type": "text", "id": "zone_label", "label": "Titre", "default": "Delivery 0 to 30 km" },
+    { "type": "richtext", "id": "zone_detail", "label": "Détail", "default": "<p>Flat rate for any address within 30 km of our Longueuil store.</p>" },
+    { "type": "header", "content": "Au-delà" },
+    { "type": "text", "id": "beyond_label", "label": "Titre", "default": "From the 31st km" },
+    { "type": "richtext", "id": "beyond_detail", "label": "Détail", "default": "<p>Added to the flat rate for each additional kilometre.</p>" },
+    { "type": "header", "content": "Bandeau achat minimum" },
+    { "type": "text", "id": "free_title", "label": "Titre", "default": "Free delivery from $3,000" },
+    { "type": "richtext", "id": "free_text", "label": "Texte", "default": "<p>For a purchase of $3,000 or more, delivery is free within 30 km. Beyond that, only the additional kilometres are charged.</p>" }
+  ],
+  "presets": [{ "name": "Tarifs de livraison" }]
+}
+{% endschema %}

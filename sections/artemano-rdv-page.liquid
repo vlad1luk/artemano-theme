@@ -1,0 +1,308 @@
+{%- comment -%}
+  Artemano — page « Prendre rendez-vous » (/pages/rendez-vous).
+  Page à part pour pouvoir mesurer les visites (Analytique Shopify › Pages, ou Google Analytics).
+
+  - Depuis une fiche produit, le bouton mène ici avec ?produit=<handle>&variante=<id> :
+    la pièce est affichée et envoyée avec la demande.
+  - Sans paramètre, c'est une demande de visite générale.
+  - La demande part par le formulaire de contact Shopify (courriel au magasin).
+  - Après l'envoi, l'événement « artemano_rdv_envoye » est publié pour les pixels
+    (Réglages › Événements clients) si on veut compter les demandes et pas seulement les visites.
+{%- endcomment -%}
+
+{%- liquid
+  assign phone_digits = section.settings.phone | remove: ' ' | remove: '-' | remove: '.' | remove: '(' | remove: ')'
+-%}
+
+<div class="artemano-rdv-page artemano-container">
+  <aside class="artemano-rdv-page__info">
+    {%- if section.settings.intro != blank -%}
+      <div class="artemano-rte artemano-rdv-page__intro">{{ section.settings.intro }}</div>
+    {%- endif -%}
+
+    <dl class="artemano-rdv-page__list">
+      {%- if section.settings.address != blank -%}
+        <div>
+          <dt>{{ 'artemano.contact.store' | t }}</dt>
+          <dd>
+            {{ section.settings.address }}<br>
+            <a
+              class="artemano-link-caps"
+              href="https://www.google.com/maps/dir/?api=1&destination={{ section.settings.address | url_encode }}"
+              target="_blank"
+              rel="noopener"
+            >
+              {{- 'artemano.directions' | t -}}
+            </a>
+          </dd>
+        </div>
+      {%- endif -%}
+      {%- if section.settings.hours != blank -%}
+        <div>
+          <dt>{{ 'artemano.contact.hours' | t }}</dt>
+          <dd class="artemano-rte">{{ section.settings.hours }}</dd>
+        </div>
+      {%- endif -%}
+      {%- if section.settings.phone != blank -%}
+        <div>
+          <dt>{{ section.settings.phone_label }}</dt>
+          <dd><a class="artemano-rdv-page__phone" href="tel:+1{{ phone_digits }}">{{ section.settings.phone }}</a></dd>
+        </div>
+      {%- endif -%}
+    </dl>
+  </aside>
+
+  <div
+    class="artemano-rdv artemano-rdv--page"
+    data-rdv-page
+    data-closed-monday="{{ 'artemano.rdv.closed_monday' | t | escape }}"
+  >
+    <div class="artemano-rdv__panel">
+      {%- if section.settings.form_title != blank -%}
+        <h2 class="artemano-rdv__title">{{ section.settings.form_title }}</h2>
+      {%- endif -%}
+      <p class="artemano-rdv__intro">{{ 'artemano.rdv.intro' | t }}</p>
+
+      {%- form 'contact', id: 'ArtemanoRdvPageForm', class: 'artemano-rdv__form' -%}
+        {%- if form.posted_successfully? -%}
+          <div class="artemano-contact__notice is-success" role="status" tabindex="-1" data-rdv-page-posted>
+            <p><strong>{{ 'artemano.rdv.success_title' | t }}</strong> {{ 'artemano.rdv.success_text' | t }}</p>
+          </div>
+        {%- else -%}
+          {%- if form.errors -%}
+            <div class="artemano-contact__notice is-error" role="alert" tabindex="-1">
+              <p>{{ 'artemano.rdv.error' | t }}</p>
+            </div>
+          {%- endif -%}
+
+          <input type="hidden" name="contact[Demande]" value="Rendez-vous en magasin (page Prendre rendez-vous)">
+          <input type="hidden" name="contact[Produit]" value="" data-rdv-product disabled>
+          <input type="hidden" name="contact[Lien du produit]" value="" data-rdv-product-url disabled>
+
+          <div class="artemano-rdv__product" data-rdv-product-card hidden>
+            <img class="artemano-rdv__thumb" src="" alt="" width="56" height="56" data-rdv-thumb hidden>
+            <span>
+              <span class="artemano-rdv__product-name" data-rdv-product-label></span>
+              <span class="artemano-rdv__product-note">{{ 'artemano.rdv.piece_note' | t }}</span>
+            </span>
+          </div>
+
+          <div class="artemano-contact__row">
+            <label class="artemano-field">
+              <span>{{ 'artemano.contact.name' | t }} <em>*</em></span>
+              <input type="text" name="contact[name]" autocomplete="name" required value="{{ form.name }}">
+            </label>
+            <label class="artemano-field">
+              <span>{{ 'artemano.contact.phone' | t }} <em>*</em></span>
+              <input type="tel" name="contact[phone]" autocomplete="tel" required value="{{ form.phone }}">
+            </label>
+          </div>
+
+          <label class="artemano-field">
+            <span>{{ 'artemano.contact.email' | t }} <em>*</em></span>
+            <input
+              type="email"
+              name="contact[email]"
+              autocomplete="email"
+              autocapitalize="off"
+              spellcheck="false"
+              required
+              value="{% if form.email != blank %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+              {% if form.errors contains 'email' %}aria-invalid="true"{% endif %}
+            >
+          </label>
+
+          <div class="artemano-contact__row">
+            <label class="artemano-field">
+              <span>{{ 'artemano.rdv.date' | t }} <em>*</em></span>
+              <input type="date" name="contact[Jour souhaité]" required data-rdv-date>
+            </label>
+            <label class="artemano-field">
+              <span>{{ 'artemano.rdv.moment' | t }}</span>
+              <select name="contact[Moment]">
+                <option value="Avant-midi (10 h à 13 h)">{{ 'artemano.rdv.morning' | t }}</option>
+                <option value="Après-midi (13 h à 16 h)">{{ 'artemano.rdv.afternoon' | t }}</option>
+              </select>
+            </label>
+          </div>
+
+          <label class="artemano-field">
+            <span>{{ 'artemano.rdv.details' | t }} <em>{{ 'artemano.contact.optional' | t }}</em></span>
+            <textarea
+              name="contact[body]"
+              rows="4"
+              placeholder="{{ 'artemano.rdv.details_placeholder' | t | escape }}"
+            >
+              {{- form.body -}}
+            </textarea>
+          </label>
+
+          <div class="artemano-rdv__actions">
+            <button type="submit" class="artemano-btn artemano-btn--dark">{{ 'artemano.rdv.submit' | t }}</button>
+            <p class="artemano-rdv__small">{{ 'artemano.rdv.footnote' | t }}</p>
+          </div>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.querySelector('[data-rdv-page]');
+    if (!root || root.dataset.ready) return;
+    root.dataset.ready = '1';
+
+    // Demande envoyée : on le signale aux pixels (Cedrick peut compter les demandes)
+    var posted = root.querySelector('[data-rdv-page-posted]');
+    if (posted) {
+      posted.focus();
+      try {
+        if (window.Shopify && Shopify.analytics && Shopify.analytics.publish) {
+          Shopify.analytics.publish('artemano_rdv_envoye', { page: location.pathname });
+        }
+      } catch (e) {}
+      return;
+    }
+
+    function iso(d) {
+      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    }
+
+    // Jours possibles : de demain à dans 60 jours, sauf le lundi (magasin fermé)
+    var date = root.querySelector('[data-rdv-date]');
+    if (date) {
+      var start = new Date(); start.setDate(start.getDate() + 1);
+      var end = new Date(); end.setDate(end.getDate() + 60);
+      date.min = iso(start);
+      date.max = iso(end);
+      date.addEventListener('input', function () {
+        var picked = date.value ? new Date(date.value + 'T12:00:00') : null;
+        date.setCustomValidity(picked && picked.getDay() === 1 ? root.dataset.closedMonday : '');
+      });
+    }
+
+    // Pièce choisie sur la fiche produit
+    var params = new URLSearchParams(location.search);
+    var handle = (params.get('produit') || '').replace(/[^a-z0-9\-_]/gi, '');
+    if (!handle) return;
+    var variantId = params.get('variante');
+    var rootUrl = (window.Shopify && Shopify.routes && Shopify.routes.root) || '/';
+
+    fetch(rootUrl + 'products/' + handle + '.js', { headers: { Accept: 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (p) {
+        if (!p) return;
+        var label = p.title;
+        var v = variantId && p.variants.filter(function (x) { return String(x.id) === variantId; })[0];
+        if (v && v.title !== 'Default Title') label += ' — ' + v.title;
+
+        var hidden = root.querySelector('[data-rdv-product]');
+        var url = root.querySelector('[data-rdv-product-url]');
+        hidden.value = label;
+        hidden.disabled = false;
+        url.value = location.origin + '/products/' + p.handle + (v ? '?variant=' + v.id : '');
+        url.disabled = false;
+
+        root.querySelector('[data-rdv-product-label]').textContent = label;
+        var img = (v && v.featured_image && v.featured_image.src) || p.featured_image;
+        var thumb = root.querySelector('[data-rdv-thumb]');
+        if (img) {
+          thumb.src = img + (img.indexOf('?') > -1 ? '&' : '?') + 'width=160';
+          thumb.hidden = false;
+        }
+        root.querySelector('[data-rdv-product-card]').hidden = false;
+      })
+      .catch(function () {});
+  })();
+</script>
+
+{% stylesheet %}
+  .artemano-rdv-page {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(2.5rem, 6vw, 6rem);
+    align-items: start;
+    padding-block: 4rem 5rem;
+  }
+
+  .artemano-rdv-page__intro {
+    margin-bottom: 2rem;
+  }
+
+  .artemano-rdv-page__list {
+    display: grid;
+    gap: 1.5rem;
+    margin: 0;
+  }
+
+  .artemano-rdv-page__list dt {
+    margin-bottom: 0.375rem;
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--artemano-ink-muted);
+  }
+
+  .artemano-rdv-page__list dd {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--artemano-ink);
+  }
+
+  .artemano-rdv-page__list dd p {
+    margin: 0;
+  }
+
+  .artemano-rdv-page__phone {
+    font-family: var(--font-heading--family);
+    font-size: 1.375rem;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .artemano-rdv--page [hidden] {
+    display: none !important;
+  }
+
+  .artemano-rdv.artemano-rdv--page {
+    width: 100%;
+    max-height: none;
+    margin: 0;
+    border: 1px solid var(--artemano-line);
+    box-shadow: none;
+  }
+
+  .artemano-rdv--page .artemano-rdv__panel {
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  @media screen and (max-width: 989px) {
+    .artemano-rdv-page {
+      grid-template-columns: 1fr;
+      padding-block: 2.5rem 3.5rem;
+    }
+
+    .artemano-rdv-page__info {
+      order: 2;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Prise de rendez-vous",
+  "tag": "section",
+  "class": "artemano-rdv-page-section",
+  "settings": [
+    { "type": "richtext", "id": "intro", "label": "Introduction" },
+    { "type": "text", "id": "address", "label": "Adresse", "default": "1138 Marie-Victorin Blvd., Longueuil, Quebec J4G 2H9" },
+    { "type": "richtext", "id": "hours", "label": "Heures", "default": "<p>Tuesday to Sunday: 10 a.m. to 4 p.m.<br/>Monday: closed</p>" },
+    { "type": "text", "id": "phone_label", "label": "Titre du téléphone", "default": "Longueuil store" },
+    { "type": "text", "id": "phone", "label": "Téléphone", "default": "450 321-0565" },
+    { "type": "text", "id": "form_title", "label": "Titre du formulaire", "default": "Choose your visit" }
+  ],
+  "presets": [{ "name": "Prise de rendez-vous" }]
+}
+{% endschema %}
