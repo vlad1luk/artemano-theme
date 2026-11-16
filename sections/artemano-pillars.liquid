@@ -1,0 +1,280 @@
+{%- comment -%}
+  Artemano — énoncé + colonnes (mission et piliers « Défini par la nature », pièces de la maison…).
+  Chaque colonne : image facultative, titre, texte, lien facultatif.
+  Sans image, les colonnes sont numérotées (01, 02, 03).
+{%- endcomment -%}
+
+{%- liquid
+  assign count = section.blocks.size
+  if count > 4
+    assign count = 4
+  endif
+-%}
+
+<div class="artemano-pillars artemano-pillars--{{ section.settings.background }}">
+  <div class="artemano-container">
+    {%- if section.settings.eyebrow != blank or section.settings.title != blank or section.settings.text != blank -%}
+      <header class="artemano-pillars__header">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="artemano-eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        {%- if section.settings.title != blank -%}
+          <h2 class="artemano-pillars__title">{{ section.settings.title }}</h2>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <div class="artemano-rte artemano-pillars__lead">{{ section.settings.text }}</div>
+        {%- endif -%}
+      </header>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="artemano-pillars__grid" style="--pillars-columns: {{ count }};">
+        {%- for block in section.blocks -%}
+          <article class="artemano-pillars__item{% if block.settings.image != blank %} has-image{% endif %}" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              <div class="artemano-pillars__media">
+                {{
+                  block.settings.image
+                  | image_url: width: 1000
+                  | image_tag:
+                    widths: '400, 600, 800, 1000',
+                    sizes: '(min-width: 990px) 30vw, (min-width: 750px) 45vw, 100vw',
+                    loading: 'lazy',
+                    class: 'artemano-pillars__image',
+                    alt: block.settings.title | escape
+                }}
+              </div>
+            {%- else -%}
+              <p class="artemano-pillars__number">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</p>
+            {%- endif -%}
+
+            {%- if block.settings.title != blank -%}
+              <h3 class="artemano-pillars__item-title">{{ block.settings.title }}</h3>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <div class="artemano-rte artemano-pillars__item-text">{{ block.settings.text }}</div>
+            {%- endif -%}
+            {%- if block.settings.link_label != blank -%}
+              <a href="{% render 'artemano-url', url: block.settings.link %}" class="artemano-text-link">
+                {{- block.settings.link_label -}}
+              </a>
+            {%- endif -%}
+          </article>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .artemano-pillars {
+    padding-block: 5.5rem;
+  }
+
+  .artemano-pillars--cream {
+    background: var(--artemano-cream, #f7f3ec);
+  }
+
+  .artemano-pillars--white {
+    background: #fff;
+  }
+
+  .artemano-pillars--walnut {
+    background: var(--artemano-walnut, #4a3426);
+    color: var(--artemano-cream, #f7f3ec);
+  }
+
+  .artemano-pillars__header {
+    max-width: 52rem;
+    margin: 0 auto 3.5rem;
+    text-align: center;
+  }
+
+  .artemano-pillars__header .artemano-eyebrow {
+    margin: 0 0 1rem;
+  }
+
+  .artemano-pillars--walnut .artemano-eyebrow {
+    color: #d9b98c;
+  }
+
+  .artemano-pillars__title {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-weight: 400;
+    font-size: clamp(2rem, 3.6vw, 3rem);
+    line-height: 1.12;
+    color: inherit;
+  }
+
+  .artemano-pillars__lead {
+    margin-top: 1.25rem;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--artemano-ink-soft, #5a4e45);
+  }
+
+  .artemano-pillars--walnut .artemano-pillars__lead {
+    color: rgb(247 243 236 / 0.82);
+  }
+
+  .artemano-pillars__lead p {
+    margin: 0 0 0.75rem;
+  }
+
+  .artemano-pillars__lead p:last-child {
+    margin-bottom: 0;
+  }
+
+  .artemano-pillars__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--pillars-columns, 3), minmax(0, 1fr));
+    gap: 2.5rem 2rem;
+  }
+
+  .artemano-pillars__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .artemano-pillars__item:not(.has-image) {
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--artemano-line, #e2d9cc);
+  }
+
+  .artemano-pillars--walnut .artemano-pillars__item:not(.has-image) {
+    border-top-color: rgb(247 243 236 / 0.25);
+  }
+
+  .artemano-pillars__media {
+    overflow: hidden;
+    border-radius: var(--artemano-radius, 4px);
+    background: var(--artemano-line, #e2d9cc);
+    margin-bottom: 0.5rem;
+  }
+
+  .artemano-pillars__image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  .artemano-pillars__item:hover .artemano-pillars__image {
+    transform: scale(1.03);
+  }
+
+  .artemano-pillars__number {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    color: var(--artemano-walnut, #4a3426);
+  }
+
+  .artemano-pillars--walnut .artemano-pillars__number {
+    color: #d9b98c;
+  }
+
+  .artemano-pillars__item-title {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-weight: 400;
+    font-size: clamp(1.5rem, 2.2vw, 1.875rem);
+    line-height: 1.2;
+    color: inherit;
+  }
+
+  .artemano-pillars__item-text {
+    font-size: 0.9875rem;
+    line-height: 1.65;
+    color: var(--artemano-ink-soft, #5a4e45);
+  }
+
+  .artemano-pillars--walnut .artemano-pillars__item-text {
+    color: rgb(247 243 236 / 0.82);
+  }
+
+  .artemano-pillars__item-text p {
+    margin: 0 0 0.75rem;
+  }
+
+  .artemano-pillars__item-text p:last-child {
+    margin-bottom: 0;
+  }
+
+  .artemano-pillars__item .artemano-text-link {
+    margin-top: auto;
+    align-self: flex-start;
+  }
+
+  @media screen and (max-width: 989px) {
+    .artemano-pillars__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .artemano-pillars {
+      padding-block: 3.5rem;
+    }
+
+    .artemano-pillars__header {
+      margin-bottom: 2.5rem;
+    }
+
+    .artemano-pillars__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .artemano-pillars__image {
+      aspect-ratio: 4 / 3;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Énoncé et colonnes",
+  "tag": "section",
+  "class": "artemano-pillars-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre" },
+    { "type": "text", "id": "title", "label": "Titre" },
+    { "type": "richtext", "id": "text", "label": "Texte" },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Fond",
+      "options": [
+        { "value": "cream", "label": "Crème" },
+        { "value": "white", "label": "Blanc" },
+        { "value": "walnut", "label": "Noyer" }
+      ],
+      "default": "cream"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pillar",
+      "name": "Colonne",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image (facultative)" },
+        { "type": "text", "id": "title", "label": "Titre" },
+        { "type": "richtext", "id": "text", "label": "Texte" },
+        { "type": "text", "id": "link_label", "label": "Lien : texte" },
+        { "type": "url", "id": "link", "label": "Lien : adresse" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Énoncé et colonnes",
+      "blocks": [{ "type": "pillar" }, { "type": "pillar" }, { "type": "pillar" }]
+    }
+  ]
+}
+{% endschema %}

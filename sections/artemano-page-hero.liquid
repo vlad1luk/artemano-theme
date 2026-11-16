@@ -10,7 +10,7 @@
 
 <div
   class="artemano-page-hero{% if image != blank %} has-image{% endif %}"
-  style="--page-hero-height: {{ section.settings.height }}rem;"
+  style="--page-hero-height: {{ section.settings.height }}rem; --page-hero-position: {{ section.settings.image_position | default: 'center' }};"
 >
   {%- if image != blank -%}
     {{
@@ -76,6 +76,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: var(--page-hero-position, center);
   }
 
   .artemano-page-hero.has-image::after {
@@ -162,6 +163,17 @@
     { "type": "text", "id": "title", "label": "Titre", "info": "Laisser vide pour utiliser le titre de la page." },
     { "type": "richtext", "id": "subtitle", "label": "Sous-titre" },
     { "type": "image_picker", "id": "image", "label": "Image" },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Cadrage de l'image",
+      "options": [
+        { "value": "center top", "label": "Haut" },
+        { "value": "center", "label": "Centre" },
+        { "value": "center bottom", "label": "Bas" }
+      ],
+      "default": "center"
+    },
     { "type": "text", "id": "button_label", "label": "Bouton principal" },
     { "type": "url", "id": "button_link", "label": "Lien du bouton principal" },
     { "type": "text", "id": "button2_label", "label": "Bouton secondaire" },

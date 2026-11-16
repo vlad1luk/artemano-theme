@@ -1,0 +1,162 @@
+{%- comment -%}
+  Artemano — bandeau photo pleine largeur avec une phrase (respiration entre deux sections).
+{%- endcomment -%}
+
+{%- assign image = section.settings.image -%}
+
+<div
+  class="artemano-band artemano-band--{{ section.settings.align }}{% if image == blank %} is-placeholder{% endif %}"
+  style="--band-height: {{ section.settings.height }}rem; --band-position: {{ section.settings.position }};"
+>
+  {%- if image != blank -%}
+    {{
+      image
+      | image_url: width: 2400
+      | image_tag:
+        widths: '800, 1200, 1600, 2000, 2400',
+        sizes: '100vw',
+        loading: 'lazy',
+        class: 'artemano-band__image',
+        alt: image.alt | escape
+    }}
+  {%- endif -%}
+  <div class="artemano-band__inner artemano-container">
+    <div class="artemano-band__text">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="artemano-eyebrow artemano-band__eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      {%- if section.settings.title != blank -%}
+        <h2 class="artemano-band__title">{{ section.settings.title }}</h2>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <div class="artemano-band__body">{{ section.settings.text }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .artemano-band {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    min-height: var(--band-height, 32rem);
+    margin-inline: 4px;
+    overflow: hidden;
+    background: var(--artemano-walnut, #4a3426);
+    color: var(--artemano-cream, #f7f3ec);
+  }
+
+  .artemano-band--center {
+    align-items: center;
+    text-align: center;
+  }
+
+  .artemano-band__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--band-position, center);
+  }
+
+  .artemano-band::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgb(43 36 32 / 0.7) 0%, rgb(43 36 32 / 0.15) 55%, rgb(43 36 32 / 0) 100%);
+  }
+
+  .artemano-band--center::after {
+    background: rgb(43 36 32 / 0.35);
+  }
+
+  .artemano-band__inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding-block: 3.5rem;
+  }
+
+  .artemano-band__text {
+    max-width: 42rem;
+  }
+
+  .artemano-band--center .artemano-band__text {
+    margin-inline: auto;
+  }
+
+  .artemano-band__eyebrow {
+    margin: 0 0 0.875rem;
+    color: #f0d9b5;
+  }
+
+  .artemano-band__title {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-weight: 400;
+    font-size: clamp(2rem, 4.2vw, 3.5rem);
+    line-height: 1.08;
+    color: inherit;
+    text-shadow: 0 1px 24px rgb(43 36 32 / 0.25);
+  }
+
+  .artemano-band__body {
+    margin-top: 1rem;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    opacity: 0.92;
+  }
+
+  .artemano-band__body p {
+    margin: 0;
+  }
+
+  @media screen and (max-width: 749px) {
+    .artemano-band {
+      min-height: calc(var(--band-height, 32rem) * 0.7);
+    }
+
+    .artemano-band__inner {
+      padding-block: 2.5rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Bandeau photo",
+  "tag": "section",
+  "class": "artemano-band-section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Cadrage de l'image",
+      "options": [
+        { "value": "center top", "label": "Haut" },
+        { "value": "center", "label": "Centre" },
+        { "value": "center bottom", "label": "Bas" }
+      ],
+      "default": "center"
+    },
+    { "type": "range", "id": "height", "label": "Hauteur", "min": 20, "max": 48, "step": 2, "unit": "rem", "default": 32 },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Texte",
+      "options": [
+        { "value": "left", "label": "En bas à gauche" },
+        { "value": "center", "label": "Centré" }
+      ],
+      "default": "left"
+    },
+    { "type": "text", "id": "eyebrow", "label": "Surtitre" },
+    { "type": "text", "id": "title", "label": "Phrase" },
+    { "type": "richtext", "id": "text", "label": "Texte" }
+  ],
+  "presets": [{ "name": "Bandeau photo" }]
+}
+{% endschema %}
