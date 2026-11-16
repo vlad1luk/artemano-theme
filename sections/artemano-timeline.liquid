@@ -1,109 +1,402 @@
 {%- comment -%}
-  Artemano — ligne du temps (Notre histoire) : une étape par bloc, année en grand, photo facultative.
+  Artemano — ligne du temps (Notre histoire).
+  Ordinateur : rail horizontal avec points dorés, grandes années en Garamond.
+  Mobile et tablette : rail vertical à gauche.
+  Les étapes apparaissent l'une après l'autre quand la section arrive à l'écran
+  (sauf si le visiteur a réduit les animations, et toujours visibles dans l'éditeur).
+  Photo facultative par étape (ex. images de campagne).
 {%- endcomment -%}
 
-<div class="artemano-timeline artemano-container">
-  <header class="artemano-timeline__header">
-    {%- if section.settings.eyebrow != blank -%}
-      <p class="artemano-eyebrow">{{ section.settings.eyebrow }}</p>
-    {%- endif -%}
-    {%- if section.settings.title != blank -%}
-      <h2 class="artemano-section-title">{{ section.settings.title }}</h2>
-    {%- endif -%}
-  </header>
+{%- assign count = section.blocks.size -%}
 
-  <ol class="artemano-timeline__list list-unstyled" role="list">
-    {%- for block in section.blocks -%}
-      {%- assign image = block.settings.image -%}
-      <li class="artemano-timeline__item{% if image != blank %} has-image{% endif %}" {{ block.shopify_attributes }}>
-        <p class="artemano-timeline__year">{{ block.settings.year }}</p>
-        <div class="artemano-timeline__content">
-          <h3 class="artemano-timeline__title">{{ block.settings.title }}</h3>
-          {%- if block.settings.text != blank -%}
-            <div class="artemano-rte artemano-timeline__text">{{ block.settings.text }}</div>
-          {%- endif -%}
-        </div>
-        {%- if image != blank -%}
-          <div class="artemano-timeline__media">
-            {{
-              image
-              | image_url: width: 900
-              | image_tag: widths: '400, 600, 900', sizes: '(min-width: 990px) 22rem, 100vw', loading: 'lazy', alt: image.alt | escape
-            }}
-          </div>
+<div
+  class="artemano-tl artemano-tl--{{ section.settings.background | default: 'walnut' }}"
+  data-artemano-timeline
+  {% if request.design_mode %}data-design-mode{% endif %}
+>
+  <div class="artemano-container">
+    <header class="artemano-tl__header">
+      <div class="artemano-tl__heading">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="artemano-eyebrow artemano-tl__eyebrow">{{ section.settings.eyebrow }}</p>
         {%- endif -%}
-      </li>
-    {%- endfor -%}
-  </ol>
+        {%- if section.settings.title != blank -%}
+          <h2 class="artemano-tl__heading-title">{{ section.settings.title }}</h2>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.text != blank -%}
+        <div class="artemano-tl__intro">{{ section.settings.text }}</div>
+      {%- endif -%}
+    </header>
+
+    <ol class="artemano-tl__list" role="list" style="--tl-count: {{ count }};">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign image = block.settings.image
+          assign year = block.settings.year | strip
+          assign year_class = ''
+          if year.size > 4
+            assign year_class = ' is-word'
+          endif
+        -%}
+        <li
+          class="artemano-tl__item{% if forloop.last %} is-current{% endif %}{% if image != blank %} has-image{% endif %}"
+          style="--i: {{ forloop.index0 }};"
+          {{ block.shopify_attributes }}
+        >
+          <span class="artemano-tl__dot" aria-hidden="true"></span>
+          {%- if year != blank -%}
+            <p class="artemano-tl__year{{ year_class }}">{{ year }}</p>
+          {%- endif -%}
+          {%- if block.settings.title != blank -%}
+            <h3 class="artemano-tl__title">{{ block.settings.title }}</h3>
+          {%- endif -%}
+          {%- if block.settings.text != blank -%}
+            <div class="artemano-tl__text">{{ block.settings.text }}</div>
+          {%- endif -%}
+          {%- if image != blank -%}
+            <div class="artemano-tl__media">
+              {{
+                image
+                | image_url: width: 800
+                | image_tag:
+                  widths: '400, 600, 800',
+                  sizes: '(min-width: 990px) 18vw, 80vw',
+                  loading: 'lazy',
+                  alt: image.alt | escape
+              }}
+            </div>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
 </div>
 
-{% stylesheet %}
-  .artemano-timeline {
-    padding-block: 5rem;
-  }
+<script>
+  (function () {
+    var root = document.currentScript && document.currentScript.previousElementSibling;
+    if (!root || !root.matches('[data-artemano-timeline]') || root.dataset.ready) return;
+    root.dataset.ready = '1';
 
-  .artemano-timeline__header {
-    max-width: 40rem;
-    margin-bottom: 3rem;
-  }
-
-  .artemano-timeline__header .artemano-eyebrow {
-    margin: 0 0 0.75rem;
-  }
-
-  .artemano-timeline__list {
-    margin: 0;
-    padding: 0;
-    border-top: 1px solid var(--artemano-line, #e2d9cc);
-  }
-
-  .artemano-timeline__item {
-    display: grid;
-    grid-template-columns: 11rem minmax(0, 1fr);
-    gap: 1rem 3rem;
-    padding-block: 2.5rem;
-    border-bottom: 1px solid var(--artemano-line, #e2d9cc);
-  }
-
-  .artemano-timeline__item.has-image {
-    grid-template-columns: 11rem minmax(0, 1fr) 22rem;
-  }
-
-  .artemano-timeline__year {
-    margin: 0;
-    font-family: var(--font-heading--family);
-    font-size: clamp(2.25rem, 3.5vw, 3.25rem);
-    line-height: 1;
-    color: var(--artemano-walnut-soft, #6e4b2f);
-  }
-
-  .artemano-timeline__title {
-    margin: 0.25rem 0 0.75rem;
-    font-family: var(--font-heading--family);
-    font-weight: 400;
-    font-size: 1.625rem;
-    line-height: 1.2;
-    color: var(--artemano-ink, #2b2420);
-  }
-
-  .artemano-timeline__media img {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-    border-radius: 2px;
-  }
-
-  @media screen and (max-width: 989px) {
-    .artemano-timeline {
-      padding-block: 3rem;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || root.hasAttribute('data-design-mode') || !('IntersectionObserver' in window)) {
+      root.classList.add('is-visible');
+      return;
     }
 
-    .artemano-timeline__item,
-    .artemano-timeline__item.has-image {
+    root.classList.add('is-armed');
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            root.classList.add('is-visible');
+            io.disconnect();
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+    io.observe(root.querySelector('.artemano-tl__list') || root);
+  })();
+</script>
+
+{% stylesheet %}
+  .artemano-tl {
+    --tl-gold: #d9b98c;
+    --tl-line: rgb(217 185 140 / 0.35);
+    --tl-ink: var(--artemano-cream, #f7f3ec);
+    --tl-soft: rgb(247 243 236 / 0.74);
+    position: relative;
+    padding-block: 6rem 6.5rem;
+    margin-inline: 4px;
+    overflow: hidden;
+    color: var(--tl-ink);
+    background:
+      radial-gradient(ellipse 70% 60% at 12% 0%, rgb(217 185 140 / 0.12) 0%, rgb(217 185 140 / 0) 60%),
+      radial-gradient(ellipse 60% 50% at 95% 100%, rgb(0 0 0 / 0.22) 0%, rgb(0 0 0 / 0) 70%),
+      linear-gradient(160deg, #3a281d 0%, var(--artemano-walnut, #4a3426) 55%, #3f2c20 100%);
+  }
+
+  .artemano-tl--cream {
+    --tl-gold: var(--artemano-walnut, #4a3426);
+    --tl-line: var(--artemano-line, #e2d9cc);
+    --tl-ink: var(--artemano-ink, #2b2420);
+    --tl-soft: var(--artemano-ink-soft, #5a4e45);
+    background: var(--artemano-cream, #f7f3ec);
+  }
+
+  /* En-tête */
+  .artemano-tl__header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: end;
+    gap: 1.5rem 4rem;
+    margin-bottom: 4.5rem;
+  }
+
+  .artemano-tl__eyebrow {
+    margin: 0 0 1rem;
+    color: var(--tl-gold);
+  }
+
+  .artemano-tl__heading-title {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-weight: 400;
+    font-size: clamp(2.25rem, 4.2vw, 3.75rem);
+    line-height: 1.05;
+    color: var(--tl-ink);
+  }
+
+  .artemano-tl__intro {
+    max-width: 30rem;
+    justify-self: end;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--tl-soft);
+  }
+
+  .artemano-tl__intro p {
+    margin: 0;
+  }
+
+  /* Rail */
+  .artemano-tl__list {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(var(--tl-count, 5), minmax(0, 1fr));
+    gap: 2.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .artemano-tl__list::before {
+    content: '';
+    position: absolute;
+    top: 7px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--tl-line) 0%, var(--tl-gold) 85%, var(--tl-line) 100%);
+    opacity: 0.7;
+    transform-origin: left center;
+  }
+
+  .artemano-tl__item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding-top: 2.5rem;
+  }
+
+  .artemano-tl__dot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 15px;
+    height: 15px;
+    border: 1px solid var(--tl-gold);
+    border-radius: 50%;
+    background: transparent;
+    transition: transform 0.4s ease, background-color 0.4s ease;
+  }
+
+  .artemano-tl__dot::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    background: var(--tl-gold);
+  }
+
+  .artemano-tl__item.is-current .artemano-tl__dot {
+    background: rgb(217 185 140 / 0.25);
+  }
+
+  .artemano-tl__item.is-current .artemano-tl__dot::before {
+    content: '';
+    position: absolute;
+    inset: -7px;
+    border-radius: 50%;
+    border: 1px solid var(--tl-gold);
+    opacity: 0;
+    animation: artemano-tl-pulse 2.8s ease-out infinite;
+  }
+
+  @keyframes artemano-tl-pulse {
+    0% {
+      transform: scale(0.6);
+      opacity: 0.7;
+    }
+
+    100% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+  }
+
+  .artemano-tl__item:hover .artemano-tl__dot {
+    transform: scale(1.25);
+  }
+
+  .artemano-tl__year {
+    margin: 0 0 1.25rem;
+    font-family: var(--font-heading--family);
+    font-weight: 400;
+    font-size: clamp(2.75rem, 4.2vw, 4.25rem);
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    color: var(--tl-gold);
+    white-space: nowrap;
+    transition: color 0.4s ease;
+  }
+
+  .artemano-tl__year.is-word {
+    font-size: clamp(1.875rem, 2.6vw, 2.625rem);
+    font-style: italic;
+    line-height: 1.15;
+    padding-top: calc(clamp(2.75rem, 4.2vw, 4.25rem) * 0.95 - clamp(1.875rem, 2.6vw, 2.625rem) * 1.15);
+  }
+
+  .artemano-tl__item:hover .artemano-tl__year {
+    color: var(--tl-ink);
+  }
+
+  .artemano-tl__title {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-heading--family);
+    font-weight: 400;
+    font-size: 1.375rem;
+    line-height: 1.25;
+    color: var(--tl-ink);
+  }
+
+  .artemano-tl__text {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--tl-soft);
+  }
+
+  .artemano-tl__text p {
+    margin: 0 0 0.6rem;
+  }
+
+  .artemano-tl__text p:last-child {
+    margin-bottom: 0;
+  }
+
+  .artemano-tl__media {
+    margin-top: 1.5rem;
+    overflow: hidden;
+    border-radius: var(--artemano-radius, 4px);
+    border: 1px solid var(--tl-line);
+  }
+
+  .artemano-tl__media img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  /* Apparition au défilement */
+  .artemano-tl.is-armed .artemano-tl__list::before {
+    transform: scaleX(0);
+    transition: transform 1.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .artemano-tl.is-armed .artemano-tl__item {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.8s ease,
+      transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition-delay: calc(0.25s + var(--i, 0) * 0.16s);
+  }
+
+  .artemano-tl.is-armed.is-visible .artemano-tl__list::before {
+    transform: scaleX(1);
+  }
+
+  .artemano-tl.is-armed.is-visible .artemano-tl__item {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Tablette et mobile : rail vertical */
+  @media screen and (max-width: 989px) {
+    .artemano-tl {
+      padding-block: 4.5rem 5rem;
+    }
+
+    .artemano-tl__header {
       grid-template-columns: 1fr;
-      padding-block: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .artemano-tl__intro {
+      justify-self: start;
+    }
+
+    .artemano-tl__list {
+      grid-template-columns: 1fr;
+      gap: 0;
+      padding-left: 2.25rem;
+    }
+
+    .artemano-tl__list::before {
+      top: 0.4rem;
+      bottom: 0.4rem;
+      left: 7px;
+      right: auto;
+      width: 1px;
+      height: auto;
+      background: linear-gradient(180deg, var(--tl-line) 0%, var(--tl-gold) 85%, var(--tl-line) 100%);
+      transform-origin: center top;
+    }
+
+    .artemano-tl.is-armed .artemano-tl__list::before {
+      transform: scaleY(0);
+    }
+
+    .artemano-tl.is-armed.is-visible .artemano-tl__list::before {
+      transform: scaleY(1);
+    }
+
+    .artemano-tl__item {
+      padding-top: 0;
+      padding-bottom: 2.75rem;
+    }
+
+    .artemano-tl__item:last-child {
+      padding-bottom: 0;
+    }
+
+    .artemano-tl__dot {
+      top: 0.55rem;
+      left: -2.25rem;
+    }
+
+    .artemano-tl__year {
+      margin-bottom: 0.75rem;
+      font-size: clamp(2.5rem, 9vw, 3.25rem);
+    }
+
+    .artemano-tl__year.is-word {
+      font-size: clamp(1.875rem, 7vw, 2.375rem);
+      padding-top: 0;
+    }
+
+    .artemano-tl__media {
+      max-width: 26rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .artemano-tl__item.is-current .artemano-tl__dot::before {
+      animation: none;
     }
   }
 {% endstylesheet %}
@@ -114,21 +407,38 @@
   "tag": "section",
   "class": "artemano-timeline-section",
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Étiquette", "default": "Depuis 2002" },
-    { "type": "text", "id": "title", "label": "Titre", "default": "Les grandes étapes" }
+    { "type": "text", "id": "eyebrow", "label": "Surtitre" },
+    { "type": "text", "id": "title", "label": "Titre" },
+    { "type": "richtext", "id": "text", "label": "Introduction" },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Fond",
+      "options": [
+        { "value": "walnut", "label": "Noyer" },
+        { "value": "cream", "label": "Crème" }
+      ],
+      "default": "walnut"
+    }
   ],
   "blocks": [
     {
       "type": "step",
       "name": "Étape",
       "settings": [
-        { "type": "text", "id": "year", "label": "Année", "default": "2002" },
-        { "type": "text", "id": "title", "label": "Titre", "default": "Titre de l'étape" },
+        { "type": "text", "id": "year", "label": "Année" },
+        { "type": "text", "id": "title", "label": "Titre" },
         { "type": "richtext", "id": "text", "label": "Texte" },
-        { "type": "image_picker", "id": "image", "label": "Photo" }
+        { "type": "image_picker", "id": "image", "label": "Photo (facultative)" }
       ]
     }
   ],
-  "presets": [{ "name": "Ligne du temps" }]
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Ligne du temps",
+      "blocks": [{ "type": "step" }, { "type": "step" }, { "type": "step" }]
+    }
+  ]
 }
 {% endschema %}

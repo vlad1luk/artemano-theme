@@ -36,7 +36,9 @@
       "type": "artemano-timeline",
       "settings": {
         "eyebrow": "Since 2002",
-        "title": "Milestones"
+        "title": "Milestones",
+        "text": "<p>More than twenty years of passion for exotic wood, from our very first pieces to our Longueuil showroom.</p>",
+        "background": "walnut"
       },
       "blocks": {
         "s1": {
@@ -284,10 +286,10 @@
   "order": [
     "hero",
     "intro",
+    "timeline",
     "mission",
     "asia",
     "rooms",
-    "timeline",
     "wood",
     "mosaic",
     "store"
