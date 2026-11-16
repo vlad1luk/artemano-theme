@@ -14,9 +14,10 @@
       "settings": {
         "eyebrow": "Since 2002",
         "title": "Our story",
-        "subtitle": "<p>More than twenty years of solid wood furniture in Longueuil.</p>",
-        "height": 36,
-        "image": "shopify://shop_images/HP2-1920X1080.jpg"
+        "subtitle": "<p>Defined by nature. More than twenty years of solid wood furniture, chosen with passion.</p>",
+        "height": 40,
+        "image": "shopify://shop_images/artemano-facade.jpg",
+        "image_position": "center top"
       }
     },
     "intro": {
@@ -24,11 +25,11 @@
       "settings": {
         "image_side": "left",
         "background": "cream",
-        "eyebrow": "The beginnings",
-        "title": "A solid wood story, since 2002",
-        "text": "<p><em>Text to come, from the Artemano book.</em></p>",
-        "caption": "",
-        "image": "shopify://shop_images/Slide_03.jpg"
+        "eyebrow": "Our roots",
+        "title": "It all starts at the roots",
+        "text": "<p>Artemano was born from a journey: many travels, wonderful encounters and a real passion for nature's most beautiful elements, and for the stories they tell.</p><p>Since 2002, that spirit has stayed alive. Each piece we select shares our way of believing, seeing, creating and building. Because everything starts at the roots, the ones that nourish all living things and help them grow. Let's keep growing together.</p>",
+        "caption": "Twist stools in solid suar",
+        "image": "shopify://shop_images/artemano-racines.jpg"
       }
     },
     "timeline": {
@@ -43,26 +44,34 @@
           "settings": {
             "year": "2002",
             "title": "Artemano is born",
-            "text": "<p><em>Text to come, from the Artemano book.</em></p>"
+            "text": "<p>A passion for exotic wood becomes a company: minimalist, functional furniture to turn every home into an escape.</p>"
           }
         },
         "s2": {
           "type": "step",
           "settings": {
-            "year": "Year",
-            "title": "Milestone to complete",
-            "text": "<p><em>Text to come, from the Artemano book.</em></p>"
+            "year": "2005",
+            "title": "Our first campaigns",
+            "text": "<p>The first Artemano brand images: wood, light and calm, already at the heart of everything.</p>"
           }
         },
         "s3": {
           "type": "step",
           "settings": {
-            "year": "Year",
-            "title": "Milestone to complete",
-            "text": "<p><em>Text to come, from the Artemano book.</em></p>"
+            "year": "2007",
+            "title": "Beyond furnishing",
+            "text": "<p>“Beyond furnishing”: our signature takes shape, furniture as functional art.</p>"
           }
         },
         "s4": {
+          "type": "step",
+          "settings": {
+            "year": "2013",
+            "title": "Grand opening",
+            "text": "<p>A grand opening, and a new chapter for Artemano.</p>"
+          }
+        },
+        "s5": {
           "type": "step",
           "settings": {
             "year": "Today",
@@ -75,7 +84,8 @@
         "s1",
         "s2",
         "s3",
-        "s4"
+        "s4",
+        "s5"
       ]
     },
     "wood": {
@@ -85,9 +95,9 @@
         "background": "walnut",
         "eyebrow": "The wood",
         "title": "Suar, rosewood, mango wood, acacia, teak",
-        "text": "<p>Each wood has its own grain, colour and character. Because wood is alive, no two pieces of furniture are quite the same.</p><p><em>Text to come, from the Artemano book.</em></p>",
-        "quote": "Quote from Gianni to come.",
-        "quote_author": "Gianni, Artemano",
+        "text": "<p>Each wood has its own grain, colour and character. Because wood is alive, no two pieces of furniture are quite the same.</p><p>Each wood also carries an element: <strong>acacia</strong>, water, for balance, creativity and beauty; <strong>rosewood</strong>, fire, for warmth and intuition; <strong>teak</strong>, water, for a cleansing, protective energy.</p>",
+        "quote": "Nature defines who we are, and who we are is defined by nature.",
+        "quote_author": "Artemano",
         "button_label": "See the furniture",
         "button_link": "shopify://collections/living",
         "image": "shopify://shop_images/Slide_06.jpg"
@@ -163,11 +173,120 @@
         "visit_label": "Plan a visit",
         "directions_label": "Directions"
       }
+    },
+    "mission": {
+      "type": "artemano-pillars",
+      "settings": {
+        "eyebrow": "Our mission",
+        "title": "Defined by nature",
+        "text": "<p>To be the Canadian destination for inspiration and choice when it comes to creating natural, warm and soothing spaces at home, while preserving the environment.</p>",
+        "background": "white"
+      },
+      "blocks": {
+        "m1": {
+          "type": "pillar",
+          "settings": {
+            "title": "Love of nature",
+            "text": "<p>Exotic woods chosen for their grain, their colour and their character, in a variety you won't find anywhere else.</p>"
+          }
+        },
+        "m2": {
+          "type": "pillar",
+          "settings": {
+            "title": "Respect for nature",
+            "text": "<p>Solid wood furniture made to last a lifetime and to be passed on from one generation to the next.</p>"
+          }
+        },
+        "m3": {
+          "type": "pillar",
+          "settings": {
+            "title": "Inspired by nature",
+            "text": "<p>Minimalist, functional designs, true functional art, to turn any home into an escape.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3"
+      ]
+    },
+    "asia": {
+      "type": "artemano-image-band",
+      "settings": {
+        "image": "shopify://shop_images/artemano-asie.jpg",
+        "position": "center bottom",
+        "height": 34,
+        "align": "center",
+        "eyebrow": "Our inspiration",
+        "title": "Everything brings us back to Asia…",
+        "text": "<p>It is in Asia that we find the woods we love, and the craftsmanship that shapes them.</p>"
+      }
+    },
+    "rooms": {
+      "type": "artemano-pillars",
+      "settings": {
+        "eyebrow": "Room by room",
+        "title": "Spaces with a personality",
+        "text": "<p>Modern, minimalist, ambiance-creating: every room tells its own story.</p>",
+        "background": "cream"
+      },
+      "blocks": {
+        "r1": {
+          "type": "pillar",
+          "settings": {
+            "image": "shopify://shop_images/artemano-salle-a-manger-portrait.jpg",
+            "title": "The dining room",
+            "text": "<p>A place to gather, share a meal, tell stories and celebrate together. Your table will last a lifetime and can be passed on for generations: memories will be built around it.</p>",
+            "link_label": "Shop the dining room",
+            "link": "shopify://collections/dining"
+          }
+        },
+        "r2": {
+          "type": "pillar",
+          "settings": {
+            "image": "shopify://shop_images/artemano-salon-portrait.jpg",
+            "title": "The living room",
+            "text": "<p>A vital space, made for gathering and connection: socializing, entertaining and, of course, resting. Seating, tables and storage, beautiful and functional, made to last.</p>",
+            "link_label": "Shop the living room",
+            "link": "shopify://collections/living"
+          }
+        },
+        "r3": {
+          "type": "pillar",
+          "settings": {
+            "image": "shopify://shop_images/artemano-chambre-portrait.jpg",
+            "title": "The bedroom",
+            "text": "<p>The room where we dream and travel to other worlds, where we share our most intimate moments. The wood you choose sets its whole atmosphere.</p>",
+            "link_label": "Shop the bedroom",
+            "link": "shopify://collections/bedroom"
+          }
+        },
+        "r4": {
+          "type": "pillar",
+          "settings": {
+            "image": "shopify://shop_images/artemano-accessoires-portrait.jpg",
+            "title": "Accessories",
+            "text": "<p>The right accessory makes a space more useful, more versatile, more beautiful. In every room, it warms up the space and makes it welcoming.</p>",
+            "link_label": "Shop accessories",
+            "link": "shopify://collections/accessory"
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4"
+      ]
     }
   },
   "order": [
     "hero",
     "intro",
+    "mission",
+    "asia",
+    "rooms",
     "timeline",
     "wood",
     "mosaic",

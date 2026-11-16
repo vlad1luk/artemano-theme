@@ -117,7 +117,7 @@
           "settings": {
             "collection": "accessory",
             "title": "Accessories",
-            "image": "shopify://shop_images/HomePage_5152_x_3435.jpg"
+            "image": "shopify://shop_images/artemano-luminaires.jpg"
           }
         }
       },
@@ -147,11 +147,11 @@
         "button_label": "Discover our woods",
         "button_link": "/collections/all",
         "story_eyebrow": "Our story",
-        "story_title": "Wood chosen by hand, since 2002",
-        "story_text": "<p>Two sentences about the woods and the craftspeople, to be written with Gianni.</p>",
+        "story_title": "Defined by nature",
+        "story_text": "<p>Since 2002, we choose exotic woods for their grain and character, and turn them into minimalist pieces made to last a lifetime.</p>",
         "story_link_label": "Read our story",
         "story_link": "/pages/notre-histoire",
-        "image": "shopify://shop_images/Slide_05.jpg"
+        "image": "shopify://shop_images/artemano-racines-paysage.jpg"
       },
       "blocks": {
         "p1": {

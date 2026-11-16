@@ -25,10 +25,18 @@
             "collection": "bedroom",
             "image": "shopify://shop_images/Bed_02_-_Reduced.jpg"
           }
+        },
+        "amb_lamps": {
+          "type": "ambiance",
+          "settings": {
+            "collection": "lamps",
+            "image": "shopify://shop_images/artemano-luminaires.jpg"
+          }
         }
       },
       "block_order": [
-        "amb_bedroom"
+        "amb_bedroom",
+        "amb_lamps"
       ]
     },
     "main": {
