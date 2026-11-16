@@ -205,11 +205,24 @@
         "directions_label": "Directions",
         "map_query": "1138 boulevard Marie-Victorin, Longueuil, QC J4G 2H9"
       }
+    },
+    "manifesto": {
+      "type": "artemano-manifesto",
+      "settings": {
+        "show_mark": true,
+        "eyebrow": "Maison Artemano",
+        "quote": "Nature defines who we are, and who we are is defined by nature.",
+        "signature": "Longueuil · Since 2002",
+        "link_label": "Our story",
+        "link": "/pages/notre-histoire",
+        "background": "cream"
+      }
     }
   },
   "order": [
     "double_hero",
     "guarantees",
+    "manifesto",
     "rooms",
     "best_sellers",
     "signature",

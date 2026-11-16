@@ -63,6 +63,13 @@
       {%- endfor -%}
     </div>
 
+    <div class="artemano-footer__signature">
+      <span class="artemano-footer__mark" aria-hidden="true">
+        {%- render 'artemano-logo', variant: 'mark' -%}
+      </span>
+      <p class="artemano-footer__motto">{{ 'artemano.brand.motto' | t }}</p>
+    </div>
+
     <div class="artemano-footer__bottom">
       <p class="artemano-footer__legal">
         © {{ 'now' | date: '%Y' }} {{ shop.name }}
@@ -244,6 +251,45 @@
     gap: 0.75rem;
     margin: 0;
     padding: 0;
+  }
+
+  /* Signature de la maison : papillon doré + devise */
+  .artemano-footer__signature {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding-block: 2.5rem;
+    border-top: 1px solid rgb(247 243 236 / 0.12);
+  }
+
+  .artemano-footer__signature::before,
+  .artemano-footer__signature::after {
+    content: '';
+    flex: 0 1 6rem;
+    height: 1px;
+    background: rgb(217 185 140 / 0.45);
+  }
+
+  .artemano-footer__mark {
+    display: block;
+    width: 1.875rem;
+    color: var(--artemano-gold-light, #d9b98c);
+  }
+
+  .artemano-footer__mark svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .artemano-footer__motto {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-style: italic;
+    font-size: 1.25rem;
+    letter-spacing: 0.01em;
+    color: var(--artemano-cream, #f7f3ec);
   }
 
   .artemano-footer__bottom {
