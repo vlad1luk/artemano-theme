@@ -135,14 +135,23 @@
     if (imgs.length < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var i = 0;
     var delay = parseInt(box.getAttribute('data-interval'), 10) || 6000;
+    // Charge l'image suivante d'avance; on ne passe à une image que lorsqu'elle est prête (pas d'écran gris)
+    function warm(k) {
+      var im = imgs[k % imgs.length];
+      if (im && im.loading !== 'eager') im.loading = 'eager';
+    }
+    if (document.readyState === 'complete') warm(1);
+    else window.addEventListener('load', function () { warm(1); });
     setInterval(function () {
       if (document.hidden) return;
+      var next = (i + 1) % imgs.length;
+      if (!imgs[next].complete || !imgs[next].naturalWidth) { warm(next); return; }
       imgs[i].classList.remove('is-active');
       if (dots[i]) dots[i].classList.remove('is-active');
-      i = (i + 1) % imgs.length;
-      imgs[i].loading = 'eager';
+      i = next;
       imgs[i].classList.add('is-active');
       if (dots[i]) dots[i].classList.add('is-active');
+      warm(i + 1);
     }, delay);
   })();
 </script>
