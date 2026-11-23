@@ -1282,3 +1282,13 @@ button.shopify-payment-button__button--unbranded {
 .product-details details:has(.artemano-pdp__specs:empty) {
   display: none;
 }
+
+.product-details .product-form-buttons > span:not(.product-form-text__error) {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+}
+
+.product-details a[class*='contact_button'],
+.product-details a[class*='contact_button']:hover {
+  box-shadow: none !important;
+}
