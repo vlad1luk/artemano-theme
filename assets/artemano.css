@@ -1303,3 +1303,20 @@ button.shopify-payment-button__button--unbranded {
 .product-details .add-to-cart-button .add-to-cart-icon {
   display: none;
 }
+
+@media screen and (max-width: 749px) {
+  .product-details .add-to-cart-button {
+    padding-inline: 0.75rem;
+    letter-spacing: 0.1em;
+  }
+
+  .product-details .product-form-buttons .quantity-selector {
+    width: 6.25rem;
+  }
+
+  .product-details .variant-option__button-label__pill {
+    min-height: 2.5rem;
+    padding-inline: 0.875rem;
+    font-size: 0.8125rem !important;
+  }
+}
