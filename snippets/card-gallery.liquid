@@ -113,11 +113,25 @@
         endif
 
         assign featured_media_class = media_class | replace: '[media_type]', featured_media.media_type | append: media_class_suffix
+
+        # Artemano : les détourés sur fond blanc sont montrés en entier (contain).
+        # Les photos d'ambiance Moe's recadrées (non carrées) remplissent la carte (cover).
+        assign artemano_is_moes = false
+        if product.tags contains 'moes'
+          assign artemano_is_moes = true
+        endif
+        assign featured_fit = media_fit | default: 'contain'
+        if artemano_is_moes and media_fit == blank
+          assign artemano_ar = featured_media.preview_image.aspect_ratio | default: 1
+          if artemano_ar < 0.95 or artemano_ar > 1.05
+            assign featured_fit = 'cover'
+          endif
+        endif
       %}
       {%- if product.media.size == 1 -%}
         <div
           class="{{ featured_media_class }}"
-          style="--product-media-fit: {{ media_fit | default: 'cover' }};"
+          style="--product-media-fit: {{ featured_fit }};"
         >
           {% render 'product-media',
             media: featured_media,
@@ -185,7 +199,15 @@
                 render 'product-media', media: media, sizes: sizes, loading: loading, preview_image_only: true
               endcapture
 
-              render 'slideshow-slide', slide_id: media.id, index: forloop.index0, hidden: hidden, class: class, attributes: attributes, children: slideshow_children, media_fit: media_fit
+              assign slide_fit = media_fit | default: 'contain'
+              if artemano_is_moes and media_fit == blank
+                assign artemano_ar = media.preview_image.aspect_ratio | default: 1
+                if artemano_ar < 0.95 or artemano_ar > 1.05
+                  assign slide_fit = 'cover'
+                endif
+              endif
+
+              render 'slideshow-slide', slide_id: media.id, index: forloop.index0, hidden: hidden, class: class, attributes: attributes, children: slideshow_children, media_fit: slide_fit
             endfor
           endcapture
 

@@ -467,7 +467,13 @@ html:root {
 /* --------------------------------------------------------------------------
    Photos produits : ce sont des détourés sur fond blanc → on les montre en entier
    -------------------------------------------------------------------------- */
-.product-grid .product-media__image,
+/* Cartes de collection : carrées, fond blanc. L'ajustement (contain pour les
+   détourés, cover pour les photos d'ambiance Moe's) est décidé dans card-gallery.liquid. */
+.product-grid .product-media-container,
+.product-grid .product-media__image {
+  background: #fff;
+}
+
 .artemano-coll__subcat-media img {
   object-fit: contain;
   background: #fff;
