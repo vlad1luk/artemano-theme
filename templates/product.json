@@ -18,7 +18,7 @@
           "settings": {
             "media_presentation": "grid",
             "media_columns": "two",
-            "image_gap": 8,
+            "image_gap": 12,
             "large_first_image": true,
             "icons_style": "chevron",
             "slideshow_controls_style": "thumbnails",
@@ -268,28 +268,10 @@
                   },
                   "blocks": {
                     "desc": {
-                      "type": "text",
+                      "type": "custom-liquid",
                       "settings": {
-                        "text": "{{ closest.product.description }}",
-                        "width": "100%",
-                        "max_width": "normal",
-                        "alignment": "left",
-                        "type_preset": "rte",
-                        "font": "var(--font-body--family)",
-                        "font_size": "",
-                        "line_height": "normal",
-                        "letter_spacing": "normal",
-                        "case": "none",
-                        "wrap": "pretty",
-                        "background": false,
-                        "background_color": "#00000026",
-                        "corner_radius": 0,
-                        "padding-block-start": 0,
-                        "padding-block-end": 0,
-                        "padding-inline-start": 0,
-                        "padding-inline-end": 0
-                      },
-                      "blocks": {}
+                        "custom_liquid": "<div class=\"rte artemano-pdp__desc\">{{ product.description | split: '<h3>' | first }}</div>"
+                      }
                     }
                   },
                   "block_order": [
@@ -308,7 +290,7 @@
                     "dims": {
                       "type": "custom-liquid",
                       "settings": {
-                        "custom_liquid": "<dl class=\"artemano-pdp__specs\">\n  {%- for option in product.options_with_values -%}\n    {%- assign n = option.name | downcase -%}\n    {%- if n contains 'dimension' or n contains 'size' or n contains 'taille' -%}\n      <div><dt>{{ option.name }}</dt><dd>{{ option.values | join: ' · ' }}</dd></div>\n    {%- endif -%}\n  {%- endfor -%}\n  {%- if product.metafields.custom.dimensions != blank -%}<div><dt>{{ 'artemano.specs.dimensions' | t }}</dt><dd>{{ product.metafields.custom.dimensions.value }}</dd></div>{%- endif -%}\n  {%- if product.metafields.custom.poids != blank -%}<div><dt>{{ 'artemano.specs.weight' | t }}</dt><dd>{{ product.metafields.custom.poids.value }}</dd></div>{%- endif -%}\n</dl>"
+                        "custom_liquid": "{%- liquid\n  assign dims_html = ''\n  assign sections = product.description | split: '<h3>'\n  for s in sections offset: 1\n    if s contains 'Dimensions</h3>'\n      assign dims_html = s | split: '</h3>' | last\n    endif\n  endfor\n-%}\n{%- if dims_html != blank -%}<div class=\"rte artemano-pdp__desc\">{{ dims_html }}</div>{%- else -%}\n<dl class=\"artemano-pdp__specs\">\n  {%- for option in product.options_with_values -%}\n    {%- assign n = option.name | downcase -%}\n    {%- if n contains 'dimension' or n contains 'size' or n contains 'taille' -%}\n      <div><dt>{{ option.name }}</dt><dd>{{ option.values | join: ' · ' }}</dd></div>\n    {%- endif -%}\n  {%- endfor -%}\n  {%- if product.metafields.custom.dimensions != blank -%}<div><dt>{{ 'artemano.specs.dimensions' | t }}</dt><dd>{{ product.metafields.custom.dimensions.value }}</dd></div>{%- endif -%}\n  {%- if product.metafields.custom.poids != blank -%}<div><dt>{{ 'artemano.specs.weight' | t }}</dt><dd>{{ product.metafields.custom.poids.value }}</dd></div>{%- endif -%}\n</dl>\n{%- endif -%}"
                       },
                       "blocks": {}
                     }
@@ -354,11 +336,32 @@
                   "block_order": [
                     "deliv"
                   ]
+                },
+                "row_materials": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "Materials and care",
+                    "open_by_default": false,
+                    "icon": "none",
+                    "width": 20
+                  },
+                  "blocks": {
+                    "mat": {
+                      "type": "custom-liquid",
+                      "settings": {
+                        "custom_liquid": "{%- assign sections = product.description | split: '<h3>' -%}<div class=\"rte artemano-pdp__desc\">{%- for s in sections offset: 1 -%}{%- unless s contains 'Dimensions</h3>' -%}<h3>{{ s }}{%- endunless -%}{%- endfor -%}</div>"
+                      }
+                    }
+                  },
+                  "block_order": [
+                    "mat"
+                  ]
                 }
               },
               "block_order": [
                 "row_description",
                 "row_dimensions",
+                "row_materials",
                 "row_delivery"
               ]
             }
