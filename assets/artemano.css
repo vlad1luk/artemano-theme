@@ -1292,3 +1292,14 @@ button.shopify-payment-button__button--unbranded {
 .product-details a[class*='contact_button']:hover {
   box-shadow: none !important;
 }
+
+.product-details .add-to-cart-button {
+  padding-inline: 1rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  white-space: nowrap;
+}
+
+.product-details .add-to-cart-button .add-to-cart-icon {
+  display: none;
+}
